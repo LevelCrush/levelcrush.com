@@ -6,6 +6,8 @@ import * as multer from 'multer';
 
 import { Repository } from 'typeorm';
 import ENV from '../env';
+import * as https from 'https';
+import * as fs from 'fs';
 
 // passports
 
@@ -20,14 +22,33 @@ export interface ServerRequest extends express.Request {
 export class Server {
     public app: express.Express;
     private port: number = 8080;
+    private httpsServer: https.Server | undefined;
 
-    public constructor(engine: string, views: string) {
+    public constructor(
+        engine: string,
+        views: string,
+        ssl?: {
+            key: string;
+            cert: string;
+        },
+    ) {
         // create our express app
         this.app = express();
 
         // set pug as our view engine
         this.app.set('view engine', engine);
         this.app.set('views', views);
+
+        let enableSSL = ssl !== undefined;
+        if (ssl !== undefined) {
+            this.httpsServer = https.createServer(
+                {
+                    key: fs.readFileSync(ssl.key),
+                    cert: fs.readFileSync(ssl.cert),
+                },
+                this.app,
+            );
+        }
 
         // configure body parsing
         this.app.use(bodyParser.json());
@@ -51,9 +72,15 @@ export class Server {
 
         this.port = port;
         return new Promise(() => {
-            this.app.listen(this.port, () => {
-                console.log('Now listening on ' + this.port);
-            });
+            if (this.httpsServer !== undefined) {
+                this.httpsServer.listen(this.port, () => {
+                    console.log('Doing something on ' + this.port);
+                });
+            } else {
+                this.app.listen(this.port, () => {
+                    console.log('Now listening on ' + this.port);
+                });
+            }
         });
     }
 }

@@ -18,6 +18,7 @@ async function main(): Promise<void> {
     let server = new Server(
         ENV.server && ENV.server.engine ? ENV.server.engine : '',
         ENV.server && ENV.server.views ? ENV.server.views : '',
+        ENV.server && ENV.server.ssl && ENV.server.ssl ? ENV.server.ssl : undefined,
     );
     var assetPath =
         ENV.server !== undefined && ENV.server.assets !== undefined ? ENV.server.assets : 'please supply static path';

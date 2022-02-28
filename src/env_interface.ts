@@ -10,6 +10,10 @@ export interface ENV {
         url?: string;
         engine?: string;
         views?: string;
+        ssl?: {
+            key: string;
+            cert: string;
+        };
     };
     hosts: {
         api: string;
