@@ -50,4 +50,4 @@ jobs:
         # Arguments to pass to rsync
         #ARGS: -rltgoDzvO # optional, default is -rltgoDzvO
         # An array of folder to exclude
-        #EXCLUDE: ${{ secrets.SSH_DIR_EXCLUDES }} # optional, default is 
+        EXCLUDE: ${{ secrets.SSH_DIR_EXCLUDES }} # optional, default is 
