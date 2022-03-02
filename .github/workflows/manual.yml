@@ -40,7 +40,7 @@ jobs:
         # Remote user
         REMOTE_USER: ${{ secrets.SSH_REMOTE_USER }} 
         # Remote port
-        REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}  # optional, default is 22
+        #REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}  # optional, default is 22
         # Source directory
         #SOURCE: ${{ secrets.SSH_DIR_SOURCE }}  # optional, default is 
         # Target directory
