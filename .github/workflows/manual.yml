@@ -42,10 +42,10 @@ jobs:
         # Remote port
         REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}  # optional, default is 22
         # Source directory
-        SOURCE: ${{ secrets.SSH_DIR_SOURCE }}  # optional, default is 
+        #SOURCE: ${{ secrets.SSH_DIR_SOURCE }}  # optional, default is 
         # Target directory
         TARGET: ${{ secrets.SSH_DIR_TARGET }} # optional, default is /home/REMOTE_USER/
         # Arguments to pass to rsync
-        ARGS: -rltgoDzvO # optional, default is -rltgoDzvO
+        #ARGS: -rltgoDzvO # optional, default is -rltgoDzvO
         # An array of folder to exclude
-        EXCLUDE: ${{ secrets.SSH_DIR_EXCLUDES }} # optional, default is 
+        #EXCLUDE: ${{ secrets.SSH_DIR_EXCLUDES }} # optional, default is 
