@@ -51,3 +51,10 @@ jobs:
         #ARGS: -rltgoDzvO # optional, default is -rltgoDzvO
         # An array of folder to exclude
         EXCLUDE: ${{ secrets.SSH_DIR_EXCLUDES }} # optional, default is 
+    - name: executing remote ssh commands 
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.SSH_REMOTE_HOST }}
+          username: ${{ secrets.SSH_REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: npm install
