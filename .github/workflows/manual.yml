@@ -57,4 +57,8 @@ jobs:
           host: ${{ secrets.SSH_REMOTE_HOST }}
           username: ${{ secrets.SSH_REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: cd {{ secrets.SSH_DIR_TARGET}} && npm install
+          script: | 
+            cd ${{ secrets.SSH_DIR_TARGET}}
+            npm install
+            npm run build
+            sudo systemctl restart ${{ secrets.SERVICE_NAME }}.service
