@@ -38,6 +38,7 @@ export class Server {
         // set pug as our view engine
         this.app.set('view engine', engine);
         this.app.set('views', views);
+        this.app.locals.basedir = views;
 
         let enableSSL = ssl !== undefined;
         if (ssl !== undefined) {

@@ -1,0 +1,45 @@
+head 
+
+    // any meta tags here
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+
+    // favicon support
+    link(rel="icon", type="image/svg+xml", href="/favicon.svg")
+    link(rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png")
+
+    // setup page title
+    title #{title}
+
+    // adobe typekit font support
+    link(rel="stylesheet", href="https://use.typekit.net/pfr8gmr.css")
+
+    // library support here
+    // tailwind (not ideal should eventually build a optimized version)
+    script(src="https://cdn.tailwindcss.com?plugins=forms,typography")
+    
+    script(type="text/javascript").
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans' : ['acumin-pro','sans-serif']
+                    }
+                }
+            }
+        }
+
+    // ENV output 
+    script(type="text/javascript").
+        var ENV = {
+            hosts: {
+                api: "#{hosts.api}",
+                login: "#{hosts.login}",
+                frontend: "#{hosts.frontend}"
+            }
+        }
+
+    
+    
+
