@@ -4,7 +4,6 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as multer from 'multer';
 
-import { Repository } from 'typeorm';
 import ENV from '../env';
 import * as https from 'https';
 import * as fs from 'fs';
