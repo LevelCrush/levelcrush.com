@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: '[Production] Server Restart'
+name: '[Dev] Server Restart'
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -22,7 +22,7 @@ jobs:
     restarting:
         # The type of runner that the job will run on
         runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/dev'
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
             # Runs a single command using the runners shell
@@ -33,4 +33,4 @@ jobs:
                   username: ${{ secrets.SSH_REMOTE_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      sudo systemctl restart ${{ secrets.SERVICE_NAME }}.service
+                      sudo systemctl restart ${{ secrets.SERVICE_NAME }}_dev.service
