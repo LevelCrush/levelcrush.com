@@ -26,6 +26,8 @@ The local builds for **api.levelcrush** and **login.levelcrush** are recommended
 
 ## How to run the server?
 
+Assuming you have properly setup your env.ts in the src folder you can use the below commands to run the server.
+
 If you are looking to run the server locally with typescript runtime support (**Recommended for development**) Then you can run the following command below from your terminal.
 
 ```
@@ -183,6 +185,7 @@ Once you have setup your env.ts you should successfully be able to build your le
 | Typescript | Application Language                                         |
 | Express    | Web Server                                                   |
 | Pug        | Template engine for pages                                    |
+| Tailwind   | Used as a utiliy css framework to rapidly style pages        |
 | Axios      | Backend web request to api.levelcrush and login.levelcrush   |
 | moment     | Date formating and timestamps                                |
 | ts-node    | Used to run debug builds with typescript support at runtime. |
@@ -195,3 +198,37 @@ Once you have setup your env.ts you should successfully be able to build your le
 | cors            | express |
 | express-session | express |
 | multer          | express |
+
+---
+
+## Why not merge login.levelcrush and api.levelcrush into this one server?
+
+Great question. The previous iteration of levelcrush.com was built on **Wordpress**. While Wordpress itself is fine, the original idea was to have members of leadership or have members of the community edit the website and manage it. However this did not stick, and there were other services that were wanted more but still needed to be on a levelcrush.com domain space. The result was a monolithic plugin that handled SSO/apis/etc. While altogether not terrible, maintaining the site and plugin was a nightmare.
+
+Not only did you need to run the bloated wordpress installation, but now you had to have wordpress knowledge + extensive php knowledge to work on it and it was a much slower development process. The flexibiltiy as well of the login system due to it being hosted on wordpress via plugin was very scope limiting.
+
+By seperating the api out and the login functionality into its own domain and keeping them isolated, it is the belief that we will be able to work on features / domains much better and allow other users to use our api system to create better interactive experiences for our community.
+
+To this purpose: levelcrush.com will serve mainly as a "wrapper" around the api , allowing users to eventually do the following features
+
+-   Access a members dashboard to access creator tools
+-   Access a party room where users will be able to watch private streams/watch parties as a community
+-   Provide a streamlined interface to LFG and keep track of said LFG's
+-   Provide a mechanism to have polls to reach out to the community
+-   Provide a mechanism to have users give feedback on the community
+-   Provide a mechanism to link accounts such as bungie/xbox/etc and have a unified account that will be representive of them in the other "levelcrush applications"
+
+levelcrush.com will leverage this api on both the server side and client side where appropriate.
+
+### What happens when we want to develop an application that is **not** hosted on the \*.levelcrush.com domain space?
+
+Our system will support these applications so long as they are whitelisted. Allowing other developers to leverage our network and provide unique experiences for users, using one single sign on. Even if there is no immediate need for this functionality, the system supports it due to this structure we have setup, allowing it to be much more portable.
+
+## External Library Documentation
+
+-   Node.js: [https://nodejs.org/en/docs/](https://nodejs.org/en/docs/)
+-   Typescript: [https://www.typescriptlang.org/docs/](https://www.typescriptlang.org/docs/)
+-   Pug: [https://pugjs.org](https://pugjs.org)
+-   Express: [https://expressjs.com/en/4x/api.html](https://expressjs.com/en/4x/api.html)
+-   Tailwind: [https://tailwindcss.com/](https://tailwindcss.com/)
+-   Axios: [https://axios-http.com/docs/intro](https://axios-http.com/docs/intro)
