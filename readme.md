@@ -176,6 +176,35 @@ Once you have setup your env.ts you should successfully be able to build your le
 
 ---
 
+## How to setup routes
+
+Add the route to the [PageController.ts](https://github.com/LevelCrush/levelcrush.com/blob/main/src/controllers/page_controller.ts) controller or create a new controller and add it to the [app.ts](https://github.com/LevelCrush/levelcrush.com/blob/main/src/app.ts) initializetion process.
+
+```typescript
+let controllers: ServerController[] = [new PageController()];
+controllers.forEach((controller, index) => {
+    server.router(controller.route, controller.router);
+});
+```
+
+## How to serve assets
+
+Assets are stored in the assets folder. See below for a url map
+
+```
+| project directory
+    | readme.md
+    | tsconfig.json
+    | src
+    | assets -> https://levelcrush.com/assets/**/*
+        | css -> https://levelcrush.com/assets/css/**/*
+        | images -> https://levelcrush.com/assets/images/**/*
+        | js -> https://levelcrush.com/assets/js/**/*
+        | root -> https://levelcrush.com/**/* OR https://levelcrush.com/assets/root/**/*
+```
+
+From the above visual you can see that in general, the assets folder is mapped to the equivalent of https://levelcrush.com/assets. The "root" folder has a special mapping that is intended for files that are hosted at the / of a website traditionally. Such as favicons and robots.txt
+
 ## What's the stack
 
 ### Below is a table of "packages" that we use
@@ -223,6 +252,8 @@ levelcrush.com will leverage this api on both the server side and client side wh
 ### What happens when we want to develop an application that is **not** hosted on the \*.levelcrush.com domain space?
 
 Our system will support these applications so long as they are whitelisted. Allowing other developers to leverage our network and provide unique experiences for users, using one single sign on. Even if there is no immediate need for this functionality, the system supports it due to this structure we have setup, allowing it to be much more portable.
+
+---
 
 ## External Library Documentation
 

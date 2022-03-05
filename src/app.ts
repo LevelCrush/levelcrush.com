@@ -3,7 +3,7 @@ import ENV from './env';
 import Server from './server/server';
 
 import ServerController from './server/server_controller';
-import PageController from './controllers/PageController';
+import PageController from './controllers/page_controller';
 import * as path from 'path';
 
 async function main(): Promise<void> {
