@@ -8,7 +8,7 @@ export interface ENV {
         assets?: string;
         domain?: string;
         url?: string;
-        engine?: string;
+        engine?: 'pug'; // the only current choice right now
         views?: string;
         ssl?: {
             key: string;
