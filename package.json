@@ -11,7 +11,9 @@
     "clean": "tsc --build --clean",
     "debug": "ts-node ./src/app.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "production" : "node ./dist/app.js"
+    "production": "node ./dist/app.js",
+    "build:css": "postcss assets/css/tailwind-build.css -o assets/css/tailwind.css",
+    "watch:css" : "postcss assets/css/tailwind-build.css -o assets/css/tailwind.css --watch"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -26,11 +28,13 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
+    "tailwindcss": "^3.0.23",
     "ts-node": "^10.4.0",
     "typescript": "^4.0.5"
   },
   "dependencies": {
     "@types/pug": "^2.0.6",
+    "autoprefixer": "^10.4.2",
     "axios": "^0.26.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
@@ -39,6 +43,8 @@
     "express-session": "^1.17.2",
     "moment": "^2.29.1",
     "multer": "^1.4.4",
+    "postcss": "^8.4.8",
+    "postcss-cli": "^9.1.0",
     "pug": "^3.0.2"
   }
 }
