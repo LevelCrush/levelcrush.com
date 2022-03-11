@@ -541,6 +541,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
 }
+.flex-nowrap {
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+}
 .items-center {
   -webkit-align-items: center;
           align-items: center;
@@ -697,6 +701,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   .md\:flex-auto {
     -webkit-flex: 1 1 auto;
             flex: 1 1 auto;
+  }
+
+  .md\:flex-wrap {
+    -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
   }
 
   .md\:text-left {
