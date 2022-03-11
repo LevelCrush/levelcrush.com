@@ -529,6 +529,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-flex: 0 1 auto;
           flex: 0 1 auto;
 }
+.flex-\[1_1_auto\] {
+  -webkit-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
 .basis-full {
   -webkit-flex-basis: 100%;
           flex-basis: 100%;
@@ -717,9 +721,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 @media (min-width: 1024px) {
 
-  .lg\:basis-5\/12 {
-    -webkit-flex-basis: 41.666667%;
-            flex-basis: 41.666667%;
+  .lg\:flex-\[0_1_40\%\] {
+    -webkit-flex: 0 1 40%;
+            flex: 0 1 40%;
   }
 
   .lg\:text-lg {
