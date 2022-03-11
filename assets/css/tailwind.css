@@ -512,6 +512,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-full {
   height: 100%;
 }
+.min-h-\[50rem\] {
+  min-height: 50rem;
+}
 .w-full {
   width: 100%;
 }
@@ -525,6 +528,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .flex-initial {
   -webkit-flex: 0 1 auto;
           flex: 0 1 auto;
+}
+.flex-\[1_1_auto\] {
+  -webkit-flex: 1 1 auto;
+          flex: 1 1 auto;
 }
 .basis-full {
   -webkit-flex-basis: 100%;
@@ -669,13 +676,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
 }
-@media (min-width: 640px) {
-
-  .sm\:basis-full {
-    -webkit-flex-basis: 100%;
-            flex-basis: 100%;
-  }
-}
 @media (min-width: 768px) {
 
   .md\:mt-0 {
@@ -696,6 +696,16 @@ Ensure the default browser behavior of the `hidden` attribute.
             flex: 1 1 auto;
   }
 
+  .md\:basis-auto {
+    -webkit-flex-basis: auto;
+            flex-basis: auto;
+  }
+
+  .md\:flex-nowrap {
+    -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+  }
+
   .md\:text-left {
     text-align: left;
   }
@@ -703,11 +713,21 @@ Ensure the default browser behavior of the `hidden` attribute.
   .md\:text-right {
     text-align: right;
   }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 @media (min-width: 1024px) {
 
-  .lg\:basis-5\/12 {
-    -webkit-flex-basis: 41.666667%;
-            flex-basis: 41.666667%;
+  .lg\:flex-\[0_1_40\%\] {
+    -webkit-flex: 0 1 40%;
+            flex: 0 1 40%;
+  }
+
+  .lg\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
