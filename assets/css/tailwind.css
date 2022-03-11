@@ -541,10 +541,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
 }
-.flex-nowrap {
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
-}
 .items-center {
   -webkit-align-items: center;
           align-items: center;
@@ -676,13 +672,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
 }
-@media (min-width: 640px) {
-
-  .sm\:basis-full {
-    -webkit-flex-basis: 100%;
-            flex-basis: 100%;
-  }
-}
 @media (min-width: 768px) {
 
   .md\:mt-0 {
@@ -703,9 +692,14 @@ Ensure the default browser behavior of the `hidden` attribute.
             flex: 1 1 auto;
   }
 
-  .md\:flex-wrap {
-    -webkit-flex-wrap: wrap;
-            flex-wrap: wrap;
+  .md\:basis-auto {
+    -webkit-flex-basis: auto;
+            flex-basis: auto;
+  }
+
+  .md\:flex-nowrap {
+    -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
   }
 
   .md\:text-left {
@@ -715,11 +709,21 @@ Ensure the default browser behavior of the `hidden` attribute.
   .md\:text-right {
     text-align: right;
   }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 @media (min-width: 1024px) {
 
   .lg\:basis-5\/12 {
     -webkit-flex-basis: 41.666667%;
             flex-basis: 41.666667%;
+  }
+
+  .lg\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
