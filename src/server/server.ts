@@ -41,6 +41,7 @@ export class Server {
 
         let enableSSL = ssl !== undefined;
         if (ssl !== undefined) {
+            console.log(ssl);
             this.httpsServer = https.createServer(
                 {
                     key: fs.readFileSync(ssl.key),
