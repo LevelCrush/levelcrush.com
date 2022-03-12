@@ -48,3 +48,5 @@ ormconfig.ts
 
 bin/*
 obj/*
+
+tailwind.css
