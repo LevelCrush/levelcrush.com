@@ -125,7 +125,7 @@ export interface ENV {
 export default ENV;
 ```
 
-### What your env.ts should look like
+### What your env.ts can look like
 
 ```typescript
 import * as path from 'path';
