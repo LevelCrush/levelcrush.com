@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "..\\levelcrush-creator-widget"
+	},
+	{
+		"path": "..\\levelcrush-components"
+	}
+],
+  "settings": {}
+}

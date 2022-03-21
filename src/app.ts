@@ -1,7 +1,7 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 import ENV from './env';
-
 import Server from './server/server';
-
 import ServerController from './server/server_controller';
 import PageController from './controllers/page_controller';
 import * as path from 'path';

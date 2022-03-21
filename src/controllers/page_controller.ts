@@ -20,6 +20,7 @@ export class PageController extends ServerController {
         let possibleSecrets = 0;
         variables['title'] = 'Secret';
         variables['hosts'] = ENV.hosts;
+        variables['application'] = ENV.platforms.api.token;
 
         let viewDirectory = ENV.server && ENV.server.views ? ENV.server.views : '';
         if (viewDirectory !== '') {
@@ -45,6 +46,7 @@ export class PageController extends ServerController {
         let variables: { [key: string]: unknown } = {};
         variables['title'] = 'Home | Level Crush';
         variables['hosts'] = ENV.hosts;
+        variables['application'] = ENV.platforms.api.token;
         response.render('pages/index', variables);
     }
 
@@ -52,6 +54,7 @@ export class PageController extends ServerController {
         let variables: { [key: string]: unknown } = {};
         variables['title'] = 'LFG Application | Level Crush';
         variables['hosts'] = ENV.hosts;
+        variables['application'] = ENV.platforms.api.token;
         response.render('pages/lfg', variables);
     }
 
@@ -60,6 +63,7 @@ export class PageController extends ServerController {
 
         variables['title'] = 'Feedback Form | Level Crush';
         variables['hosts'] = ENV.hosts;
+        variables['application'] = ENV.platforms.api.token;
         response.render('pages/feedback', variables);
     }
 }

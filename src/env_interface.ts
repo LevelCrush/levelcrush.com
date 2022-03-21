@@ -24,6 +24,7 @@ export interface ENV {
         api: {
             token: string;
             token_secret: string;
+            application: string;
         };
         discord: {
             oauth: {
