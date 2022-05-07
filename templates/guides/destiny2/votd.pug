@@ -34,7 +34,7 @@ html(class=theme, data-fetchtime=duration)
                 div(id="slides" class="flex-[1_1_auto] lg:flex-[0_1_65%]  relative top-0 self-start guide-content mt-8 lg:mt-0")
                     each encounter, encounterID in guide.encounters
                         article(class="slide px-4", data-id=encounterID)
-                            h2(class="text-3xl underline font-bold uppercase font-sans", id=encounterID) #{encounter.title} 
+                            h2(class="text-2xl lg:text-3xl underline font-bold uppercase font-sans", id=encounterID) #{encounter.title} 
                             each section, sectionID in encounter.sections 
                                 section(data-id=sectionID)
                                     h3(class="text-xl underline uppercase font-bold font-sans", id=sectionID) #{section.title}
