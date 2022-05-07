@@ -291,6 +291,9 @@ export class RaidGuideManager {
             await ((targetPath: string): Promise<void> => {
                 return new Promise((resolve) => {
                     fs.mkdir(targetPath, { recursive: true }, (err) => {
+                        if (err) {
+                            console.log('Pre Render Dir Error', err);
+                        }
                         resolve();
                     });
                 });
@@ -317,6 +320,7 @@ export class RaidGuideManager {
                             if (!err) {
                                 resolve();
                             } else {
+                                console.log('Downoad Guide Assets Dir Error', err);
                                 reject(err);
                             }
                         });
@@ -337,6 +341,7 @@ export class RaidGuideManager {
                             return new Promise((resolve) => {
                                 magic.detectFile(outputPath, (err: any, result: any) => {
                                     if (err) {
+                                        console.log('Mime Type Error', err);
                                         resolve('');
                                     } else {
                                         resolve((result as string).trim());
@@ -351,7 +356,10 @@ export class RaidGuideManager {
                         //fs.renameSync(outputPath, newPath);
                         await (() => {
                             return new Promise((resolve) => {
-                                fs.rename(outputPath, newPath, () => {
+                                fs.rename(outputPath, newPath, (err) => {
+                                    if (err) {
+                                        console.log('Rename File err', err);
+                                    }
                                     resolve(true);
                                 });
                             });
@@ -381,6 +389,7 @@ export class RaidGuideManager {
                     let error: Error | undefined = undefined;
                     writer.on('error', (err) => {
                         error = err;
+                        console.log('Axios Writer Error', error);
                         reject(err);
                     });
 
@@ -391,6 +400,7 @@ export class RaidGuideManager {
                     });
                 })
                 .catch((err) => {
+                    console.log('Axios Download Error', err);
                     reject(err);
                 });
         });
