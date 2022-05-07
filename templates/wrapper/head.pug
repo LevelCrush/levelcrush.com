@@ -25,7 +25,17 @@ head
     //- polyfills
     script(src="https://cdnjs.cloudflare.com/ajax/libs/iamdustan-smoothscroll/0.3.6/smoothscroll.min.js", integrity="sha512-sgreoYznNI4R5ZZrjA2UdKdWWooRqepqS4v2i/H9QvQSR5ITHmKsrw/lskKo3Pn5bWcbjLSL0gC1QXldPtlArg==", crossorigin="anonymous", referrerpolicy="no-referrer")
 
+    //- google analytics
+  
+    script(async, src="https://www.googletagmanager.com/gtag/js?id=G-6KWQM3Y11P")
+    script(type="text/javascript").
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-6KWQM3Y11P');
+        
+    
     //- ENV output 
     script(type="text/javascript").
         var ENV = {
