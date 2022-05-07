@@ -5,6 +5,8 @@ import Server from './server/server';
 import ServerController from './server/server_controller';
 import PageController from './controllers/page_controller';
 import * as path from 'path';
+import GuideController from './controllers/guide_controller';
+import WebHookController from './controllers/webhook_controller';
 
 async function main(): Promise<void> {
     console.log('Starting database');
@@ -29,7 +31,7 @@ async function main(): Promise<void> {
 
     server.static('/', path.join(assetPath, 'root'));
 
-    let controllers: ServerController[] = [new PageController()];
+    let controllers: ServerController[] = [new PageController(), new GuideController(), new WebHookController()];
     controllers.forEach((controller, index) => {
         server.router(controller.route, controller.router);
     });

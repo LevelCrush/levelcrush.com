@@ -50,3 +50,6 @@ bin/*
 obj/*
 
 tailwind.css
+
+assets/guides/*/**/*
+guideCache/*.json

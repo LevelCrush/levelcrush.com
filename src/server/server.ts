@@ -12,6 +12,10 @@ import * as fs from 'fs';
 
 import session = require('express-session');
 
+// ... only seems to work when imported like this..
+// todo find out how to  import this via "import" instead of "require"
+const cookiesMiddleware = require('universal-cookie-express');
+
 export interface ServerRequest extends express.Request {
     globals: {
         platforms: {};
@@ -54,6 +58,8 @@ export class Server {
         // configure body parsing
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
+
+        this.app.use(cookiesMiddleware());
     }
 
     public static(route: string, path: string) {

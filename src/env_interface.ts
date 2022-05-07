@@ -6,6 +6,7 @@ export interface ENV {
         };
         port?: number;
         assets?: string;
+        guideCache?: string;
         domain?: string;
         url?: string;
         engine?: 'pug'; // the only current choice right now
