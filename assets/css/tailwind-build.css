@@ -156,9 +156,16 @@
     }
     
     .guide article section .youtube-player {
-        @apply mx-auto;
-        @apply mt-0;
+        @apply mx-0;
+        @apply mt-8;
         @apply mb-12;
+        @apply max-w-full;
+        
+        @apply w-[30rem];
+        @apply lg:w-[40rem];
+
+        @apply h-[20rem];
+        @apply lg:h-[30rem];
     }
 
     .guide article {
@@ -170,5 +177,10 @@
     }
     .guide article section {
         @apply my-8;
+    }
+
+    .guide article section a {
+        word-wrap: break-word;
+        word-break: break-all;
     }
 }

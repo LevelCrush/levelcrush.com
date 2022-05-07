@@ -11,7 +11,7 @@ html(class=theme, data-fetchtime=duration)
                         span(class="pb-2 block") Vow of the Disciple
                         div(class="border-b-yellow-400 border-b-2")
                         span(class="text-3xl pt-2 block") Raid Guide / Walkthrough
-            div(class="container mx-auto flex flex-wrap justify-between relative top-0 guide py-8")
+            div(class="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8")
                 div(class="expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] table-of-contents sticky top-0 self-start z-[9999] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none")
                     h2(class="transition-all duration-300 ease-in-out px-4 py-2 dark:bg-slate-900 border-b-2 border-solid  dark:border-cyan-900 dark:group-hover:border-cyan-400  group-hover:border-gray-400 border-gray-200") 
                         button(type="button" class="inline-block text-left  w-full collapse-toggle top-collapse align-middle") 
@@ -31,7 +31,7 @@ html(class=theme, data-fetchtime=duration)
                                                 li(class=" mb-1 hover:cursor-default")
                                                     a(href="#" + section.id, target="_self", class="hover:underline text-sm") #{section.title}
 
-                div(id="slides" class="flex-[1_1_auto] lg:flex-[0_1_65%]  relative top-0 self-start guide-content")
+                div(id="slides" class="flex-[1_1_auto] lg:flex-[0_1_65%]  relative top-0 self-start guide-content mt-8 lg:mt-0")
                     each encounter, encounterID in guide.encounters
                         article(class="slide px-4", data-id=encounterID)
                             h2(class="text-3xl underline font-bold uppercase font-sans", id=encounterID) #{encounter.title} 
