@@ -66,7 +66,10 @@ export class WebHookController extends ServerController {
                     await Promise.all([raidguide.prerender(), raidguide.downloadGuideAssets()]);
                 } catch (err) {
                     console.log(err);
-                    await fs.promises.writeFile('./error_' + moment().unix() + '.log', err);
+                    await fs.promises.writeFile(
+                        path.join(ENV.server?.guideCache as string, '..', 'error_' + moment().unix() + '.log'),
+                        err,
+                    );
                 }
             }
 
