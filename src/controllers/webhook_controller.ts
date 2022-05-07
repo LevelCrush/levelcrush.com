@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import { ServerController, ServerResponse, ServerResponseError } from '../server/server_controller';
 import * as moment from 'moment';
 import * as express from 'express';
@@ -57,11 +58,15 @@ export class WebHookController extends ServerController {
             if (isCallerValid) {
                 let raidguide = new RaidGuideManager('votd');
 
-                console.log('Pulling raid guide from api');
-                await raidguide.pull();
+                try {
+                    console.log('Pulling raid guide from api');
+                    await raidguide.pull();
 
-                console.log('Pre rendering and downloading assets');
-                await Promise.all([raidguide.prerender(), raidguide.downloadGuideAssets()]);
+                    console.log('Pre rendering and downloading assets');
+                    await Promise.all([raidguide.prerender(), raidguide.downloadGuideAssets()]);
+                } catch (err) {
+                    console.log(err);
+                }
             }
 
             WebHookController.isImporting = false;
