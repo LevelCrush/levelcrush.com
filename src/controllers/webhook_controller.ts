@@ -1,6 +1,6 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import { ServerController, ServerResponse, ServerResponseError } from '../server/server_controller';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as express from 'express';
 import * as fs from 'fs';
 import * as path from 'path';

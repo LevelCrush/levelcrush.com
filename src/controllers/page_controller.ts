@@ -1,9 +1,14 @@
 import { ServerController, ServerResponse, ServerResponseError } from '../server/server_controller';
-import * as moment from 'moment';
-import * as express from 'express';
-import * as fs from 'fs';
-import * as path from 'path';
+import moment from 'moment';
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
 import ENV from '../env';
+import ReactDOM from 'react-dom/server';
+import { TestPage, TestPageProps } from '../templates/test';
+import React from 'react';
+import axios from 'axios';
+import { LFGActivity } from '../templates/components/LFGFeed';
 
 export class PageController extends ServerController {
     public constructor() {
@@ -14,6 +19,66 @@ export class PageController extends ServerController {
         this.router.get('/feedback', this.getFeedback);
         this.router.get('/secret', this.getSecret);
         this.router.get('/guides', this.getGuides);
+        this.router.get('/test-react', this.getTestReact);
+    }
+
+    public async getTestReact(req: express.Request, response: express.Response) {
+        let variables = super.getBaseVariables(req);
+        variables['title'] = 'React Test';
+
+        // literally copy and pasted the requestFeed method and stripped out any unnncessary code
+        let lfgs = await ((): Promise<LFGActivity[]> => {
+            return new Promise((resolve) => {
+                axios
+                    .post(ENV.hosts.api + '/feed/get', {
+                        application: ENV.platforms.api.application,
+                        name: 'destiny-lfg',
+                    })
+                    .then((response) => {
+                        const timeEnd = Date.now();
+                        if (
+                            response.data &&
+                            typeof response.data['success'] !== undefined &&
+                            response.data['success'] === true &&
+                            typeof response.data['response']['feed'] !== 'undefined' &&
+                            typeof response.data['response']['feed']['data'] !== 'undefined'
+                        ) {
+                            // todo
+                            const activityFeedJSON = response.data['response']['feed']['data'];
+                            let activityFeed: LFGActivity[] | undefined = undefined;
+                            try {
+                                activityFeed = JSON.parse(activityFeedJSON);
+                                resolve(activityFeed as LFGActivity[]);
+                            } catch {
+                                console.log('Unable to parse JSON feed');
+                                resolve([]);
+                            }
+                        } else {
+                            resolve([]);
+                        }
+                    })
+                    .catch(() => {
+                        resolve([]);
+                    });
+            });
+        })();
+
+        console.log(lfgs);
+
+        response.render('react', variables, (err, html) => {
+            response.send(
+                html.replace(
+                    '<div id="entry"></div>',
+                    '<div id="entry">' +
+                        ReactDOM.renderToString(
+                            React.createElement(TestPage, {
+                                lfgs: lfgs,
+                            } as TestPageProps),
+                        ) +
+                        '</div>',
+                ),
+            );
+        });
     }
 
     public async getGuides(req: express.Request, response: express.Response) {

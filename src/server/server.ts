@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import * as ExpressSession from 'express-session';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
