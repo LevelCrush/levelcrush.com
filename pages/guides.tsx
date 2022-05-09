@@ -3,6 +3,7 @@ import React from "react";
 import Hero from "../components/hero";
 import SiteHead from "../components/site_head";
 import SiteHeader from "../components/site_header";
+import DiscordLink from "../components/discord_link";
 
 export class GuidePage extends React.Component {
   public constructor(props: any) {
@@ -31,14 +32,7 @@ export class GuidePage extends React.Component {
             community! Enjoy what we have currently put together. | If you have
             any suggestions for any more, please feel free to join us on the
             discord and make the suggestions there!
-            <Link href="https://discord.gg/levelcrush">
-              <a
-                target="_blank"
-                className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
-              >
-                Join us on Discord
-              </a>
-            </Link>
+            <DiscordLink />
           </p>
         </div>
         <div className="container px-4 mx-auto mt-8 mb-16">

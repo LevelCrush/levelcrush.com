@@ -7,6 +7,7 @@ import EmbedGallery from "../components/embed_gallery";
 import Hero from "../components/hero";
 import SiteHead from "../components/site_head";
 import { SiteHeader } from "../components/site_header";
+import DiscordLink from "../components/discord_link";
 
 export const HomePage = (props: any) => (
   <div>
@@ -42,14 +43,7 @@ export const HomePage = (props: any) => (
                 community, our gamers continue to raid the Hive, loot
                 King&apos;s Canyon, and creep through haunted farm houses at
                 night. Come join us!
-                <Link href="https://discord.gg/levelcrush">
-                  <a
-                    target="_blank"
-                    className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
-                  >
-                    Join us on Discord
-                  </a>
-                </Link>
+                <DiscordLink />
               </p>
             </div>
             <div className="container px-4 mx-auto mt-8 mb-16">
@@ -64,14 +58,7 @@ export const HomePage = (props: any) => (
                 <br/>
                 Well, what are you waiting for? Ready
                 up!
-                <Link href="https://discord.gg/levelcrush">
-                  <a
-                    target="_blank"
-                    className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
-                  >
-                    Join us on Discord
-                  </a>
-                </Link>
+                <DiscordLink />
               </p>
             </div>
             <div className="container px-4 mx-auto mt-8 mb-16">
@@ -92,14 +79,7 @@ export const HomePage = (props: any) => (
                 fermentum augue, ac pulvinar ipsum lorem et nulla. Ut eros
                 magna, semper a leo at, semper mattis nunc. Nullam in elit
                 massa.
-                <Link href="https://discord.gg/levelcrush">
-                  <a
-                    target="_blank"
-                    className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
-                  >
-                    Join us on Discord
-                  </a>
-                </Link>
+                <DiscordLink />
               </p>
             </div>
             <div className="container px-4 mx-auto mt-8 mb-16">
@@ -120,14 +100,7 @@ export const HomePage = (props: any) => (
                 fermentum augue, ac pulvinar ipsum lorem et nulla. Ut eros
                 magna, semper a leo at, semper mattis nunc. Nullam in elit
                 massa.
-                <Link href="https://discord.gg/levelcrush">
-                  <a
-                    target="_blank"
-                    className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
-                  >
-                    Join us on Discord
-                  </a>
-                </Link>
+                <DiscordLink />
               </p>
             </div>
           </div>
