@@ -8,7 +8,7 @@ import Hero from "../components/hero";
 import SiteHead from "../components/site_head";
 import { SiteHeader } from "../components/site_header";
 
-const HomePage = (props: any) => (
+export const HomePage = (props: any) => (
   <div>
     <SiteHead title="Level Crush - Home" />
     <SiteHeader />
