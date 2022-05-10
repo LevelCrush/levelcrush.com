@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export const Document = () => (
   <Html lang="en">
@@ -15,6 +16,23 @@ export const Document = () => (
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      />
+
+      {/* google analytics */}
+      <Script
+        async={true}
+        src="https://www.googletagmanager.com/gtag/js?id=G-6KWQM3Y11P"
+      ></Script>
+
+      {/* must be a better way to do this inside nextjs? */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || [];
+                   function gtag(){dataLayer.push(arguments);}
+                   gtag('js', new Date());
+                   gtag('config', 'G-6KWQM3Y11P');
+                  `,
+        }}
       />
     </Head>
     <body>
