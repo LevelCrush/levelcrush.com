@@ -62,4 +62,5 @@ jobs:
           script: |
             cd ${{ secrets.SSH_DIR_TARGET_DEV}}
             npm install
+            npm run build
             pm2 start dev-${{ secrets.APP_NAME }}
