@@ -65,7 +65,8 @@ export default async function handler(
 
           console.log("Pre rendering and downloading assets");
           // download files first
-          await raidguide.downloadGuideAssets();
+          // now handled by assets.levelcrush.com
+          //await raidguide.downloadGuideAssets();
           // pre rendering requires us to inspect the file tree. HAVE to run after downloading
           await raidguide.prerender();
         } catch (err) {
