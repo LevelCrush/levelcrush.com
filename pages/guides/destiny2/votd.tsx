@@ -1,7 +1,6 @@
 import path from "path";
 import React from "react";
 import Hero from "../../../components/hero";
-import SiteHead from "../../../components/site_head";
 import SiteHeader from "../../../components/site_header";
 import {
   TableOfContents,
@@ -10,6 +9,7 @@ import {
 import RaidGuideManager, { RaidGuide } from "../../../core/raid_guide";
 import * as fs from "fs";
 import { RaidGuideDisplay } from "../../../components/raid_guide_display";
+import Head from "next/head";
 
 export async function getServerSideProps() {
   let doHardPull = false;
@@ -85,7 +85,9 @@ export class GuideVOTDPage extends React.Component<GuideVOTDPageProps> {
   public render() {
     return (
       <div>
-        <SiteHead title="Level Crush - VOTD Raid Guide" />
+        <Head>
+          <title>Level Crush - VOTD Raid Guide</title>
+        </Head>
         <SiteHeader />
         <main>
           <Hero className="bg-[url('/images/VOTDHero.jpg')] min-h-[35rem]">

@@ -1,17 +1,15 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import EmbedGallery from "../components/embed_gallery";
 import Hero from "../components/hero";
-import SiteHead from "../components/site_head";
 import { SiteHeader } from "../components/site_header";
 import DiscordLink from "../components/discord_link";
 
 export const HomePage = (props: any) => (
   <div>
-    <SiteHead title="Level Crush - Home" />
+    <Head>
+      <title>Level Crush - Home</title>
+    </Head>
     <SiteHeader />
     <main>
       <Hero className="bg-[url('/images/banner_background.jpg')] min-h-[50rem]">
@@ -54,10 +52,9 @@ export const HomePage = (props: any) => (
                 Need another Guardian to take on Atheon? How about another
                 squadmate to take on the kill leader? Or maybe run some casual
                 creative modes?
-                <br/>
-                <br/>
-                Well, what are you waiting for? Ready
-                up!
+                <br />
+                <br />
+                Well, what are you waiting for? Ready up!
                 <DiscordLink />
               </p>
             </div>

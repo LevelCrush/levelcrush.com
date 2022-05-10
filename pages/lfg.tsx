@@ -1,10 +1,7 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import React from "react";
 import Hero from "../components/hero";
 import LFGFeed from "../components/lfg_feed";
-import SiteHead from "../components/site_head";
 import { SiteHeader } from "../components/site_header";
 import LFGActivity from "../core/lfg_activity";
 import LFGFeedRequest from "../core/lfg_feed_request";
@@ -37,7 +34,9 @@ export class LFGPage extends React.Component<LFGPageProps> {
   public render() {
     return (
       <div>
-        <SiteHead title="Level Crush - Looking for Group" />
+        <Head>
+          <title>Level Crush - Looking For Group</title>
+        </Head>
         <SiteHeader />
         <main>
           <Hero className="bg-[url('/images/banner_background.jpg')] min-h-[20rem]">

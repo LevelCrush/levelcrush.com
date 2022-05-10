@@ -4,6 +4,14 @@ import Script from "next/script";
 export const Document = () => (
   <Html lang="en">
     <Head>
+      {/* added meta tags */}
+      <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta charSet="UTF-8" />
+      <meta
+        name="viewport"
+        content="width=device-width,initial-scale=1,shrink-to-fit=no"
+      />
+
       {/* Favicon Support */}
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React from "react";
 import Hero from "../components/hero";
-import SiteHead from "../components/site_head";
 import SiteHeader from "../components/site_header";
 import DiscordLink from "../components/discord_link";
+import Head from "next/head";
 
 export class GuidePage extends React.Component {
   public constructor(props: any) {
@@ -13,7 +13,9 @@ export class GuidePage extends React.Component {
   public render() {
     return (
       <div>
-        <SiteHead title="Level Crush - Guides" />
+        <Head>
+          <title>Level Crush - Guides</title>
+        </Head>
         <SiteHeader />
         <Hero className="bg-[url('/images/banner_background.jpg')] min-h-[20rem]">
           <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
