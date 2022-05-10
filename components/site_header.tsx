@@ -14,7 +14,7 @@ export class SiteHeader extends React.Component {
                 Level Crush
               </Link>
               <div
-                className="inline-block w-auto h-auto text-lg"
+                className="inline-block w-auto h-auto text-lg ml-4"
                 title="Toggle Dark/Light Mode"
               >
                 <ThemeToggle />
