@@ -98,7 +98,9 @@ export class RaidGuideManager {
               if (targetPath.trim().length > 0) {
                 const extension = path.extname(targetPath);
                 const urlPath =
-                  "/guides/destiny2/votd/" + content.trim() + extension;
+                  "https://assets.levelcrush.com/guides/destiny2/votd/" +
+                  content.trim() +
+                  extension;
 
                 // for now we will put the img element inside a picture element for future case
                 contentChunks.push(
