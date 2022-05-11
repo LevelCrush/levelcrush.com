@@ -28,9 +28,10 @@ jobs:
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_REMOTE_HOST }}
-          username: ${{ secrets.SSH_REMOTE_USER }}
+          host: ${{ secrets.SSH_REMOTE_HOST_DEV }}
+          username: ${{ secrets.SSH_REMOTE_USER_DEV }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.SSH_DIR_TARGET_STAGE }}
+            npm install
             npm run build
