@@ -55,6 +55,7 @@ export class RaidGuideManager {
       const guidePath = path.join(assetPath, "guides");
       const gamePath = path.join(guidePath, "destiny2");
       const raidGuidePath = path.join(gamePath, this.baseName);
+      console.log(this.guide.assets, "guide assets");
       for (let encounterID in this.guide.encounters) {
         //console.log(this.guide.encounters[encounterID].sections);
         for (let sectionID in this.guide.encounters[encounterID].sections) {
@@ -64,6 +65,8 @@ export class RaidGuideManager {
           let sectionContent = section.content;
           let mediaChunks = sectionContent.trim().split(mediaRegex);
           let contentChunks: string[] = [];
+
+          console.log(mediaChunks);
 
           for (let i = 0; i < mediaChunks.length; i++) {
             let content = mediaChunks[i].trim();
@@ -75,24 +78,23 @@ export class RaidGuideManager {
               let assetPath = path.join(raidGuidePath, content);
 
               let jpgPath = assetPath + ".jpg";
+              let jpegPath = assetPath + ".jpeg";
               let pngPath = assetPath + ".png";
               let gifPath = assetPath + ".gif";
 
               let fsResults = await Promise.all([
                 this.fileExists(jpgPath),
+                this.fileExists(jpegPath),
                 this.fileExists(pngPath),
                 this.fileExists(gifPath),
               ]);
 
               let targetPath = "";
-              if (fsResults[0].result) {
-                targetPath = fsResults[0].path;
-              } else if (fsResults[1].result) {
-                targetPath = fsResults[1].path;
-              } else if (fsResults[2].result) {
-                targetPath = fsResults[2].path;
-              } else {
-                targetPath = "";
+              for (let i = 0; i < fsResults.length; i++) {
+                if (fsResults[i].result) {
+                  targetPath = fsResults[i].path;
+                  break;
+                }
               }
 
               if (targetPath.trim().length > 0) {
