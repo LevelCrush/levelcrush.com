@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.SSH_REMOTE_USER_DEV }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ${{ secrets.SSH_DIR_TARGET_STAGE_DEV}}
+            cd ${{ secrets.SSH_DIR_TARGET_STAGE}}
             npm install
             npm run build
             pm2 start stage-${{ secrets.APP_NAME }}
