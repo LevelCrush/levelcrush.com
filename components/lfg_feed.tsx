@@ -109,7 +109,7 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
         className="animate-pulse feed p-4 sticky top-0"
         data-name={this.props.name}
       >
-        <h3 className="text-1xl  md:text-2xl  lg:text-3xl  font-sans font-bold uppercase mb-2 dark:text-white rounded-lg p-2 py-4 dark:bg-gradient-to-t dark:bg-slate-900 dark:from-black dark:to-slate-800 transition-all duration-300">
+        <h3 className="text-2xl  md:text-2xl  lg:text-3xl  font-sans font-bold uppercase mb-2 dark:text-white rounded-lg p-2 py-4 dark:bg-gradient-to-t dark:bg-slate-900 dark:from-black dark:to-slate-800 transition-all duration-300">
           {"#" + this.props.name}
         </h3>
         <div className="activities">
@@ -150,12 +150,12 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
       <div
         className={
           (this.props.className ? this.props.className : "") +
-          " feed p-4 relative lg:sticky top-0 " +
+          " feed relative lg:sticky top-0 mt-24 first:mt-0 lg:mt-0" +
           (this.state.refreshing === true ? "animate-pulse" : "")
         }
         data-name={this.props.name}
       >
-        <h3 className="text-1xl  md:text-2xl  lg:text-3xl font-sans font-bold uppercase mb-2 dark:text-white rounded-lg p-2 py-4 dark:bg-gradient-to-t dark:bg-slate-900 dark:from-black dark:to-slate-800 transition-all duration-300">
+        <h3 className="text-2xl  md:text-2xl  lg:text-3xl font-sans font-bold uppercase mb-2 dark:text-white rounded-lg p-2 py-4 dark:bg-gradient-to-t dark:bg-slate-900 dark:from-black dark:to-slate-800 transition-all duration-300">
           <span className="float-left">{"#" + this.props.name}</span>
           <button
             className="mx-4 text-lg float-right"

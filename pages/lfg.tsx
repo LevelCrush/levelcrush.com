@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import DiscordLink from "../components/discord_link";
 import Hero from "../components/hero";
 import LFGFeed from "../components/lfg_feed";
 import { SiteHeader } from "../components/site_header";
@@ -47,16 +48,26 @@ export class LFGPage extends React.Component<LFGPageProps> {
               </h2>
             </div>
           </Hero>
+          <div className="container px-4 mx-auto mt-8 mb-16">
+            <h3 className="text-4xl font-sans font-bold uppercase mb-4">
+              Looking for a group?
+            </h3>
+            <p>
+              Right now we are currenlty working on our own lfg search feature.
+              In the meantime please visit the discord to lfg. Thank you!
+              <DiscordLink></DiscordLink>
+            </p>
+          </div>
           <div className="container  px-4 mx-auto mt-8 mb-16">
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap justify-between ">
               <LFGFeed
-                className="flex-auto lg:w-6/12 self-start"
+                className="flex-initial  w-full lg:w-[48%] self-start"
                 interval={30}
                 name="destiny-lfg"
                 lfgs={this.props.lfgs !== undefined ? this.props.lfgs : []}
               ></LFGFeed>
               <LFGFeed
-                className="flex-auto lg:w-6/12  self-start"
+                className="flex-initial w-full  lg:w-[48%]  self-start"
                 interval={30}
                 name="destiny-scheduled-lfg"
                 lfgs={
