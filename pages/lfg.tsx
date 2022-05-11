@@ -53,7 +53,7 @@ export class LFGPage extends React.Component<LFGPageProps> {
               Looking for a group?
             </h3>
             <p>
-              Right now we are currenlty working on our own lfg search feature.
+              Right now we are currently working on our own lfg search feature.
               In the meantime please visit the discord to lfg. Thank you!
               <DiscordLink></DiscordLink>
             </p>

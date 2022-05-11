@@ -58,62 +58,6 @@ export const HomePage = (props: any) => (
                 <DiscordLink />
               </p>
             </div>
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                FEEDBACK ?
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id
-                nisl et augue cursus euismod vitae eget lorem. Donec maximus
-                suscipit elit, at egestas nulla lacinia quis. Vivamus
-                ullamcorper velit sem, ut eleifend eros facilisis non.
-                Pellentesque varius lacinia est, a fringilla ipsum pulvinar sed.
-                Etiam rutrum sem quis mauris aliquam, non lacinia felis gravida.
-                Nulla gravida mauris ac ipsum posuere, eget bibendum magna
-                laoreet. Donec magna felis, semper eget dui sed, cursus
-                sollicitudin arcu. In scelerisque nisl ut tempor interdum.
-                Aliquam consectetur, lorem nec hendrerit accumsan, felis mauris
-                fermentum augue, ac pulvinar ipsum lorem et nulla. Ut eros
-                magna, semper a leo at, semper mattis nunc. Nullam in elit
-                massa.
-                <DiscordLink />
-              </p>
-            </div>
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                WANT TO COLLABORATE ?
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id
-                nisl et augue cursus euismod vitae eget lorem. Donec maximus
-                suscipit elit, at egestas nulla lacinia quis. Vivamus
-                ullamcorper velit sem, ut eleifend eros facilisis non.
-                Pellentesque varius lacinia est, a fringilla ipsum pulvinar sed.
-                Etiam rutrum sem quis mauris aliquam, non lacinia felis gravida.
-                Nulla gravida mauris ac ipsum posuere, eget bibendum magna
-                laoreet. Donec magna felis, semper eget dui sed, cursus
-                sollicitudin arcu. In scelerisque nisl ut tempor interdum.
-                Aliquam consectetur, lorem nec hendrerit accumsan, felis mauris
-                fermentum augue, ac pulvinar ipsum lorem et nulla. Ut eros
-                magna, semper a leo at, semper mattis nunc. Nullam in elit
-                massa.
-                <DiscordLink />
-              </p>
-            </div>
-          </div>
-          <div className="flex-[1_1_auto] lg:flex-[0_1_30%]">
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                Discord Activity
-              </h3>
-              <iframe
-                src="https://discord.com/widget?id=303862208419594240&theme=dark"
-                width="100%"
-                height="1000"
-                frameBorder="0"
-                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-              ></iframe>
-            </div>
           </div>
         </div>
       </div>

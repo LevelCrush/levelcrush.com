@@ -45,12 +45,16 @@ export class GuidePage extends React.Component {
             <li>
               <p>
                 <Link href="/guides/destiny2/votd">
-                  <a className="hover:underline">
+                  <a className="hover:underline underline">
                     Destiny 2 - Vow of the Disciple Raid Guide{" "}
                   </a>
                 </Link>
               </p>
-              <p>Lorem Ipsum - Description here</p>
+              <p>
+                Click the above link to learn more about Bungie&apos; latest
+                raid for Destiny 2. Vow of the Disciple or VOTD for short is
+                part of Bungie&apos; Witch Queen Expansion
+              </p>
             </li>
           </ol>
         </div>

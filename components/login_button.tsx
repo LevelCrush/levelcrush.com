@@ -128,16 +128,16 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       }
     }) as EventListener);
 
-    // check for login every 60 seconds if possible
+    // check for login every 2 minutes if possible
     setInterval(() => {
       this.loginCheck();
-    }, 60000);
+    }, 120000);
 
     // setup timers and run check to login if possible
     setInterval(() => {
-      this.pingHosts(); // explicit ping request (it is currently now redundent)
+      // this.pingHosts(); // explicit ping request (it is currently now redundent)
       this.apiGetSession();
-    }, 30000); // ping every 30 seconds and grab user session as well
+    }, 60000); // ping every 60 seconds and grab user session as well
 
     // we want to run through our entire routine, so dont just only check for a login
     // perform the entire login routine if need be automatically
