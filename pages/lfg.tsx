@@ -48,9 +48,9 @@ export class LFGPage extends React.Component<LFGPageProps> {
             </div>
           </Hero>
           <div className="container  px-4 mx-auto mt-8 mb-16">
-            <div className="flex flex-wrap  self-start">
+            <div className="flex flex-wrap">
               <LFGFeed
-                className="flex-auto lg:w-6/12"
+                className="flex-auto lg:w-6/12 self-start"
                 interval={30}
                 name="destiny-lfg"
                 lfgs={this.props.lfgs !== undefined ? this.props.lfgs : []}

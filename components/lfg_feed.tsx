@@ -150,7 +150,7 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
       <div
         className={
           (this.props.className ? this.props.className : "") +
-          " feed p-4 sticky top-0 " +
+          " feed p-4 relative lg:sticky top-0 " +
           (this.state.refreshing === true ? "animate-pulse" : "")
         }
         data-name={this.props.name}
