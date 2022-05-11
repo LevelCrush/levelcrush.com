@@ -59,6 +59,20 @@ export const HomePage = (props: any) => (
               </p>
             </div>
           </div>
+          <div className="flex-[1_1_auto] lg:flex-[0_1_30%]">
+            <div className="container px-4 mx-auto mt-8 mb-16">
+              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
+                Discord Activity
+              </h3>
+              <iframe
+                src="https://discord.com/widget?id=303862208419594240&theme=dark"
+                width="100%"
+                height="1000"
+                frameBorder="0"
+                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+              ></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </main>
