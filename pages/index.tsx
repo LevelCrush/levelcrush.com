@@ -4,6 +4,8 @@ import EmbedGallery from "../components/embed_gallery";
 import Hero from "../components/hero";
 import { SiteHeader } from "../components/site_header";
 import DiscordLink from "../components/discord_link";
+import Container from "../components/elements/container";
+import { H3 } from "../components/elements/headings";
 
 export const HomePage = (props: any) => (
   <div>
@@ -24,10 +26,8 @@ export const HomePage = (props: any) => (
       <div className="container mx-auto">
         <div className="flex flex-wrap justify-between">
           <div className="flex-[1_1_auto] lg:flex-[0_1_40%]">
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                WHO ARE WE ?
-              </h3>
+            <Container>
+              <H3>WHO ARE WE ?</H3>
               <p>
                 Level Crush was spoken into existence between a small circle of
                 friends. We began with one mission: To build a strong community
@@ -43,11 +43,9 @@ export const HomePage = (props: any) => (
                 night. Come join us!
                 <DiscordLink />
               </p>
-            </div>
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                LOOKING FOR GROUP ?
-              </h3>
+            </Container>
+            <Container>
+              <H3>LOOKING FOR GROUP ?</H3>
               <p>
                 Need another Guardian to take on Atheon? How about another
                 squadmate to take on the kill leader? Or maybe run some casual
@@ -57,13 +55,11 @@ export const HomePage = (props: any) => (
                 Well, what are you waiting for? Ready up!
                 <DiscordLink />
               </p>
-            </div>
+            </Container>
           </div>
           <div className="flex-[1_1_auto] lg:flex-[0_1_30%]">
-            <div className="container px-4 mx-auto mt-8 mb-16">
-              <h3 className="text-3xl font-sans font-bold uppercase mb-4">
-                Discord Activity
-              </h3>
+            <Container>
+              <H3>Discord Activity</H3>
               <iframe
                 src="https://discord.com/widget?id=303862208419594240&theme=dark"
                 width="100%"
@@ -71,7 +67,7 @@ export const HomePage = (props: any) => (
                 frameBorder="0"
                 sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
               ></iframe>
-            </div>
+            </Container>
           </div>
         </div>
       </div>

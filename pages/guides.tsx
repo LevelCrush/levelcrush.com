@@ -4,6 +4,8 @@ import Hero from "../components/hero";
 import SiteHeader from "../components/site_header";
 import DiscordLink from "../components/discord_link";
 import Head from "next/head";
+import { H2, H3, H4 } from "../components/elements/headings";
+import Container from "../components/elements/container";
 
 export class GuidePage extends React.Component {
   public constructor(props: any) {
@@ -20,15 +22,11 @@ export class GuidePage extends React.Component {
         <Hero className="bg-[url('/images/banner_background.jpg')] min-h-[20rem]">
           <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
           <div className="container px-4 mx-auto flex-initial">
-            <h2 className="drop-shadow text-6xl text-yellow-400 font-headline font-bold uppercase tracking-widest text-center">
-              Guides
-            </h2>
+            <H2 className="drop-shadow  text-center">Guides</H2>
           </div>
         </Hero>
-        <div className="container px-4 mx-auto mt-8 mb-16">
-          <h3 className="text-4xl font-sans font-bold uppercase mb-4">
-            Guides
-          </h3>
+        <Container>
+          <H3>Guides</H3>
           <p>
             We are currently working on expanding our guides available to the
             community! Enjoy what we have currently put together. | If you have
@@ -36,9 +34,9 @@ export class GuidePage extends React.Component {
             discord and make the suggestions there!
             <DiscordLink />
           </p>
-        </div>
-        <div className="container px-4 mx-auto mt-8 mb-16">
-          <h4 className="text-2xl">Guide List</h4>
+        </Container>
+        <Container>
+          <H4>Guide List</H4>
           <hr />
           <br />
           <ol>
@@ -57,7 +55,7 @@ export class GuidePage extends React.Component {
               </p>
             </li>
           </ol>
-        </div>
+        </Container>
       </div>
     );
   }
