@@ -9,6 +9,9 @@ import smoothScroll from "smoothscroll-polyfill";
 import { useEffect } from "react";
 import Head from "next/head";
 
+import SEO from "../next-seo.config";
+import { DefaultSeo } from "next-seo";
+
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     smoothScroll.polyfill();
@@ -24,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="width=device-width,initial-scale=1,shrink-to-fit=no"
         />
       </Head>
+      <DefaultSeo {...SEO} />
       <Component {...pageProps} />
     </>
   );
