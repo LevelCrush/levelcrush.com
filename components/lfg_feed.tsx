@@ -10,7 +10,6 @@ import LFGFeedRequest from "../core/lfg_feed_request";
 
 export interface FeedProperties {
   name: string;
-  interval: number;
   className?: string;
   lfgs?: LFGActivity[];
 }
@@ -84,6 +83,9 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
     //if (this.props.lfgs === undefined) {
     console.log("Need lfg feed, requesting feed", this.props.name);
     this.requestFeed();
+
+    // setup interval
+
     //}
   }
 
