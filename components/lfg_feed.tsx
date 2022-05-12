@@ -135,7 +135,7 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
 
     const totalKeys = Object.keys(this.colorMap).length;
 
-    if (this.state.lfgs.length === 0) {
+    if ((this.state.lfgs || []).length === 0) {
       this.state.lfgs.push({
         joinID: "0",
         activity: "No Activity Found",
@@ -172,7 +172,7 @@ export class LFGFeed extends React.Component<FeedProperties, FeedState> {
           <div className="clear-both"></div>
         </h3>
         <div className="activities">
-          {this.state.lfgs.map((activity, index) => (
+          {(this.state.lfgs || []).map((activity, index) => (
             <div
               className="activity p-4 my-4 mx-auto bg-white dark:bg-gradient-to-t dark:bg-slate-900 dark:from-black dark:to-slate-800 border-solid border-[1px] dark:border-[1px] dark:border-gray-800 rounded-lg  transition-all duration-300"
               key={index}
