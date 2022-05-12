@@ -11,21 +11,6 @@ export interface LFGPageProps {
   lfgs?: LFGActivity[];
   scheduledLfgs?: LFGActivity[];
 }
-export async function getServerSideProps() {
-  // on the server side provide the initial data required for the feed request
-  const feedRequest = new LFGFeedRequest("destiny-lfg");
-  const lfgs = await feedRequest.fetch();
-
-  const scheduledLFGRequest = new LFGFeedRequest("destiny-scheduled-lfg");
-  const scheduledLfgs = await scheduledLFGRequest.fetch();
-
-  return {
-    props: {
-      lfgs: lfgs,
-      scheduledLfgs: scheduledLfgs,
-    },
-  };
-}
 
 export class LFGPage extends React.Component<LFGPageProps> {
   public constructor(props: any) {
@@ -61,20 +46,16 @@ export class LFGPage extends React.Component<LFGPageProps> {
           <div className="container  px-4 mx-auto mt-8 mb-16">
             <div className="flex flex-wrap justify-between ">
               <LFGFeed
-                className="flex-initial  w-full lg:w-[48%] self-start"
+                className=" flex-[0_0_auto]  w-full lg:w-[48%] self-start"
                 interval={30}
                 name="destiny-lfg"
-                lfgs={this.props.lfgs !== undefined ? this.props.lfgs : []}
+                lfgs={this.props.lfgs}
               ></LFGFeed>
               <LFGFeed
-                className="flex-initial w-full  lg:w-[48%]  self-start"
+                className="flex-[0_0_auto] w-full  lg:w-[48%]  self-start"
                 interval={30}
                 name="destiny-scheduled-lfg"
-                lfgs={
-                  this.props.scheduledLfgs !== undefined
-                    ? this.props.scheduledLfgs
-                    : []
-                }
+                lfgs={this.props.scheduledLfgs}
               ></LFGFeed>
             </div>
           </div>
