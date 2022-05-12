@@ -25,6 +25,7 @@ export class ThemeToggle extends React.Component<
 
     this.firstLoad = true;
     this.cookies = new Cookies();
+
     this.state = {
       mode: ENV.theme as Theme,
     };
@@ -55,6 +56,7 @@ export class ThemeToggle extends React.Component<
   public themeSetDarkMode() {
     // Whenever the user explicitly chooses dark mode
     document.documentElement.classList.add("dark");
+
     localStorage.theme = "dark";
     this.cookies.set("theme", "dark");
     this.setState(
@@ -62,6 +64,7 @@ export class ThemeToggle extends React.Component<
         mode: "dark",
       },
       () => {
+        console.log("Dark Mode enabled");
         document.dispatchEvent(
           new CustomEvent("theme_darkmode", { bubbles: true })
         );
@@ -103,26 +106,20 @@ export class ThemeToggle extends React.Component<
     this.themeCheck();
 
     // watch for system dark mode changes
+    /* disabled this listener , due to it being inconsistent with expectation
     window
       .matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", (event) => {
         //onst newColorScheme = event.matches ? 'dark' : 'light';
         this.themeReset();
       });
-
-    const htmlElement = document.querySelector("html");
-    if (htmlElement) {
-      htmlElement.setAttribute("data-themed", "yes");
-    }
+      */
   }
 
   public render() {
     return (
       <button
-        className={
-          "flex-auto text-center " +
-          (this.state.mode === "light" ? "text-yellow-500" : "text-cyan-500")
-        }
+        className={"theme-toggle flex-auto text-center"}
         onClick={(event) =>
           this.state.mode === "light"
             ? this.themeSetDarkMode()

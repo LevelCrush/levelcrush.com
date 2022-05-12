@@ -8,7 +8,7 @@ import Container from "../components/elements/container";
 import { H3 } from "../components/elements/headings";
 
 export const HomePage = (props: any) => (
-  <div>
+  <>
     <Head>
       <title>Level Crush - Home</title>
     </Head>
@@ -72,7 +72,7 @@ export const HomePage = (props: any) => (
         </div>
       </div>
     </main>
-  </div>
+  </>
 );
 
 export default HomePage;
