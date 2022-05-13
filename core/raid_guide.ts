@@ -200,7 +200,7 @@ export class RaidGuideManager {
 
   private linkToYouTubeEmbed(input: string) {
     const regex =
-      /(<a(.*)\>http(s?)\:\/\/([wW\.]+)?youtu([a-zA-z\.]+)\/(watch\?v=)?([0-9A-Za-z\-]+)\<\/a>)/;
+      /(<a(.*)\>http(s?)\:\/\/([wW\.]+)?youtu([a-zA-z\.]+)\/(watch\?v=)?([0-9A-Za-z\-]+)([\&\=\;\_A-Za-z0-9]+)?\<\/a>)/;
     const subst = `$1<iframe loading="lazy" class="youtube-player" type="text/html" width="640" height="480"  src="https://www.youtube.com/embed/$7?autoplay=0"  frameborder="0"></iframe>`;
     return input.replace(regex, subst);
   }
