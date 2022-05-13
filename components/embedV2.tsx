@@ -288,7 +288,10 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
           }}
         >
           <div className="embed-loading-messsage bg-white p-8 flex-initial">
-            <H2 className="text-black text-2xl font-sans" minimalCSS={true}>
+            <H2
+              className="text-black text-2xl font-sans font-bold  "
+              minimalCSS={true}
+            >
               <span className="text-purple-500 text-3xl">
                 {this.props.creator || this.props.embed}
               </span>{" "}
