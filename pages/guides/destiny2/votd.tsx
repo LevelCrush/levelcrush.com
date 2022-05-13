@@ -10,6 +10,8 @@ import RaidGuideManager, { RaidGuide } from "../../../core/raid_guide";
 import * as fs from "fs";
 import { RaidGuideDisplay } from "../../../components/raid_guide_display";
 import Head from "next/head";
+import Container from "../../../components/elements/container";
+import { H2 } from "../../../components/elements/headings";
 
 export async function getServerSideProps() {
   let doHardPull = false;
@@ -90,17 +92,19 @@ export class GuideVOTDPage extends React.Component<GuideVOTDPageProps> {
         </Head>
         <SiteHeader />
         <main>
-          <Hero className="bg-[url('https://assets.levelcrush.com/images/banner_background_opt.jpg')] min-h-[35rem]">
-            <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
-            <div className="container px-4 mx-auto flex-initial">
-              <h2 className="drop-shadow text-6xl text-yellow-400 font-headline font-bold uppercase tracking-widest text-center">
+          <Hero
+            className="min-h-[35rem]"
+            backgroundUrl="https://assets.levelcrush.com/images/banner_background_opt.jpg"
+          >
+            <Container>
+              <H2 className="drop-shadow text-center">
                 <span className="pb-2 block">Vow of the Disciple</span>
                 <div className="border-b-yellow-400 border-b-2"></div>
                 <span className="text-3xl pt-2 block">
                   Raid Guide / Walkthrough
                 </span>
-              </h2>
-            </div>
+              </H2>
+            </Container>
           </Hero>
           <div className="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8">
             <TableOfContents navTree={this.props.navTree}></TableOfContents>

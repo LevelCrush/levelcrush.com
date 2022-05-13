@@ -13,8 +13,7 @@ export const GuidePage = (props: any) => (
       <title>Level Crush - Guides</title>
     </Head>
     <SiteHeader />
-    <Hero className="bg-[url('https://assets.levelcrush.com/images/banner_background_opt.jpg')] min-h-[20rem]">
-      <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
+    <Hero className="min-h-[20rem]">
       <Container className="px-4 mx-auto flex-initial" minimalCSS={true}>
         <H2 className="drop-shadow  text-center">Guides</H2>
       </Container>

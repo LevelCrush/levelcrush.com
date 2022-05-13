@@ -14,8 +14,7 @@ export const HomePage = (props: any) => (
     </Head>
     <SiteHeader />
     <main>
-      <Hero className="bg-[url('https://assets.levelcrush.com/images/banner_background_opt.jpg')] min-h-[50rem]">
-        <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
+      <Hero className="min-h-[50rem]">
         <div className="w-full">
           <EmbedGallery
             embeds={["terr0rbyt3", "arcane1x", "thatguymcdsr"]}

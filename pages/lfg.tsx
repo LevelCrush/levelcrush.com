@@ -20,8 +20,7 @@ export const LFGPage = (props: LFGPageProps) => (
     </Head>
     <SiteHeader />
     <main>
-      <Hero className="bg-[url('https://assets.levelcrush.com/images/banner_background_opt.jpg')] min-h-[20rem]">
-        <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
+      <Hero className="min-h-[20rem]">
         <Container minimalCSS={true} className="px-4 mx-auto flex-initial">
           <H2 className="drop-shadow text-center">Looking for a group?</H2>
         </Container>
