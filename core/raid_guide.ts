@@ -106,7 +106,9 @@ export class RaidGuideManager {
 
                 // for now we will put the img element inside a picture element for future case
                 contentChunks.push(
-                  '<picture><img src="' + urlPath + '" /></picture>'
+                  '<picture><img src="' +
+                    urlPath +
+                    '" loading="lazy" /></picture>'
                 );
               }
             } else {
@@ -199,7 +201,7 @@ export class RaidGuideManager {
   private linkToYouTubeEmbed(input: string) {
     const regex =
       /(<a(.*)\>http(s?)\:\/\/([wW\.]+)?youtu([a-zA-z\.]+)\/(watch\?v=)?([0-9A-Za-z\-]+)\<\/a>)/;
-    const subst = `$1<iframe class="youtube-player" type="text/html" width="640" height="480"  src="https://www.youtube.com/embed/$7?autoplay=0"  frameborder="0"></iframe>`;
+    const subst = `$1<iframe loading="lazy" class="youtube-player" type="text/html" width="640" height="480"  src="https://www.youtube.com/embed/$7?autoplay=0"  frameborder="0"></iframe>`;
     return input.replace(regex, subst);
   }
 
