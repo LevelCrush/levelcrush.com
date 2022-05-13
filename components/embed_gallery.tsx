@@ -138,6 +138,9 @@ export class EmbedGallery extends React.Component<
             height={480}
             embed={val}
             hideChat={true}
+            poster={
+              "https://assets.levelcrush.com/posters/embed_" + val + ".jpg"
+            }
             onRequestFeature={this.embedWantsFeature}
           />
         ))}

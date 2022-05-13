@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faMessage } from "@fortawesome/free-solid-svg-icons";
 import ENV from "../core/env";
+import Image from "next/image";
 
 export interface EmbedProperties {
   platform: "twitch";
@@ -11,12 +12,14 @@ export interface EmbedProperties {
   embedID: string;
   className?: string;
   hideChat?: boolean;
+  poster: string;
   onShowChat?: (ev: React.MouseEvent) => void;
   onRequestFeature?: (ev: React.MouseEvent) => void;
 }
 
 export interface EmbedState {
   sdkReady: boolean;
+  playerReady: boolean;
 }
 
 export interface TwitchEmbedPlayerInterface {
@@ -136,6 +139,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
     this.chat = undefined;
     this.state = {
       sdkReady: false,
+      playerReady: false,
     };
   }
 
@@ -170,6 +174,10 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
         this.player = (
           this.embed as TwitchEmbedInterface
         ).getPlayer() as TwitchEmbedPlayerInterface;
+        console.log("Player ready");
+        this.setState({
+          playerReady: true,
+        });
       });
 
       this.createEmbedChat();
@@ -268,8 +276,24 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
         </button>
 
         <div
+          className="embed-img w-full h-[30rem]"
+          style={{
+            display: this.state.playerReady ? "none" : "block",
+          }}
+        >
+          <img
+            className="object-cover object-center w-full h-full"
+            src={this.props.poster}
+            alt={this.props.embed}
+          />
+        </div>
+
+        <div
           id={this.containerID}
           className="flex clear-both flex-wrap md:flex-nowrap"
+          style={{
+            display: this.state.playerReady ? "block" : "none",
+          }}
         >
           <div id={this.elementID} className="flex-auto transition-all"></div>
           <div
