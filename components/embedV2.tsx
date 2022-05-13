@@ -3,10 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faMessage } from "@fortawesome/free-solid-svg-icons";
 import ENV from "../core/env";
 import Image from "next/image";
+import { H2 } from "./elements/headings";
+import Link from "next/link";
 
 export interface EmbedProperties {
   platform: "twitch";
   embed: string;
+  creator?: string;
   width: "100%" | string | number;
   height: string | number;
   embedID: string;
@@ -274,21 +277,25 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
           />
           <span>Feature</span>
         </button>
-
         <div
-          className="embed-img w-full h-[30rem]"
+          className="embed-loading relative top-0 h-[30rem] items-center justify-center flex"
           style={{
-            display: this.state.playerReady ? "none" : "block",
+            display: this.state.playerReady ? "none" : "flex",
+            backgroundImage: "url(" + this.props.poster + ")",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
           }}
         >
-          <img
-            className="object-cover object-center w-full h-full"
-            src={this.props.poster}
-            alt={this.props.embed}
-            loading="lazy"
-          />
+          <div className="embed-loading-messsage bg-white p-8 flex-initial">
+            <H2 className="text-black text-2xl font-sans" minimalCSS={true}>
+              <span className="text-purple-500 text-3xl">
+                {this.props.creator || this.props.embed}
+              </span>{" "}
+              is loading!
+            </H2>
+          </div>
         </div>
-
         <div
           id={this.containerID}
           className="flex clear-both flex-wrap md:flex-nowrap"
