@@ -285,6 +285,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
             className="object-cover object-center w-full h-full"
             src={this.props.poster}
             alt={this.props.embed}
+            loading="lazy"
           />
         </div>
 
