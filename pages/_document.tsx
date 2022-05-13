@@ -1,6 +1,4 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
-import SiteHeader from "../components/site_header";
 
 export const Document = () => (
   <Html lang="en">

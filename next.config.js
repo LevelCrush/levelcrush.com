@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['assets.levelcrush.com']
   },
+  optimizeFonts: false,
   redirects: async () => {
     return [
       {
