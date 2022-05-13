@@ -2,6 +2,7 @@ import moment from "moment";
 import React from "react";
 import ENV from "../core/env";
 import Embed from "./embed";
+import EmbedV2 from "./embedV2";
 
 export interface EmbedGalleryProperties {
   embeds: string[];
@@ -121,7 +122,7 @@ export class EmbedGallery extends React.Component<
         data-center-order={"order-" + (startingCenterIndex + 1)}
       >
         {this.props.embeds.map((val, index) => (
-          <Embed
+          <EmbedV2
             className={
               "flex-initial w-full max-w-[40rem] lg:max-w-[33%] 2xl:max-w-[31.25rem]  4k:max-w-[40rem] origin-center transition order-" +
               (index + 1) +
