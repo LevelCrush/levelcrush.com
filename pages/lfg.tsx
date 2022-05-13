@@ -5,7 +5,6 @@ import Hero from "../components/hero";
 import LFGFeed from "../components/lfg_feed";
 import { SiteHeader } from "../components/site_header";
 import LFGActivity from "../core/lfg_activity";
-import LFGFeedRequest from "../core/lfg_feed_request";
 
 export interface LFGPageProps {
   lfgs?: LFGActivity[];

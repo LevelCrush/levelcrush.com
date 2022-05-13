@@ -140,11 +140,11 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
   }
 
   public componentDidMount() {
-    console.log("Component mounting");
     if (this._mounted) {
       return;
     }
     // nextjs will mount twice in dev mode(this is due to how react works when hydrating)
+    // since this is not a typical react style component, we'll track componentDidMount to make sure we dont duplicate
     this._mounted = true;
     if (this.props.platform === "twitch") {
       // determine if the twitch api is loaded on the page

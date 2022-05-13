@@ -132,7 +132,7 @@ export class EmbedGallery extends React.Component<
                 : nonCenterScale)
             }
             key={index}
-            id={"gallery_embed_" + index.toString() + "_" + val}
+            embedID={"gallery_embed_" + index.toString() + "_" + val}
             platform="twitch"
             width="100%"
             height={480}
