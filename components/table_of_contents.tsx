@@ -1,3 +1,5 @@
+import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
 import ENV from "../core/env";
@@ -124,7 +126,10 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
                   type="button"
                   onClick={this.handleToggleCollapseClick}
                 >
-                  <i className="fas fa-angle-double-right float-right align-middle relative top-1 "></i>
+                  <FontAwesomeIcon
+                    icon={faAngleDoubleRight}
+                    className="float-right align-middle relative top-1"
+                  />
                 </button>
                 <nav aria-label={navItem.text + " Sections"}>
                   <ol data-level="2">

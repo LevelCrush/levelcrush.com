@@ -12,10 +12,7 @@ export const Document = () => (
       />
       {/* adobe typekit support */}
       <link rel="stylesheet" href="https://use.typekit.net/pfr8gmr.css" />
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      />
+
       {/* twitch sdk */}
       <script defer src="https://embed.twitch.tv/embed/v1.js"></script>
 

@@ -90,7 +90,7 @@ export class GuideVOTDPage extends React.Component<GuideVOTDPageProps> {
         </Head>
         <SiteHeader />
         <main>
-          <Hero className="bg-[url('/images/VOTDHero.jpg')] min-h-[35rem]">
+          <Hero className="bg-[url('https://assets.levelcrush.com/images/banner_background_opt.jpg')] min-h-[35rem]">
             <div className="absolute top-0 left-0 bg-black opacity-[.65] w-full h-full"></div>
             <div className="container px-4 mx-auto flex-initial">
               <h2 className="drop-shadow text-6xl text-yellow-400 font-headline font-bold uppercase tracking-widest text-center">

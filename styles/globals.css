@@ -40,7 +40,7 @@
 
   /** table of contents stying **/
 
-  button.collapse-toggle i {
+  button.collapse-toggle svg {
     @apply transition-all;
     @apply duration-300;
     @apply ease-in-out;
@@ -60,15 +60,15 @@
     @apply max-h-[100rem];
   }
 
-  .table-of-contents>h2>button.collapse-toggle:hover i {
+  .table-of-contents>h2>button.collapse-toggle:hover svg {
     @apply rotate-90;
   }
 
-  .table-of-contents.expanded>h2>button.collapse-toggle i {
+  .table-of-contents.expanded>h2>button.collapse-toggle svg {
     @apply rotate-90;
   }
 
-  .table-of-contents.expanded>h2>button.collapse-toggle:hover i {
+  .table-of-contents.expanded>h2>button.collapse-toggle:hover svg {
     @apply rotate-0;
   }
 
@@ -105,7 +105,7 @@
 
   .table-of-contents>nav>ol>li:hover {}
 
-  .table-of-contents>nav>ol>li:hover button.collapse-toggle i {
+  .table-of-contents>nav>ol>li:hover button.collapse-toggle svg {
     @apply rotate-90;
   }
 
@@ -122,11 +122,11 @@
     @apply max-h-[50rem];
   }
 
-  .table-of-contents>nav>ol>li.expanded button.collapse-toggle i {
+  .table-of-contents>nav>ol>li.expanded button.collapse-toggle svg {
     @apply rotate-90;
   }
 
-  .table-of-contents>nav>ol>li.expanded:hover button.collapse-toggle i {
+  .table-of-contents>nav>ol>li.expanded:hover button.collapse-toggle svg {
     @apply rotate-0;
   }
 
