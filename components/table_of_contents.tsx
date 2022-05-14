@@ -71,6 +71,7 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
     var element = ev.target as HTMLAnchorElement;
     let hashbangSplit = element.href.split("#");
     let hashBang = hashbangSplit.length > 0 ? hashbangSplit[1].trim() : "";
+
     if (hashBang.trim().length > 0) {
       ev.preventDefault();
       console.log(document.getElementById(hashBang));
@@ -93,7 +94,7 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
 
   public render() {
     return (
-      <div className="expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] table-of-contents sticky top-0 self-start z-[9999] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none">
+      <div className="table-of-contents expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] sticky top-0 self-start z-[9999] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none">
         <h2 className="transition-all duration-300 ease-in-out px-4 py-2 dark:bg-slate-900 border-b-2 border-solid  dark:border-cyan-900 dark:group-hover:border-cyan-400  group-hover:border-gray-400 border-gray-200">
           <button
             type="button"
@@ -101,7 +102,10 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
             onClick={this.handleToggleCollapseClick}
           >
             <span>Table of Contents</span>
-            <i className="fas fa-angle-double-right float-right align-middle relative top-1 "></i>
+            <FontAwesomeIcon
+              icon={faAngleDoubleRight}
+              className="float-right align-middle relative top-1"
+            />
             <div className="clear-both"></div>
           </button>
         </h2>

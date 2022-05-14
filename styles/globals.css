@@ -13,6 +13,10 @@
   html[data-themed='yes'] {
     display:block;
   } */
+
+  html {
+     scroll-behavior: smooth;
+  }
   
   body {
     @apply min-h-screen;

@@ -155,7 +155,11 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
     this._mounted = true;
     if (this.props.platform === "twitch") {
       // determine if the twitch api is loaded on the page
-      this.createEmbedPlayer();
+      console.log("Waiting to load...", this.props.embed);
+      setTimeout(() => {
+        console.log("Trigger load for embed", this.props.embed);
+        this.createEmbedPlayer();
+      }, 5000);
     }
   }
 
@@ -207,6 +211,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
       srcQueryParams.toString();
     this.chat.width = "100%";
     this.chat.height = this.props.height.toString();
+    (this.chat as any).loading = "lazy";
 
     document.getElementById(this.chatID)?.append(this.chat);
   }
