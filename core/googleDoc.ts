@@ -111,13 +111,7 @@ export class GoogleDoc {
       if (outline.title.length > 0) {
         // we can continue
 
-        const headingMatches = [
-          "HEADING_2",
-          "HEADING_3",
-          "HEADING_4",
-          "HEADING_5",
-          "HEADING_6",
-        ];
+        const headingMatches = ["HEADING_2", "HEADING_3"];
         let activeEntry: GoogleDocOutlineEntry | undefined = undefined;
         let activeHeading2: GoogleDocOutlineEntry | undefined = undefined;
         let activeHeading3: GoogleDocOutlineEntry | undefined = undefined;
