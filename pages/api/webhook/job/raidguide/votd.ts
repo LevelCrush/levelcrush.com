@@ -68,9 +68,11 @@ export default async function handler(
           // now handled by assets.levelcrush.com
           // however we still need to download on our serve side to make sure that
           // we know how what extension to serve when dealing when pre rendering the html
-          await raidguide.downloadGuideAssets();
+          // we no longer need to do this since our asset server can now auto detect our use case
+          //await raidguide.downloadGuideAssets();
 
           // pre rendering requires us to inspect the file tree. HAVE to run after downloading
+          // downloading no longer required 05/15/2022
           await raidguide.prerender();
         } catch (err) {
           console.log(err);

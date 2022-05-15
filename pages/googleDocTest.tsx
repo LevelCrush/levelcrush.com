@@ -1,22 +1,46 @@
+import { docs_v1 } from "googleapis";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next";
 import Head from "next/head";
+import GoogleDocDisplay from "../components/google_doc_display";
 import SiteHeader from "../components/site_header";
 import {
   TableOfContents,
   TableOfContentsNavigationItem,
 } from "../components/table_of_contents";
-import GoogleDoc from "../core/googleDoc";
+import GoogleDoc, { GoogleDocAssetMap } from "../core/googleDoc";
 
 export interface GoogleDocTestProps {
   navTree: TableOfContentsNavigationItem[];
+  doc: docs_v1.Schema$Document;
+  assetMap: GoogleDocAssetMap;
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const googleDoc = new GoogleDoc(
-    process.env["GOOGLEDOC_DESTINY2_VOTD"] as string
+    process.env["GOOGLEDOC_DESTINY2_VOTD"] as string,
+    {
+      assetUrl: "https://assets.levelcrush.com/guides/destiny2/votd",
+    }
   );
 
   console.log("Pulling google doc");
   await googleDoc.pull();
+
+  const docSchema = googleDoc.getDoc();
+  if (docSchema === undefined) {
+    return {
+      notFound: true,
+    };
+  }
+
+  console.log("Generating Asset Map");
+  await googleDoc.generateAssetMap();
 
   console.log("Generating outline");
   const googleDocOutline = await googleDoc.generateOutline();
@@ -41,12 +65,15 @@ export async function getServerSideProps() {
     });
   }
 
+  const assetMap = await googleDoc.generateAssetMap();
   return {
     props: {
       navTree: navTree,
+      doc: docSchema as docs_v1.Schema$Document,
+      assetMap: assetMap,
     },
   };
-}
+};
 
 export const GoogleDocTest = (props: GoogleDocTestProps) => (
   <>
@@ -55,7 +82,13 @@ export const GoogleDocTest = (props: GoogleDocTestProps) => (
     </Head>
     <SiteHeader />
     <main>
-      <TableOfContents navTree={props.navTree}></TableOfContents>
+      <div className="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8">
+        <TableOfContents navTree={props.navTree}></TableOfContents>
+        <GoogleDocDisplay
+          doc={props.doc}
+          assetMap={props.assetMap}
+        ></GoogleDocDisplay>
+      </div>
     </main>
   </>
 );

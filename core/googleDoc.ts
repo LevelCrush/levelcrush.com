@@ -1,7 +1,17 @@
 import axios from "axios";
 import { docs_v1 } from "googleapis";
-import { content } from "googleapis/build/src/apis/content";
 import ENV from "./env";
+
+export interface GoogleDocAsset {
+  googleUrl: string;
+  assetUrl: string;
+  assetID: string;
+  inlineObject: docs_v1.Schema$InlineObject;
+}
+
+export interface GoogleDocAssetMap {
+  [key: string]: GoogleDocAsset;
+}
 
 export interface GoogleDocOutlineEntry {
   title: string; // comes from the text value of the heading
@@ -33,7 +43,9 @@ export class GoogleDoc {
     googleDoc: string | docs_v1.Schema$Document,
     config: Partial<GoogleDocParseConfig> = DefaultGoogleDocParseConfig
   ) {
-    this.config = { ...config, ...DefaultGoogleDocParseConfig };
+    this.config = { ...DefaultGoogleDocParseConfig, ...config };
+    console.log(config);
+    console.log(this.config);
     if (typeof googleDoc === "string") {
       this.docID = googleDoc;
     } else if (typeof googleDoc === "object") {
@@ -47,6 +59,14 @@ export class GoogleDoc {
     if (this.doc !== undefined) {
       this.docID = this.doc.documentId || "";
     }
+  }
+
+  /**
+   * Gets the google doc value (raw)
+   * @returns Google Doc Schema.
+   */
+  public getDoc() {
+    return this.doc;
   }
 
   public async pull() {
@@ -199,6 +219,41 @@ export class GoogleDoc {
       }
     }
     return outline;
+  }
+
+  /** loop through the document and get **just the assets**  */
+  public async generateAssetMap() {
+    let assetMap: GoogleDocAssetMap = {};
+    if (this.doc) {
+      for (let assetID in this.doc.inlineObjects) {
+        const inlineObject = this.doc.inlineObjects[assetID];
+        if (
+          inlineObject.inlineObjectProperties &&
+          inlineObject.inlineObjectProperties.embeddedObject
+        ) {
+          let googleUrl = "";
+          if (
+            inlineObject.inlineObjectProperties.embeddedObject
+              .imageProperties &&
+            inlineObject.inlineObjectProperties.embeddedObject.imageProperties
+              .contentUri
+          ) {
+            googleUrl =
+              inlineObject.inlineObjectProperties.embeddedObject.imageProperties
+                .contentUri;
+          }
+
+          assetMap[assetID] = {
+            assetID: assetID,
+            googleUrl: googleUrl,
+            assetUrl: this.config.assetUrl + "/" + assetID,
+            inlineObject: inlineObject,
+          };
+        }
+      }
+    }
+    //await fs.promises.writeFile("assetMap.json", JSON.stringify(assetMap));
+    return assetMap;
   }
 }
 
