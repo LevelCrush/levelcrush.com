@@ -1,6 +1,9 @@
 import axios from "axios";
 import { docs_v1 } from "googleapis";
 import ENV from "./env";
+import * as fs from "fs";
+import path from "path";
+import moment from "moment";
 
 export interface GoogleDocAsset {
   googleUrl: string;
@@ -69,8 +72,31 @@ export class GoogleDoc {
     return this.doc;
   }
 
-  public async pull() {
+  public async pull(fresh = false) {
+    const docCacheFile = path.join(
+      "docCache",
+      (this.docID as string) + ".json"
+    );
+    // check cache first
+    if (!fresh) {
+      try {
+        // the promise version will raise an error when access is not allowed
+
+        await fs.promises.access(docCacheFile);
+
+        console.log("Parsing cache", moment().unix());
+        this.doc = JSON.parse(
+          await fs.promises.readFile(docCacheFile, { encoding: "utf-8" })
+        );
+      } catch {
+        this.doc = undefined;
+      }
+    } else {
+      // make sure we have a undefined document to pass check below
+      this.doc = undefined;
+    }
     if (this.doc === undefined) {
+      console.log("Getting fresh copy of doc", this.docID);
       const request = await axios.post(ENV.hosts.api + "/feed/get", {
         application: ENV.api.token,
         name: "googledoc_" + this.docID,
@@ -84,6 +110,20 @@ export class GoogleDoc {
         request.data["response"]["feed"] &&
         request.data["response"]["feed"]["data"]
       ) {
+        try {
+          // create docCache folder
+          await fs.promises.mkdir("docCache", { recursive: true });
+
+          // write file out
+          await fs.promises.writeFile(
+            docCacheFile,
+            request.data["response"]["feed"]["data"],
+            { encoding: "utf-8" }
+          );
+        } catch (err) {
+          console.log("IO Error", err);
+        }
+
         this.doc = JSON.parse(
           request.data["response"]["feed"]["data"]
         ) as docs_v1.Schema$Document;

@@ -2,6 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 import ENV from "../../../../../core/env";
+import GoogleDoc from "../../../../../core/googleDoc";
 import RaidGuideManager from "../../../../../core/raid_guide";
 
 let webhookRunning = false;
@@ -57,26 +58,15 @@ export default async function handler(
       }
 
       if (isCallerValid) {
-        let raidguide = new RaidGuideManager("votd");
+        const googleDoc = new GoogleDoc(
+          process.env["GOOGLEDOC_DESTINY2_VOTD"] as string,
+          {
+            assetUrl: "https://assets.levelcrush.com/guides/destiny2/votd",
+          }
+        );
 
-        try {
-          console.log("Pulling raid guide from api");
-          await raidguide.pull();
-
-          console.log("Pre rendering and downloading assets");
-          // download files first
-          // now handled by assets.levelcrush.com
-          // however we still need to download on our serve side to make sure that
-          // we know how what extension to serve when dealing when pre rendering the html
-          // we no longer need to do this since our asset server can now auto detect our use case
-          //await raidguide.downloadGuideAssets();
-
-          // pre rendering requires us to inspect the file tree. HAVE to run after downloading
-          // downloading no longer required 05/15/2022
-          await raidguide.prerender();
-        } catch (err) {
-          console.log(err);
-        }
+        console.log("Pulling fresh copy of google doc and caching");
+        await googleDoc.pull(true);
       }
 
       webhookRunning = false;

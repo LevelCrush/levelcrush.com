@@ -36,3 +36,4 @@ yarn-error.log*
 
 public/guides/**/*
 guideCache/*.json
+docCache/*.json

@@ -10,7 +10,7 @@ import { H3 } from "../components/elements/headings";
 export const HomePage = (props: any) => (
   <>
     <Head>
-      <title>Level Crush - Home</title>
+      <title>Home | Level Crush</title>
     </Head>
     <SiteHeader />
     <main>

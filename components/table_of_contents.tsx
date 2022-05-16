@@ -1,8 +1,7 @@
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import React from "react";
-import ENV from "../core/env";
+import { Hyperlink } from "./elements/hyperlink";
 
 // import the polyfill
 // probably should do this in _app for the future but for now this works (i think. 4am me lol)
@@ -34,15 +33,24 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
     const evTarget = ev.target as HTMLElement;
     if (evTarget.parentNode) {
       const evTargetParentNode = evTarget.parentNode as HTMLElement;
-      if (evTarget.classList.contains("top-collapse")) {
-        const superParent = evTargetParentNode.parentNode as HTMLElement;
-        if (superParent) {
-          superParent.classList.toggle("expanded");
+      if (
+        evTarget.classList.contains("top-collapse") ||
+        (evTargetParentNode &&
+          evTargetParentNode.classList.contains("top-collapse"))
+      ) {
+        const entireTableOfContents = evTarget.closest(".table-of-contents");
+        if (entireTableOfContents) {
+          entireTableOfContents.classList.toggle("expanded");
         }
       } else {
-        evTargetParentNode.click();
+        const closetLi = evTarget.closest("li");
+        if (closetLi) {
+          closetLi.click();
+        }
       }
-      evTarget.blur();
+      if (evTarget) {
+        evTarget.blur();
+      }
     }
     return false;
   }
@@ -95,17 +103,21 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
   public render() {
     return (
       <div className="table-of-contents expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] sticky top-0 self-start z-[9999] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none">
-        <h2 className="transition-all duration-300 ease-in-out px-4 py-2 dark:bg-slate-900 border-b-2 border-solid  dark:border-cyan-900 dark:group-hover:border-cyan-400  group-hover:border-gray-400 border-gray-200">
+        <h2 className="transition-all duration-300 ease-in-out dark:bg-slate-900 border-b-2 border-solid  dark:border-cyan-900 dark:group-hover:border-cyan-400  group-hover:border-gray-400 border-gray-200">
           <button
             type="button"
-            className="inline-block text-left  w-full collapse-toggle top-collapse align-middle"
+            className="transition-all duration-300 px-4 py-2  inline-block text-left  w-full collapse-toggle top-collapse align-middle hover:bg-white hover:bg-opacity-10"
             onClick={this.handleToggleCollapseClick}
           >
             <span>Table of Contents</span>
+
             <FontAwesomeIcon
               icon={faAngleDoubleRight}
               className="float-right align-middle relative top-1"
             />
+            <span className="text-xs float-right align-middle relative top-1 pr-4">
+              (Click to show/hide)
+            </span>
             <div className="clear-both"></div>
           </button>
         </h2>
@@ -117,14 +129,14 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
                 className="mb-2"
                 onClick={this.handleListItemClick}
               >
-                <Link href={navItem.url} target={navItem.target}>
-                  <a
-                    onClick={this.handleLinkIntercept}
-                    className="hover:underline active:underline text-base"
-                  >
-                    {navItem.text}
-                  </a>
-                </Link>
+                <Hyperlink
+                  href={navItem.url}
+                  target={navItem.target}
+                  onClick={this.handleLinkIntercept}
+                  className="text-sm"
+                >
+                  {navItem.text}
+                </Hyperlink>
                 <button
                   className="float-right inline-block w-auto collapse-toggle"
                   type="button"
@@ -142,14 +154,14 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
                         className="mb-1 hover:cursor-default"
                         key={"navitem_" + index + "_" + subIndex}
                       >
-                        <Link href={subItem.url} target={subItem.target}>
-                          <a
-                            onClick={this.handleLinkIntercept}
-                            className="hover:underline text-sm"
-                          >
-                            {subItem.text}
-                          </a>
-                        </Link>
+                        <Hyperlink
+                          className="text-sm"
+                          href={subItem.url}
+                          target={subItem.target}
+                          onClick={this.handleLinkIntercept}
+                        >
+                          {subItem.text}
+                        </Hyperlink>
                       </li>
                     ))}
                   </ol>

@@ -12,108 +12,106 @@ import { RaidGuideDisplay } from "../../../components/raid_guide_display";
 import Head from "next/head";
 import Container from "../../../components/elements/container";
 import { H2 } from "../../../components/elements/headings";
+import GoogleDoc, { GoogleDocAssetMap } from "../../../core/googleDoc";
+import { docs_v1 } from "googleapis";
+import moment from "moment";
+import GoogleDocDisplay from "../../../components/google_doc_display";
 
 export async function getServerSideProps() {
-  let doHardPull = false;
-  const cachePath = path.join("./", "guideCache", "raidguide_votd.json");
-  let fileDoesExist = false;
-  let raidGuide: RaidGuide = {
-    title: "",
-    encounters: {},
-    id: "",
-    assets: {},
-  };
-  try {
-    await fs.promises.access(cachePath);
-    fileDoesExist = true;
-  } catch {
-    fileDoesExist = false;
+  console.log("Grabbing Google Doc", moment().unix());
+  const googleDoc = new GoogleDoc(
+    process.env["GOOGLEDOC_DESTINY2_VOTD"] as string,
+    {
+      assetUrl: "https://assets.levelcrush.com/guides/destiny2/votd",
+    }
+  );
+  console.log("Pulling google doc", moment().unix());
+  await googleDoc.pull();
+
+  const docSchema = googleDoc.getDoc();
+  if (docSchema === undefined) {
+    return {
+      notFound: true,
+    };
   }
 
-  if (fileDoesExist) {
-    raidGuide = JSON.parse(
-      await fs.promises.readFile(cachePath, { encoding: "utf-8" })
-    );
-  } else {
-    doHardPull = true;
-  }
+  console.log("Generating Asset Map", moment().unix());
+  await googleDoc.generateAssetMap();
 
-  if (doHardPull) {
-    let guideManager = new RaidGuideManager("votd");
-    await guideManager.pull();
-    await guideManager.prerender();
-    raidGuide = guideManager.raw() as RaidGuide;
-  }
+  console.log("Generating outline", moment().unix());
+  const googleDocOutline = await googleDoc.generateOutline();
 
+  // build a 2 level deep nav tree
   let navTree: TableOfContentsNavigationItem[] = [];
-
-  for (let encounterID in raidGuide.encounters) {
-    const encounter = raidGuide.encounters[encounterID];
+  for (let i = 0; i < googleDocOutline.entries.length; i++) {
+    const level1Entry = googleDocOutline.entries[i];
     let subnavigation: TableOfContentsNavigationItem[] = [];
-
-    for (let sectionID in raidGuide.encounters[encounterID].sections) {
-      const section = raidGuide.encounters[encounterID].sections[sectionID];
+    for (let j = 0; j < level1Entry.entries.length; j++) {
+      const level2Entry = level1Entry.entries[j];
       subnavigation.push({
-        text: section.title,
-        url: "#" + section.id,
+        text: level2Entry.title,
+        url: "#" + level2Entry.headingID,
         subnavigation: [],
       });
     }
     navTree.push({
-      text: encounter.title,
-      url: "#" + encounter.id,
+      text: level1Entry.title,
+      url: "#" + level1Entry.headingID,
       subnavigation: subnavigation,
     });
   }
 
+  console.log("Generating Asset Map", moment().unix());
+  const assetMap = await googleDoc.generateAssetMap();
   return {
     props: {
-      guide: raidGuide,
       navTree: navTree,
+      doc: docSchema as docs_v1.Schema$Document,
+      assetMap: assetMap,
     },
   };
 }
 
 export interface GuideVOTDPageProps {
-  guide: RaidGuide;
   navTree: TableOfContentsNavigationItem[];
+  doc: docs_v1.Schema$Document;
+  assetMap: GoogleDocAssetMap;
 }
 
-export class GuideVOTDPage extends React.Component<GuideVOTDPageProps> {
-  public constructor(props: GuideVOTDPageProps) {
-    super(props);
-  }
-
-  public render() {
-    return (
-      <div>
-        <Head>
-          <title>Level Crush - VOTD Raid Guide</title>
-        </Head>
-        <SiteHeader />
-        <main>
-          <Hero
-            className="min-h-[35rem]"
-            backgroundUrl="https://assets.levelcrush.com/images/banner_background_opt.jpg"
-          >
-            <Container>
-              <H2 className="drop-shadow text-center">
-                <span className="pb-2 block">Vow of the Disciple</span>
-                <div className="border-b-yellow-400 border-b-2"></div>
-                <span className="text-3xl pt-2 block">
-                  Raid Guide / Walkthrough
-                </span>
-              </H2>
-            </Container>
-          </Hero>
-          <div className="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8">
-            <TableOfContents navTree={this.props.navTree}></TableOfContents>
-            <RaidGuideDisplay guide={this.props.guide}></RaidGuideDisplay>
-          </div>
-        </main>
+export const GuideVOTDPage = (props: GuideVOTDPageProps) => (
+  <>
+    <Head>
+      <title>VOTD Raid Guide | Level Crush</title>
+    </Head>
+    <SiteHeader />
+    <main>
+      <Hero
+        className="min-h-[35rem]"
+        backgroundUrl="https://assets.levelcrush.com/images/VOTDHero.jpg"
+      >
+        <Container>
+          <H2 className="drop-shadow text-center">
+            <span className="pb-2 block">Vow of the Disciple</span>
+            <div className="border-b-yellow-400 border-b-2"></div>
+            <span className="text-3xl pt-2 block">
+              Raid Guide / Walkthrough
+            </span>
+          </H2>
+        </Container>
+      </Hero>
+      <div className="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8">
+        <TableOfContents
+          key="tableOfContents"
+          navTree={props.navTree}
+        ></TableOfContents>
+        <GoogleDocDisplay
+          key="googleDocDisplay"
+          doc={props.doc}
+          assetMap={props.assetMap}
+        ></GoogleDocDisplay>
       </div>
-    );
-  }
-}
+    </main>
+  </>
+);
 
 export default GuideVOTDPage;

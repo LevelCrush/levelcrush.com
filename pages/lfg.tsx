@@ -16,7 +16,7 @@ export interface LFGPageProps {
 export const LFGPage = (props: LFGPageProps) => (
   <>
     <Head>
-      <title>Level Crush - Looking For Group</title>
+      <title>Looking For Group | Level Crush</title>
     </Head>
     <SiteHeader />
     <main>

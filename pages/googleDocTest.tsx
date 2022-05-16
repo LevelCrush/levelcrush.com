@@ -44,7 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (
 
   console.log("Generating outline");
   const googleDocOutline = await googleDoc.generateOutline();
-  console.log(googleDocOutline);
+  //console.log(googleDocOutline);
+
   // build a 2 level deep nav tree
   let navTree: TableOfContentsNavigationItem[] = [];
   for (let i = 0; i < googleDocOutline.entries.length; i++) {
@@ -78,13 +79,17 @@ export const getServerSideProps: GetServerSideProps = async (
 export const GoogleDocTest = (props: GoogleDocTestProps) => (
   <>
     <Head>
-      <title>Looking For Group - Level Crush</title>
+      <title>Google Doc Test - Level Crush</title>
     </Head>
     <SiteHeader />
     <main>
       <div className="container mx-auto flex flex-wrap justify-between relative top-0 guide pt-0 pb-8 lg:pt-8">
-        <TableOfContents navTree={props.navTree}></TableOfContents>
+        <TableOfContents
+          key="tableOfContents"
+          navTree={props.navTree}
+        ></TableOfContents>
         <GoogleDocDisplay
+          key="googleDocDisplay"
           doc={props.doc}
           assetMap={props.assetMap}
         ></GoogleDocDisplay>

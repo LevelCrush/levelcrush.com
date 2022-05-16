@@ -1,10 +1,8 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faMessage } from "@fortawesome/free-solid-svg-icons";
 import ENV from "../core/env";
-import Image from "next/image";
 import { H2 } from "./elements/headings";
-import Link from "next/link";
 
 export interface EmbedProperties {
   platform: "twitch";
@@ -159,7 +157,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
       setTimeout(() => {
         console.log("Trigger load for embed", this.props.embed);
         this.createEmbedPlayer();
-      }, 5000);
+      }, 3000);
     }
   }
 
@@ -308,14 +306,14 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
           id={this.containerID}
           className="flex clear-both flex-wrap md:flex-nowrap"
           style={{
-            display: this.state.playerReady ? "block" : "none",
+            display: this.state.playerReady ? "flex" : "none",
           }}
         >
           <div id={this.elementID} className="flex-auto transition-all"></div>
           <div
             id={this.chatID}
             className={
-              "flex-initial basis-full md:basis-2/5 transition-all overflow-hidden" +
+              "flex-initial basis-full md:basis-2/5 transition-all overflow-hidden " +
               " " +
               (this.props.hideChat ? "md:max-w-0 max-h-0" : "active")
             }

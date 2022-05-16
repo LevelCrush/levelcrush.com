@@ -178,10 +178,9 @@
     @apply h-auto;
   }
 
-  .guide article section .youtube-player {
+  .youtube-player {
     @apply mx-0;
-    @apply mt-8;
-    @apply mb-12;
+    @apply my-4;
     @apply max-w-full;
 
     @apply w-[30rem];
@@ -203,7 +202,7 @@
     @apply my-8;
   }
 
-  .guide article section a {
+  .guide-content a {
     word-wrap: break-word;
     word-break: break-all;
   }
