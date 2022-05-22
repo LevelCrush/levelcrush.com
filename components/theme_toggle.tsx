@@ -1,9 +1,4 @@
-import {
-  faAdjust,
-  faEye,
-  faMoon,
-  faSun,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAdjust } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import ENV from "../core/env";
