@@ -1,11 +1,8 @@
 import React from "react";
-import axios from "axios";
-import ENV from "../core/env";
-
 import LFGActivity from "../core/lfg_activity";
 import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrows, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import LFGFeedRequest from "../core/lfg_feed_request";
 
 export interface FeedProperties {
