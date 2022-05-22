@@ -17,7 +17,7 @@ export const HomePage = (props: any) => (
       <Hero className="min-h-[50rem]">
         <div className="w-full">
           <EmbedGallery
-            embeds={["terr0rbyt3", "arcane1x", "thatguymcdsr"]}
+            embeds={["terrorbytetw", "arcane1x", "thatguymcdsr"]}
             type={"carousel"}
           ></EmbedGallery>
         </div>
@@ -64,6 +64,7 @@ export const HomePage = (props: any) => (
                 width="100%"
                 height="1000"
                 frameBorder="0"
+                loading="lazy"
                 sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
               ></iframe>
             </Container>

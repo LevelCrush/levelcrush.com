@@ -37,6 +37,17 @@ function renderBlock(
         ? assetSize.height.magnitude
         : "auto";
     const ptConversionFactor = 1.3333333333333333;
+    let cropProperties =
+      asset.inlineObject.inlineObjectProperties &&
+      asset.inlineObject.inlineObjectProperties.embeddedObject &&
+      asset.inlineObject.inlineObjectProperties.embeddedObject
+        .imageProperties &&
+      asset.inlineObject.inlineObjectProperties.embeddedObject.imageProperties
+        .cropProperties
+        ? asset.inlineObject.inlineObjectProperties.embeddedObject
+            .imageProperties.cropProperties
+        : undefined;
+
     if (typeof width !== "string") {
       // from what we know so far, ,google stores the size as PT units when coming from google doc
       width = width * ptConversionFactor;
@@ -44,16 +55,65 @@ function renderBlock(
     if (typeof height !== "string") {
       height = height * ptConversionFactor;
     }
+
+    // this is temporarily disabled since we need to modify asset server to get the original width/height of these images via google drive
+    // crop offsets are based off the **original** width and height. Without knowing what that is, providing a cropped version is not accurate
+    /*
+    if (cropProperties && Object.keys(cropProperties).length > 0) {
+      const inchToPT = 72;
+      height = height as number;
+      width = width as number;
+
+      const offsetLeft = cropProperties.offsetLeft
+        ? cropProperties.offsetLeft
+        : 0;
+      const offsetRight = cropProperties.offsetRight
+        ? cropProperties.offsetRight
+        : 0;
+      const offsetTop = cropProperties.offsetTop ? cropProperties.offsetTop : 0;
+      const offsetBottom = cropProperties.offsetBottom
+        ? cropProperties.offsetBottom
+        : 0;
+
+      return (
+        <span
+          className="inline-block overflow-hidden  mr-8 my-8 align-top"
+          key={structIndex + "_block_" + elementIndex + "_image_block"}
+          style={{
+            width: width,
+            height: height,
+            position: "relative",
+            top: 0,
+          }}
+        >
+          <img
+            src={asset.assetUrl}
+            key={structIndex + "_block_" + elementIndex + "_image"}
+            loading="lazy"
+            className="inline-block object-fill"
+            style={{
+              position: "relative",
+              marginTop: offsetTop,
+              marginLeft: offsetLeft,
+              marginRight: offsetRight,
+              marginBottom: offsetBottom,
+              maxWidth: "none",
+            }}
+          />
+        </span>
+      );
+    } else { */
     return (
       <img
         key={structIndex + "_block_" + elementIndex + "_image"}
         src={asset.assetUrl}
         loading="lazy"
-        width={width}
-        height={height}
-        className="inline-block mr-8 my-8"
+        /*  width={width} Disabled for now
+        height={height} */
+        className="inline-block mr-8 my-8 align-top"
       />
     );
+    // }
   } else {
     const textStyle =
       element.textRun && element.textRun.textStyle !== undefined
@@ -194,37 +254,57 @@ function renderHeading(paragraph: docs_v1.Schema$Paragraph) {
     switch (paragraph.paragraphStyle.namedStyleType) {
       case "HEADING_1":
         return (
-          <H1 id={id} key={headingKey}>
+          <H1
+            id={id}
+            key={headingKey}
+            minimalCSS={true}
+            className="dark:text-yellow-400 text-black  text-5xl font-headline font-bold uppercase tracking-widest mt-8 md:mt-0"
+          >
             {title}
           </H1>
         );
       case "HEADING_2":
         return (
-          <H2 id={id} key={headingKey}>
+          <H2
+            id={id}
+            key={headingKey}
+            minimalCSS={true}
+            className="text-4xl dark:text-yellow-400 text-black font-headline font-bold uppercase tracking-widest mt-8 mb-4"
+          >
             {title}
           </H2>
         );
       case "HEADING_3":
         return (
-          <H3 id={id} key={headingKey}>
+          <H3
+            id={id}
+            key={headingKey}
+            minimalCSS={true}
+            className="text-xl font-sans font-bold uppercase mb-4"
+          >
             {title}
           </H3>
         );
       case "HEADING_4":
         return (
-          <H4 id={id} key={headingKey}>
+          <H4
+            id={id}
+            key={headingKey}
+            minimalCSS={true}
+            className="text-lg font-bold"
+          >
             {title}
           </H4>
         );
       case "HEADING_5":
         return (
-          <H5 id={id} key={headingKey}>
+          <H5 id={id} key={headingKey} minimalCSS={true} className="text-lg">
             {title}
           </H5>
         );
       case "HEADING_6":
         return (
-          <H6 id={id} key={headingKey}>
+          <H6 id={id} key={headingKey} minimalCSS={true} className="text-base">
             {title}
           </H6>
         );

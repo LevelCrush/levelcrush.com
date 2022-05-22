@@ -1,9 +1,7 @@
 import axios from "axios";
-import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 import ENV from "../../../../../core/env";
 import GoogleDoc from "../../../../../core/googleDoc";
-import RaidGuideManager from "../../../../../core/raid_guide";
 
 let webhookRunning = false;
 

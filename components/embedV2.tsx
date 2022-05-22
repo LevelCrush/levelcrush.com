@@ -157,7 +157,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
       setTimeout(() => {
         console.log("Trigger load for embed", this.props.embed);
         this.createEmbedPlayer();
-      }, 3000);
+      }, 2000);
     }
   }
 
@@ -179,7 +179,7 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
         this.player = (
           this.embed as TwitchEmbedInterface
         ).getPlayer() as TwitchEmbedPlayerInterface;
-        console.log("Player ready");
+        console.log("Player ready", this.props.embed);
         this.setState({
           playerReady: true,
         });

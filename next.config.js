@@ -1,20 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
   reactStrictMode: true,
   images: {
     domains: ['assets.levelcrush.com']
   },
   optimizeFonts: false,
-  redirects: async () => {
-    return [
-      {
-        
-        source: '/guides',
-        destination: '/guides/destiny2/votd',
-        permanent: false,
-      }
-    ]
-  }
-}
+});
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer;

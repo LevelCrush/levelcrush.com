@@ -6,7 +6,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import Cookies from "universal-cookie";
 import ENV from "../core/env";
 
 export type Theme = "light" | "dark" | "system";
@@ -19,13 +18,10 @@ export class ThemeToggle extends React.Component<
   ThemeState
 > {
   private firstLoad: boolean;
-  private cookies: Cookies;
   public constructor(props: Record<string, never>) {
     super(props);
 
     this.firstLoad = true;
-    this.cookies = new Cookies();
-
     this.state = {
       mode: ENV.theme as Theme,
     };
@@ -40,7 +36,6 @@ export class ThemeToggle extends React.Component<
     // Whenever the user explicitly chooses light mode
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
-    this.cookies.set("theme", "light");
     this.setState(
       {
         mode: "light",
@@ -56,9 +51,7 @@ export class ThemeToggle extends React.Component<
   public themeSetDarkMode() {
     // Whenever the user explicitly chooses dark mode
     document.documentElement.classList.add("dark");
-
     localStorage.theme = "dark";
-    this.cookies.set("theme", "dark");
     this.setState(
       {
         mode: "dark",
@@ -75,7 +68,6 @@ export class ThemeToggle extends React.Component<
   public themeReset() {
     // Whenever the user explicitly chooses to respect the OS preference
     localStorage.removeItem("theme");
-    this.cookies.remove("theme");
     this.setState(
       {
         mode: "system",

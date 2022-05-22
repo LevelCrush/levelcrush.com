@@ -1,19 +1,12 @@
-import Cookies from "universal-cookie";
-import { Theme } from "../components/theme_toggle";
-
 const isBrowser = typeof window !== "undefined";
 
-const docCookie = new Cookies();
 let theme = "";
 let localStorageTheme =
   typeof localStorage !== "undefined" && localStorage["theme"] !== "undefined"
-    ? (localStorage.getItem("theme") as Theme)
+    ? localStorage.getItem("theme")
     : undefined;
-let cookieTheme = docCookie.get("theme") ? docCookie.get("theme") : undefined;
 if (localStorageTheme !== undefined) {
-  theme = localStorageTheme;
-} else if (cookieTheme !== undefined) {
-  theme = cookieTheme;
+  theme = localStorageTheme as string;
 } else {
   theme = "system";
 }

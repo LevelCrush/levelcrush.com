@@ -1,7 +1,5 @@
 import moment from "moment";
 import React from "react";
-import ENV from "../core/env";
-import Embed from "./embed";
 import EmbedV2 from "./embedV2";
 
 export interface EmbedGalleryProperties {
@@ -43,10 +41,7 @@ export class EmbedGallery extends React.Component<
         ? this.props.id
         : "gallery_" + moment().unix().toString() + +attempts.toString();
     }
-    // todo fill
-    const embedElements = document.querySelectorAll(
-      "#" + this.id + " div.embed"
-    );
+
     this.setState(
       {
         loaded: true,

@@ -1,4 +1,3 @@
-import path from "path";
 import React from "react";
 import Hero from "../../../components/hero";
 import SiteHeader from "../../../components/site_header";
@@ -6,9 +5,6 @@ import {
   TableOfContents,
   TableOfContentsNavigationItem,
 } from "../../../components/table_of_contents";
-import RaidGuideManager, { RaidGuide } from "../../../core/raid_guide";
-import * as fs from "fs";
-import { RaidGuideDisplay } from "../../../components/raid_guide_display";
 import Head from "next/head";
 import Container from "../../../components/elements/container";
 import { H2 } from "../../../components/elements/headings";
@@ -63,6 +59,25 @@ export async function getServerSideProps() {
 
   console.log("Generating Asset Map", moment().unix());
   const assetMap = await googleDoc.generateAssetMap();
+  // trim some unneeded items
+  // nextjs will store a version of this locally in the page response to hydrate
+  // trim to only what we **absolutely** need to hydrate and remount on the client side
+  // also this is where we should remove any sensitive information (like documentid)
+  // currently for our use case, we only need to send back down the body element of the docSchema and inlineObjects to properly hydrate
+  delete docSchema.documentId;
+  delete docSchema.footers;
+  delete docSchema.footnotes;
+  delete docSchema.lists;
+  delete docSchema.namedRanges;
+  delete docSchema.namedStyles;
+  delete docSchema.revisionId;
+  delete docSchema.suggestionsViewMode;
+  delete docSchema.documentStyle;
+  delete docSchema.headers;
+  delete docSchema.positionedObjects;
+  delete docSchema.suggestedNamedStylesChanges;
+  delete docSchema.suggestedDocumentStyleChanges;
+
   return {
     props: {
       navTree: navTree,

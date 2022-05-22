@@ -14,7 +14,7 @@ export const Hyperlink = (props: HyperLinkProps) => (
         props.target || (props.href.includes("http") ? "_blank" : "_self")
       }
       className={" hover:underline " + (props.className || "")}
-      onClick={props.onClick}
+      {...props}
     >
       {props.children}
     </a>

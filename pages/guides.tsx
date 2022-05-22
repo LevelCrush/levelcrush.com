@@ -6,6 +6,16 @@ import DiscordLink from "../components/discord_link";
 import Head from "next/head";
 import { H2, H3, H4 } from "../components/elements/headings";
 import Container from "../components/elements/container";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/guides/destiny2/votd",
+    },
+  };
+};
 
 export const GuidePage = (props: any) => (
   <>
