@@ -7,6 +7,7 @@ import Head from "next/head";
 import { H2, H3, H4 } from "../components/elements/headings";
 import Container from "../components/elements/container";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
+import OffCanvas from "../components/offcanvas";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
@@ -18,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export const GuidePage = (props: any) => (
-  <>
+  <OffCanvas>
     <Head>
       <title>Level Crush - Guides</title>
     </Head>
@@ -59,7 +60,7 @@ export const GuidePage = (props: any) => (
         </li>
       </ol>
     </Container>
-  </>
+  </OffCanvas>
 );
 
 export default GuidePage;

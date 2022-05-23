@@ -3,6 +3,7 @@ import Container from "./elements/container";
 import { H1 } from "./elements/headings";
 import Hyperlink from "./elements/hyperlink";
 import LoginButton from "./login_button";
+import { OffCanvasToggle } from "./offcanvas";
 import ThemeToggle from "./theme_toggle";
 
 export const SiteHeader = (props: any) => (
@@ -13,6 +14,7 @@ export const SiteHeader = (props: any) => (
         className="px-4 flex mx-auto my-0 justify-between items-center flex-wrap md:flex-nowrap"
       >
         <H1 className="flex-auto text-center md:text-left  basis-full md:basis-auto  md:flex-initial">
+          <OffCanvasToggle />
           <Hyperlink href="/" title="Go home">
             Level Crush
           </Hyperlink>
@@ -23,7 +25,7 @@ export const SiteHeader = (props: any) => (
             <ThemeToggle />
           </div>
         </H1>
-        <nav className="flex-auto basis-full  md:flex-auto mt-8 md:mt-0">
+        <nav className="flex-auto basis-full  lg:flex-auto mt-8 lg:mt-0 lg:block hidden">
           <ul className="flex justify-center text-lg md:text-sm lg:text-lg text-white font-semibold">
             <li className="flex-initial hover:underline hover:cursor-pointer px-4">
               <Hyperlink href="/lfg">Looking For Group</Hyperlink>

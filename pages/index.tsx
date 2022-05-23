@@ -6,9 +6,10 @@ import { SiteHeader } from "../components/site_header";
 import DiscordLink from "../components/discord_link";
 import Container from "../components/elements/container";
 import { H3 } from "../components/elements/headings";
+import OffCanvas from "../components/offcanvas";
 
 export const HomePage = (props: any) => (
-  <>
+  <OffCanvas>
     <Head>
       <title>Home | Level Crush</title>
     </Head>
@@ -72,7 +73,7 @@ export const HomePage = (props: any) => (
         </div>
       </div>
     </main>
-  </>
+  </OffCanvas>
 );
 
 export default HomePage;

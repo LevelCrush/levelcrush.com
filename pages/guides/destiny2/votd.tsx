@@ -12,6 +12,7 @@ import GoogleDoc, { GoogleDocAssetMap } from "../../../core/googleDoc";
 import { docs_v1 } from "googleapis";
 import moment from "moment";
 import GoogleDocDisplay from "../../../components/google_doc_display";
+import OffCanvas from "../../../components/offcanvas";
 
 export async function getServerSideProps() {
   console.log("Grabbing Google Doc", moment().unix());
@@ -94,7 +95,7 @@ export interface GuideVOTDPageProps {
 }
 
 export const GuideVOTDPage = (props: GuideVOTDPageProps) => (
-  <>
+  <OffCanvas>
     <Head>
       <title>VOTD Raid Guide | Level Crush</title>
     </Head>
@@ -126,7 +127,7 @@ export const GuideVOTDPage = (props: GuideVOTDPageProps) => (
         ></GoogleDocDisplay>
       </div>
     </main>
-  </>
+  </OffCanvas>
 );
 
 export default GuideVOTDPage;

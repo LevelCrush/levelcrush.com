@@ -5,6 +5,7 @@ import Container from "../components/elements/container";
 import { H2, H3 } from "../components/elements/headings";
 import Hero from "../components/hero";
 import LFGFeed from "../components/lfg_feed";
+import OffCanvas from "../components/offcanvas";
 import { SiteHeader } from "../components/site_header";
 import LFGActivity from "../core/lfg_activity";
 
@@ -14,7 +15,7 @@ export interface LFGPageProps {
 }
 
 export const LFGPage = (props: LFGPageProps) => (
-  <>
+  <OffCanvas>
     <Head>
       <title>Looking For Group | Level Crush</title>
     </Head>
@@ -48,7 +49,7 @@ export const LFGPage = (props: LFGPageProps) => (
         </div>
       </Container>
     </main>
-  </>
+  </OffCanvas>
 );
 
 export default LFGPage;
