@@ -1,3 +1,6 @@
+    /**
+     * @type {import('tailwindcss/plugin')}
+     */
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
@@ -15,9 +18,7 @@ module.exports = {
     },
   },
   plugins: [
-    /**
-     * @type {import('tailwindcss/plugin')}
-     */
+
     plugin(function({ addVariant }) {
         addVariant('offcanvas-opened','.offcanvas[data-showing="1"] &')
         addVariant('offcanvas-closed','.offcanvas[data-showing="0"] &')

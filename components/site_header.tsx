@@ -7,23 +7,24 @@ import { OffCanvasToggle } from "./offcanvas";
 import ThemeToggle from "./theme_toggle";
 
 export const SiteHeader = (props: any) => (
-  <header>
+  <header className="relative top-0 md:sticky z-[99] ">
     <div className="min-h-[4.5rem] h-auto bg-[#003134] border-b-8 border-solid border-cyan-400 shadow-[0px_.5rem_.5rem_2px_rgba(0,0,0,0.7)] relative z-[99] ">
       <Container
         minimalCSS={true}
         className="px-4 flex mx-auto my-0 justify-between items-center flex-wrap md:flex-nowrap"
       >
-        <H1 className="flex-auto text-center md:text-left  basis-full md:basis-auto  md:flex-initial">
-          <OffCanvasToggle />
-          <Hyperlink href="/" title="Go home">
+        <H1 className="flex-auto text-center md:text-left  basis-full md:basis-auto  md:flex-initial mt-2">
+          <OffCanvasToggle className="float-left" />
+          <Hyperlink className="!hover:no-underline " href="/" title="Go home">
             Level Crush
           </Hyperlink>
           <div
-            className="inline-block w-auto h-auto text-lg ml-4"
+            className="inline-block w-auto h-auto text-lg ml-4 float-right top-2 right-2 md:right-0 relative"
             title="Toggle Dark/Light Mode"
           >
             <ThemeToggle />
           </div>
+          <div className="clear-both"></div>
         </H1>
         <nav className="flex-auto basis-full  lg:flex-auto mt-8 lg:mt-0 lg:block hidden">
           <ul className="flex justify-center text-lg md:text-sm lg:text-lg text-white font-semibold">
@@ -35,8 +36,8 @@ export const SiteHeader = (props: any) => (
             </li>
           </ul>
         </nav>
-        <div className="flex-auto basis-full md:basis-auto  text-center mt-8 mb-8 md:mt-0 md:mb-0 md:flex-initial md:text-right levelcrush-login">
-          <LoginButton />
+        <div className="flex-auto basis-full md:basis-auto  text-center mt-8 mb-8 md:mt-0 md:mb-0 md:flex-initial md:text-right hidden md:block">
+          <LoginButton justListen={true} />
         </div>
       </Container>
     </div>

@@ -8,10 +8,11 @@ export interface ThemeState {
   mode: Theme;
 }
 
-export class ThemeToggle extends React.Component<
-  Record<string, never>,
-  ThemeState
-> {
+export interface ThemeProps {
+  className?: string;
+}
+
+export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
   private firstLoad: boolean;
   public constructor(props: Record<string, never>) {
     super(props);
@@ -23,23 +24,14 @@ export class ThemeToggle extends React.Component<
 
     this.themeCheck = this.themeCheck.bind(this);
     this.themeReset = this.themeReset.bind(this);
-    this.themeSetDarkMode = this.themeSetDarkMode.bind(this);
-    this.themeSetLightMode = this.themeSetLightMode.bind(this);
   }
 
   public themeSetLightMode() {
     // Whenever the user explicitly chooses light mode
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
-    this.setState(
-      {
-        mode: "light",
-      },
-      () => {
-        document.dispatchEvent(
-          new CustomEvent("theme_lightmode", { bubbles: true })
-        );
-      }
+    document.dispatchEvent(
+      new CustomEvent("theme_lightmode", { bubbles: true })
     );
   }
 
@@ -47,16 +39,9 @@ export class ThemeToggle extends React.Component<
     // Whenever the user explicitly chooses dark mode
     document.documentElement.classList.add("dark");
     localStorage.theme = "dark";
-    this.setState(
-      {
-        mode: "dark",
-      },
-      () => {
-        console.log("Dark Mode enabled");
-        document.dispatchEvent(
-          new CustomEvent("theme_darkmode", { bubbles: true })
-        );
-      }
+    console.log("Dark Mode enabled");
+    document.dispatchEvent(
+      new CustomEvent("theme_darkmode", { bubbles: true })
     );
   }
 
@@ -101,12 +86,26 @@ export class ThemeToggle extends React.Component<
         this.themeReset();
       });
       */
+
+    document.addEventListener("theme_darkmode", () => {
+      this.setState({
+        mode: "dark",
+      });
+    });
+
+    document.addEventListener("theme_lightmode", () => {
+      this.setState({
+        mode: "light",
+      });
+    });
   }
 
   public render() {
     return (
       <button
-        className={"theme-toggle flex-auto text-center"}
+        className={
+          "theme-toggle flex-auto text-center " + (this.props.className || "")
+        }
         onClick={(event) =>
           this.state.mode === "light"
             ? this.themeSetDarkMode()

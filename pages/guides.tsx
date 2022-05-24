@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export const GuidePage = (props: any) => (
   <OffCanvas>
     <Head>
-      <title>Level Crush - Guides</title>
+      <title>Guides | Level Crush</title>
     </Head>
     <SiteHeader />
     <Hero className="min-h-[20rem]">

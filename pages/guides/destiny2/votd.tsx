@@ -39,6 +39,7 @@ export async function getServerSideProps() {
   const googleDocOutline = await googleDoc.generateOutline();
 
   // build a 2 level deep nav tree
+  console.log("Building Navigation Tree");
   let navTree: TableOfContentsNavigationItem[] = [];
   for (let i = 0; i < googleDocOutline.entries.length; i++) {
     const level1Entry = googleDocOutline.entries[i];

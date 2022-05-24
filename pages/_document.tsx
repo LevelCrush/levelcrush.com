@@ -1,5 +1,4 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { OffCanvas } from "../components/offcanvas";
 
 export const Document = () => (
   <Html lang="en">

@@ -32,7 +32,6 @@ export default async function handler(
       let appTokenSecret =
         form.token_secret !== undefined ? form.token_secret.trim() : "";
 
-      console.log([appToken, appTokenSecret]);
       const axiosResponse = await axios.post(
         ENV.hosts.api + "/application/verify",
         {

@@ -4,7 +4,6 @@ import React from "react";
 import { Hyperlink } from "./elements/hyperlink";
 
 // import the polyfill
-// probably should do this in _app for the future but for now this works (i think. 4am me lol)
 
 export interface TableOfContentsNavigationItem {
   url: string;
@@ -102,7 +101,7 @@ export class TableOfContents extends React.Component<TableOfContentsProperties> 
 
   public render() {
     return (
-      <div className="table-of-contents expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] sticky top-0 self-start z-[9999] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none">
+      <div className="table-of-contents expanded group shadow-[0px_.4rem_0rem_1px_rgba(0,0,0,0.4)] flex-[1_1_auto] lg:flex-[0_1_30%] sticky top-0 md:top-[5rem] self-start z-[98] transition-all duration-300 ease-in-out  dark:bg-slate-900 border-2 border-solid  dark:border-cyan-900 hover:dark:border-cyan-400  hover:border-gray-400 border-gray-200 bg-white  rounded-xl  rounded-t-none">
         <h2 className="transition-all duration-300 ease-in-out dark:bg-slate-900 border-b-2 border-solid  dark:border-cyan-900 dark:group-hover:border-cyan-400  group-hover:border-gray-400 border-gray-200">
           <button
             type="button"

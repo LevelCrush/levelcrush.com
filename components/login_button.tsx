@@ -5,6 +5,7 @@ import ENV from "../core/env";
 
 export interface LoginProperties {
   display?: "default" | "full" | "events-only" | string;
+  justListen?: boolean;
 }
 
 export interface LoginState {
@@ -60,7 +61,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   // we have mounted , perform login check
   public componentDidMount() {
     // setup broadcast channel
-    if (this.loginBroadcastChannel) {
+    if (this.loginBroadcastChannel && !this.props.justListen) {
       this.loginBroadcastChannel.addEventListener("message", (ev) => {
         // todo
         const messageData = ev.data as {
@@ -109,47 +110,72 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         setup: false,
       });
       // any successful login will trigger us to get the current session
-      this.apiGetSession();
+      if (!this.props.justListen) {
+        this.apiGetSession();
+      }
     }) as EventListener);
 
     // listen for any login checks and if we are no longer logged in,
     document.addEventListener("levelcrush_login_check", ((ev: CustomEvent) => {
-      if (ev.detail["loggedIn"] !== true && this.state.loggedIn === true) {
-        document.dispatchEvent(
-          new CustomEvent("levelcrush_logout", { bubbles: true })
-        );
-      } else if (
-        ev.detail["loggedIn"] === true &&
-        this.state.loggedIn === false
-      ) {
-        document.dispatchEvent(
-          new CustomEvent("levelcrush_login_success", { bubbles: true })
-        );
+      if (!this.props.justListen) {
+        if (ev.detail["loggedIn"] !== true && this.state.loggedIn === true) {
+          document.dispatchEvent(
+            new CustomEvent("levelcrush_logout", { bubbles: true })
+          );
+        } else if (
+          ev.detail["loggedIn"] === true &&
+          this.state.loggedIn === false
+        ) {
+          document.dispatchEvent(
+            new CustomEvent("levelcrush_login_success", { bubbles: true })
+          );
+        }
+      } else {
+        this.setState({
+          setup: false,
+        });
       }
     }) as EventListener);
 
     // check for login every 2 minutes if possible
-    setInterval(() => {
-      this.loginCheck();
-    }, 120000);
+    if (!this.props.justListen) {
+      setInterval(() => {
+        this.loginCheck();
+      }, 120000);
 
-    // setup timers and run check to login if possible
-    setInterval(() => {
-      // this.pingHosts(); // explicit ping request (it is currently now redundent)
-      this.apiGetSession();
-    }, 60000); // ping every 60 seconds and grab user session as well
+      // setup timers and run check to login if possible
+      setInterval(() => {
+        // this.pingHosts(); // explicit ping request (it is currently now redundent)
+        this.apiGetSession();
+      }, 60000); // ping every 60 seconds and grab user session as well
 
-    // we want to run through our entire routine, so dont just only check for a login
-    // perform the entire login routine if need be automatically
-    this.loginCheck(false);
+      // we want to run through our entire routine, so dont just only check for a login
+      // perform the entire login routine if need be automatically
+      this.loginCheck(false);
 
-    // let the document know we have initialized fully and run any setups
-    document.dispatchEvent(
-      new CustomEvent("levelcrush_login_init", { bubbles: true })
-    );
+      // let the document know we have initialized fully and run any setups
+      document.dispatchEvent(
+        new CustomEvent("levelcrush_login_init", { bubbles: true })
+      );
+    }
+
+    if (this.props.justListen) {
+      document.addEventListener("levelcrush_login_session", ((
+        ev: CustomEvent
+      ) => {
+        //    const displayName = ev.
+        this.setState({
+          displayName: ev.detail["displayName"] as string,
+          setup: false,
+        });
+      }) as EventListener);
+    }
   }
 
   public loginCheck(onlyCheck = true, broadcastCheck = false) {
+    if (this.props.justListen) {
+      return;
+    }
     // check login.levelcrush first
     console.log("Checking if logged into ", ENV.hosts.login);
     this.setState({
@@ -212,6 +238,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public apiLogin(user: string, application: string, broadcastCheck = false) {
+    if (this.props.justListen) {
+      return;
+    }
     // todo connect and login with api
     console.log("Attempting to finish login at ", ENV.hosts.api);
     Axios({
@@ -271,6 +300,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     application: string,
     broadcastCheck = false
   ) {
+    if (this.props.justListen) {
+      return;
+    }
     console.log("Using API to login with application");
     Axios({
       url: ENV.hosts.api + "/application/login",
@@ -300,7 +332,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         serverResponse.response &&
         serverResponse.response.token.length > 0
       ) {
-        console.log("Logged into application fully! Triggering callbacks!");
         // broadcast
         // logout on our end and then tell other contexts to logout on the client
         if (!broadcastCheck) {
@@ -328,6 +359,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public startLogin() {
+    if (this.props.justListen) {
+      return;
+    }
     // start login procedure
     Axios({
       url:
@@ -345,6 +379,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public applicationLogout() {
+    if (this.props.justListen) {
+      return;
+    }
     // logout of the api and login.levelcrush
     const apiLogoutRequest = Axios.get(ENV.hosts.api + "/user/logout", {
       withCredentials: true,
@@ -370,6 +407,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public pingHosts() {
+    if (this.props.justListen) {
+      return;
+    }
     const apiRequest = Axios.get(ENV.hosts.api + "/ping", {
       withCredentials: true,
     });
@@ -386,6 +426,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public apiGetSession() {
+    if (this.props.justListen) {
+      return;
+    }
     Axios.get(ENV.hosts.api + "/user/session", {
       withCredentials: true,
     }).then((xhr) => {
@@ -406,16 +449,27 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         };
         errors: unknown[];
       };
-      this.setState({
-        requesting: false,
-        displayName:
-          apiRequest.success &&
-          apiRequest.response &&
-          apiRequest.response.applications &&
-          apiRequest.response.applications.hub.display_name_full
-            ? apiRequest.response.applications.hub.display_name_full
-            : "Unknown#Potatoe",
-      });
+
+      this.setState(
+        {
+          requesting: false,
+          displayName:
+            apiRequest.success &&
+            apiRequest.response &&
+            apiRequest.response.applications &&
+            apiRequest.response.applications.hub.display_name_full
+              ? apiRequest.response.applications.hub.display_name_full
+              : "Unknown#Potatoe",
+        },
+        () => {
+          document.dispatchEvent(
+            new CustomEvent("levelcrush_login_session", {
+              bubbles: true,
+              detail: { displayName: this.state.displayName },
+            })
+          );
+        }
+      );
     });
   }
 
@@ -436,7 +490,12 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
               : "Login with Discord"}
           </button>
         ) : (
-          ""
+          <button
+            disabled={true}
+            className="block w-full  text-white bg-blue-600 opacity-50  hover:cursor-default rounded px-4 py-2 mx-auto  my-4"
+          >
+            Login with Discord
+          </button>
         );
       return (
         <div

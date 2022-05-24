@@ -47,8 +47,6 @@ export class GoogleDoc {
     config: Partial<GoogleDocParseConfig> = DefaultGoogleDocParseConfig
   ) {
     this.config = { ...DefaultGoogleDocParseConfig, ...config };
-    console.log(config);
-    console.log(this.config);
     if (typeof googleDoc === "string") {
       this.docID = googleDoc;
     } else if (typeof googleDoc === "object") {
