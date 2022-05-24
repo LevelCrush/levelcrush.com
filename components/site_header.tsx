@@ -7,7 +7,7 @@ import { OffCanvasToggle } from "./offcanvas";
 import ThemeToggle from "./theme_toggle";
 
 export const SiteHeader = (props: any) => (
-  <header className="relative top-0 md:sticky z-[99] ">
+  <header className="top-0 sticky z-[99] ">
     <div className="min-h-[4.5rem] h-auto bg-[#003134] border-b-8 border-solid border-cyan-400 shadow-[0px_.5rem_.5rem_2px_rgba(0,0,0,0.7)] relative z-[99] ">
       <Container
         minimalCSS={true}
