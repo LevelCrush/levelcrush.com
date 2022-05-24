@@ -132,10 +132,12 @@ export class OffCanvas extends React.Component<
                           }
                         >
                           <Hyperlink
-                            className="p-4 block pl-8  hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
+                            className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
                             href={subChild.url}
                           >
-                            {subChild.name}
+                            <span className="block border-l-2  border-solid border-black dark:border-cyan-500 pl-4">
+                              {subChild.name}
+                            </span>
                           </Hyperlink>
                         </li>
                       )
