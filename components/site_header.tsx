@@ -8,12 +8,12 @@ import ThemeToggle from "./theme_toggle";
 
 export const SiteHeader = (props: any) => (
   <header className="top-0 sticky z-[99] ">
-    <div className="min-h-[4.5rem] h-auto bg-[#003134] border-b-8 border-solid border-cyan-400 shadow-[0px_.5rem_.5rem_2px_rgba(0,0,0,0.7)] relative z-[99] ">
+    <div className="min-h-[4.5rem] flex items-center h-auto bg-[#003134] border-b-8 border-solid border-cyan-400 shadow-[0px_.5rem_.5rem_2px_rgba(0,0,0,0.7)] relative z-[99] ">
       <Container
         minimalCSS={true}
-        className="px-4 flex mx-auto my-0 justify-between items-center flex-wrap md:flex-nowrap"
+        className="flex-auto px-4 flex mx-auto my-0 justify-between items-center flex-wrap md:flex-nowrap "
       >
-        <H1 className="flex-auto text-center md:text-left  basis-full md:basis-auto  md:flex-initial mt-2">
+        <H1 className="flex-auto md:flex-initial text-center md:text-left ">
           <OffCanvasToggle className="float-left" />
           <Hyperlink className="!hover:no-underline " href="/" title="Go home">
             Level Crush

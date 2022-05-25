@@ -12,7 +12,7 @@ export const H1 = (props: React.PropsWithChildren<HeadingProps>) => (
     className={
       (props.minimalCSS
         ? ""
-        : " align-middle text-yellow-400  text-4xl font-headline font-bold uppercase tracking-widest mt-8 md:mt-0 ") +
+        : " align-middle text-yellow-400  text-4xl font-headline font-bold uppercase tracking-widest ") +
       (props.className || "")
     }
   >
