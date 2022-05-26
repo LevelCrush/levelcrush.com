@@ -110,7 +110,7 @@ function renderBlock(
         loading="lazy"
         /*  width={width} Disabled for now
         height={height} */
-        className="inline-block mr-8 my-8 align-top"
+        className="inline-block pr-8 my-8 align-top"
       />
     );
     // }
