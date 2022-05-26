@@ -317,7 +317,7 @@ function renderHeading(paragraph: docs_v1.Schema$Paragraph) {
 export const GoogleDocDisplay = (props: GoogleDocDisplayProps) => (
   <div
     className={
-      "flex-[1_1_auto] lg:flex-[0_1_65%]  relative top-0 self-start guide-content mt-8 lg:mt-0 px-4 lg:px-0" +
+      "flex-[1_1_auto] lg:flex-[0_1_65%]  relative top-0 self-start guide-content mt-8 lg:mt-0 px-4" +
       " " +
       (props.className || "")
     }
