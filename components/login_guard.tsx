@@ -24,6 +24,21 @@ export class LoginGuard extends React.Component<
       loggedIn: false,
     };
     this._mounted = false;
+
+    this.onMemberLogin = this.onMemberLogin.bind(this);
+    this.onMemberLogout = this.onMemberLogout.bind(this);
+  }
+
+  public componentWillUnmount() {
+    // append login listeners
+    document.removeEventListener(
+      "levelcrush_login_success",
+      this.onMemberLogin
+    );
+
+    this._mounted = false;
+    // append login listeners
+    document.removeEventListener("levelcrush_logout", this.onMemberLogout);
   }
 
   public componentDidMount() {
@@ -34,27 +49,31 @@ export class LoginGuard extends React.Component<
     this._mounted = true;
 
     // append login listeners
-    document.addEventListener("levelcrush_login_success", ((
-      ev: CustomEvent
-    ) => {
-      this.setState({
-        loggedIn: true,
-      });
-    }) as EventListener);
+    document.addEventListener("levelcrush_login_success", this.onMemberLogin);
 
     // append login listeners
-    document.addEventListener("levelcrush_logout", ((ev: CustomEvent) => {
-      this.setState({
-        loggedIn: false,
-      });
-    }) as EventListener);
+    document.addEventListener("levelcrush_logout", this.onMemberLogout);
+  }
+
+  public onMemberLogin() {
+    console.log("Guard detected login");
+    this.setState({
+      loggedIn: true,
+    });
+  }
+
+  public onMemberLogout() {
+    console.log("Guard detected logout");
+    this.setState({
+      loggedIn: false,
+    });
   }
 
   public renderNeedsLogin() {
     return (
       <Container
         minimalCSS={true}
-        className="mx-auto my-0 flex items-center justify-center self-center min-h-full h-auto"
+        className="mx-auto my-8 flex items-center justify-center self-center min-h-full h-auto"
       >
         <div className="flex-initial w-2/4 h-auto text-center">
           <H2
@@ -82,9 +101,7 @@ export class LoginGuard extends React.Component<
   }
 
   public render() {
-    return (
-      <>{this.state.loggedIn ? this.renderNormal() : this.renderNeedsLogin()}</>
-    );
+    return this.state.loggedIn ? this.renderNormal() : this.renderNeedsLogin();
   }
 }
 

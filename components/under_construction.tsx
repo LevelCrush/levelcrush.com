@@ -7,7 +7,7 @@ import { H2 } from "./elements/headings";
 export const UnderConstruction = (props: any) => (
   <Container
     minimalCSS={true}
-    className="mx-auto my-0 flex items-center justify-center self-center min-h-full h-auto"
+    className="mx-auto my-8 flex items-center justify-center self-center min-h-full h-auto"
   >
     <div className="flex-initial w-2/4 h-auto text-center">
       <H2

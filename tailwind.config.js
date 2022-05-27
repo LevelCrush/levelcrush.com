@@ -24,6 +24,8 @@ module.exports = {
         addVariant('offcanvas-closed','.offcanvas[data-showing="0"] &')
         addVariant('is-member','.offcanvas[data-is-member="1"] &');
         addVariant('is-not-member','.offcanvas[data-is-member="0"] &');
+        addVariant('expanded','.expanded &')
+        addVariant('expanded-hover','.expanded:hover &')
     }),
   ],
 }

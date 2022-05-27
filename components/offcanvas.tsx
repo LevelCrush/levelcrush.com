@@ -1,5 +1,5 @@
 import React from "react";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleRight, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Routes, RouteItem } from "../core/routes";
 import Hyperlink from "./elements/hyperlink";
@@ -16,11 +16,7 @@ export const OffCanvasToggle = (props: OffCanvasToggleProps) => (
   <button
     className={"mr-4 " + (props.className || "")}
     onClick={(ev) => {
-      document.dispatchEvent(
-        new CustomEvent("offcanvas_request_toggle", {
-          bubbles: true,
-        })
-      );
+      document.dispatchEvent(new CustomEvent("offcanvas_request_toggle"));
     }}
   >
     <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
@@ -41,6 +37,7 @@ export class OffCanvas extends React.Component<
   React.PropsWithChildren<OffCanvasProps>,
   OffCanvasState
 > {
+  private mounted = false;
   public constructor(props: React.PropsWithChildren<OffCanvasProps>) {
     // run the parent constructor
     super(props);
@@ -52,48 +49,82 @@ export class OffCanvas extends React.Component<
       routes: this.props.routes || Routes,
       isMember: false,
     };
+
+    // bind
+    this.onCanvasHide = this.onCanvasHide.bind(this);
+    this.onCanvasShow = this.onCanvasShow.bind(this);
+    this.onCanvasToggle = this.onCanvasToggle.bind(this);
+    this.onMemberLogin = this.onMemberLogin.bind(this);
+    this.onMemberLogout = this.onMemberLogout.bind(this);
+  }
+
+  public componentWillUnmount() {
+    document.removeEventListener(
+      "offcanvas_request_toggle",
+      this.onCanvasToggle
+    );
+    document.removeEventListener("offcanvas_show", this.onCanvasShow);
+    document.removeEventListener("offcanvas_hide", this.onCanvasHide);
+
+    // we have logged in as  a member
+    document.removeEventListener(
+      "levelcrush_login_success",
+      this.onMemberLogin
+    );
+
+    // we have logged out.
+    document.removeEventListener("levelcrush_logout", this.onMemberLogout);
+    this.mounted = false;
   }
 
   public componentDidMount() {
-    document.addEventListener("offcanvas_request_toggle", (ev) => {
-      // an event was dispatched to request either showing/hiding of the offcanvas
-      // handle within this component as a "master control" since we are managing visual state here
-      if (this.state.showing) {
-        document.dispatchEvent(
-          new CustomEvent("offcanvas_hide", { bubbles: true })
-        );
-      } else {
-        document.dispatchEvent(
-          new CustomEvent("offcanvas_show", { bubbles: true })
-        );
-      }
-    });
-    document.addEventListener("offcanvas_show", (ev) => {
-      this.setState({
-        showing: true,
-      });
-    });
-    document.addEventListener("offcanvas_hide", (ev) => {
-      this.setState({
-        showing: false,
-      });
-    });
+    if (this.mounted) {
+      return;
+    }
+    this.mounted = true;
+    document.addEventListener("offcanvas_request_toggle", this.onCanvasToggle);
+    document.addEventListener("offcanvas_show", this.onCanvasShow);
+    document.addEventListener("offcanvas_hide", this.onCanvasHide);
 
     // we have logged in as  a member
-    document.addEventListener("levelcrush_login_success", ((
-      ev: CustomEvent
-    ) => {
-      this.setState({
-        isMember: true,
-      });
-    }) as EventListener);
+    document.addEventListener("levelcrush_login_success", this.onMemberLogin);
 
     // we have logged out.
-    document.addEventListener("levelcrush_logout", ((ev: CustomEvent) => {
-      this.setState({
-        isMember: false,
-      });
-    }) as EventListener);
+    document.addEventListener("levelcrush_logout", this.onMemberLogout);
+  }
+  public onCanvasToggle() {
+    // an event was dispatched to request either showing/hiding of the offcanvas
+    // handle within this component as a "master control" since we are managing visual state here
+    if (this.state.showing) {
+      document.dispatchEvent(new CustomEvent("offcanvas_hide"));
+    } else {
+      document.dispatchEvent(new CustomEvent("offcanvas_show"));
+    }
+  }
+  public onCanvasShow() {
+    this.setState({
+      showing: true,
+    });
+  }
+
+  public onCanvasHide() {
+    this.setState({
+      showing: false,
+    });
+  }
+
+  public onMemberLogin() {
+    console.log("Off Canvas detected Member Login");
+    this.setState({
+      isMember: true,
+    });
+  }
+
+  public onMemberLogout() {
+    console.log("Off Canvas detected Member Logout");
+    this.setState({
+      isMember: false,
+    });
   }
 
   public render() {
@@ -115,7 +146,7 @@ export class OffCanvas extends React.Component<
               Level Crush
             </Hyperlink>
             <div
-              className="inline-block w-auto h-auto text-lg ml-4"
+              className="inline-block w-auto h-auto text-lg ml-4 relative bottom-1"
               title="Toggle Dark/Light Mode"
             >
               <ThemeToggle />
@@ -128,16 +159,50 @@ export class OffCanvas extends React.Component<
               }
               return (
                 <li
-                  className="text-black dark:text-white border-b-[1px] first:border-t-[1px] border-solid border-black dark:border-cyan-500"
+                  className="group text-black dark:text-white border-b-[1px] first:border-t-[1px] border-solid border-black dark:border-cyan-500"
                   key={"routeitem_" + routeItemIndex + "_" + routeItem.url}
                 >
                   <Hyperlink
                     className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
                     href={routeItem.url}
+                    data-has-sub={
+                      (routeItem.children || []).length > 0 ? "1" : "0"
+                    }
+                    onClick={
+                      routeItem.children
+                        ? (ev) => {
+                            if (ev.target) {
+                              const closetLi = (
+                                ev.target as HTMLAnchorElement
+                              ).closest("li");
+                              if (closetLi) {
+                                closetLi.classList.toggle("expanded");
+                                ev.preventDefault();
+                                return false;
+                              }
+                            }
+                          }
+                        : undefined
+                    }
                   >
+                    {(routeItem.children || []).length > 0 ? (
+                      <div
+                        className="inline-block float-right px-4"
+                        key={"routeitem_" + routeItem.url + "_expansion_toggle"}
+                      >
+                        <FontAwesomeIcon
+                          className="expanded:rotate-90 group-hover:rotate-90 transition-all duration-300"
+                          icon={faAngleDoubleRight}
+                        ></FontAwesomeIcon>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                     {routeItem.name}
+                    <div className="clear-both"></div>
                   </Hyperlink>
-                  <nav className="offcanvas-sub-menu">
+
+                  <nav className="offcanvas-sub-menu max-h-0 h-auto overflow-hidden transition-all duration-300 ease-in-out expanded:max-h-[100rem]">
                     <ul className="text-white font-bold">
                       {(routeItem.children || []).map(
                         (subChild, subChildIndex) => (
@@ -175,15 +240,13 @@ export class OffCanvas extends React.Component<
             <LoginButton></LoginButton>
           </div>
         </nav>
-        <div className="offcanvas-content min-h-screen h-screen  block transition-all duration-300">
+        <div className="offcanvas-content min-h-screen h-auto  block transition-all duration-300">
           {this.props.children}
         </div>
         <div
           className="offcanvas-background hidden transition-all duration-30 h-screen w-screen fixed opacity-0 top-0 bg-black offcanvas-opened:opacity-75 offcanvas-opened:block z-[99998]"
           onClick={(ev) => {
-            document.dispatchEvent(
-              new CustomEvent("offcanvas_hide", { bubbles: true })
-            );
+            document.dispatchEvent(new CustomEvent("offcanvas_hide"));
           }}
         ></div>
       </div>

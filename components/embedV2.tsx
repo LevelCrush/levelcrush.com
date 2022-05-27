@@ -142,6 +142,8 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
       sdkReady: false,
       playerReady: false,
     };
+
+    this.handleVideoReady = this.handleVideoReady.bind(this);
   }
 
   public componentDidMount() {
@@ -161,6 +163,18 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
     }
   }
 
+  public componentWillUnmount() {
+    if (this.embed) {
+      const TwitchSDK = (window as unknown as { [key: string]: unknown })[
+        "Twitch"
+      ] as TwitchInterface;
+      this.embed.removeEventListener(
+        TwitchSDK.Embed.VIDEO_READY,
+        this.handleVideoReady
+      );
+    }
+  }
+
   public createEmbedPlayer() {
     if (ENV.isBrowser) {
       const TwitchSDK = (window as unknown as { [key: string]: unknown })[
@@ -175,15 +189,10 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
         layout: "video",
       }) as TwitchEmbedInterface;
 
-      this.embed.addEventListener(TwitchSDK.Embed.VIDEO_READY, () => {
-        this.player = (
-          this.embed as TwitchEmbedInterface
-        ).getPlayer() as TwitchEmbedPlayerInterface;
-        console.log("Player ready", this.props.embed);
-        this.setState({
-          playerReady: true,
-        });
-      });
+      this.embed.addEventListener(
+        TwitchSDK.Embed.VIDEO_READY,
+        this.handleVideoReady
+      );
 
       this.createEmbedChat();
 
@@ -191,6 +200,16 @@ export class Embed extends React.Component<EmbedProperties, EmbedState> {
         sdkReady: true,
       });
     }
+  }
+
+  private handleVideoReady() {
+    this.player = (
+      this.embed as TwitchEmbedInterface
+    ).getPlayer() as TwitchEmbedPlayerInterface;
+    console.log("Player ready", this.props.embed);
+    this.setState({
+      playerReady: true,
+    });
   }
 
   public createEmbedChat() {

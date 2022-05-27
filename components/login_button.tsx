@@ -25,9 +25,13 @@ levelcrush_logout -> occurs when we have logged out of the application
 */
 
 export class LoginButton extends React.Component<LoginProperties, LoginState> {
-  public readonly loginBroadcastChannel: BroadcastChannel | undefined;
+  public loginBroadcastChannel: BroadcastChannel | undefined;
   private readonly version: string;
-
+  private _mounted = false;
+  private _sessionTimer: number | undefined | NodeJS.Timer = undefined;
+  private myRef;
+  private makingLoginCheck = false;
+  private makingApiLogin = false;
   public constructor(props: LoginProperties) {
     super(props);
 
@@ -38,8 +42,75 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       displayName: "",
     };
 
+    this.myRef = React.createRef<HTMLDivElement>();
+
+    this._mounted = false;
+    this.makingLoginCheck = false;
+    this.makingApiLogin = false;
+
     // specify version
     this.version = "1.1.0";
+
+    this.startLogin = this.startLogin.bind(this);
+    this.loginCheck = this.loginCheck.bind(this);
+    this.apiLogin = this.apiLogin.bind(this);
+    this.applicationLogin = this.applicationLogin.bind(this);
+    this.applicationLogout = this.applicationLogout.bind(this);
+    this.pingHosts = this.pingHosts.bind(this);
+    this.apiGetSession = this.apiGetSession.bind(this);
+
+    // event listeners
+    this.onLoginCheck = this.onLoginCheck.bind(this);
+    this.onLoginSuccess = this.onLoginSuccess.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+    this.onLoginSession = this.onLoginSession.bind(this);
+  }
+
+  public componentWillUnmount() {
+    if (this.props.justListen) {
+      document.removeEventListener(
+        "levelcrush_login_session",
+        this.onLoginSession as EventListener
+      );
+    }
+
+    clearInterval(this._sessionTimer as any);
+    this._mounted = false;
+    this.makingApiLogin = false;
+
+    // setup logout event handler
+    document.removeEventListener(
+      "levelcrush_logout",
+      this.onLogout as EventListener
+    );
+
+    // when we have successfully logged in update our state
+    document.removeEventListener(
+      "levelcrush_login_success",
+      this.onLoginSuccess as EventListener
+    );
+
+    // listen for any login checks and if we are no longer logged in,
+    document.removeEventListener(
+      "levelcrush_login_check",
+      this.onLoginCheck as EventListener
+    );
+
+    if (ENV.isBrowser) {
+      if (this.loginBroadcastChannel) {
+        this.loginBroadcastChannel.close();
+      }
+    }
+  }
+
+  // we have mounted , perform login check
+  public componentDidMount() {
+    if (this._mounted) {
+      console.log("Has already been mounted", this.myRef);
+      return;
+    }
+
+    this._mounted = true;
 
     if (ENV.isBrowser) {
       // setup broadcast channel
@@ -49,17 +120,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         this.loginBroadcastChannel = undefined;
       }
     }
-    this.startLogin = this.startLogin.bind(this);
-    this.loginCheck = this.loginCheck.bind(this);
-    this.apiLogin = this.apiLogin.bind(this);
-    this.applicationLogin = this.applicationLogin.bind(this);
-    this.applicationLogout = this.applicationLogout.bind(this);
-    this.pingHosts = this.pingHosts.bind(this);
-    this.apiGetSession = this.apiGetSession.bind(this);
-  }
 
-  // we have mounted , perform login check
-  public componentDidMount() {
     // setup broadcast channel
     if (this.loginBroadcastChannel && !this.props.justListen) {
       this.loginBroadcastChannel.addEventListener("message", (ev) => {
@@ -72,9 +133,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         switch (messageData.command) {
           case "logout":
             console.log("Logout command received. Updating UI");
-            document.dispatchEvent(
-              new CustomEvent("levelcrush_logout", { bubbles: true })
-            );
+            document.dispatchEvent(new CustomEvent("levelcrush_logout"));
             break;
           case "login":
             console.log("Login command received. Performing check in tab");
@@ -90,94 +149,94 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     }
 
     // setup logout event handler
-    document.addEventListener("levelcrush_logout", () => {
-      console.log("Logout request detected. Updating UI");
-      this.setState({
-        requesting: false,
-        setup: false,
-        loggedIn: false,
-      });
-    });
+    document.addEventListener("levelcrush_logout", this.onLogout, true);
 
     // when we have successfully logged in update our state
-    document.addEventListener("levelcrush_login_success", ((
-      ev: CustomEvent
-    ) => {
-      console.log("Log in detected. Updating UI");
-      this.setState({
-        loggedIn: true,
-        requesting: this.props.justListen ? false : true,
-        setup: false,
-      });
-      // any successful login will trigger us to get the current session
-      if (!this.props.justListen) {
-        this.apiGetSession();
-      }
-    }) as EventListener);
+    document.addEventListener("levelcrush_login_success", this.onLoginSuccess);
 
     // listen for any login checks and if we are no longer logged in,
-    document.addEventListener("levelcrush_login_check", ((ev: CustomEvent) => {
-      if (!this.props.justListen) {
-        if (ev.detail["loggedIn"] !== true && this.state.loggedIn === true) {
-          document.dispatchEvent(
-            new CustomEvent("levelcrush_logout", { bubbles: true })
-          );
-        } else if (
-          ev.detail["loggedIn"] === true &&
-          this.state.loggedIn === false
-        ) {
-          document.dispatchEvent(
-            new CustomEvent("levelcrush_login_success", { bubbles: true })
-          );
-        }
-      } else {
-        this.setState({
-          setup: false,
-        });
-      }
-    }) as EventListener);
+    document.addEventListener(
+      "levelcrush_login_check",
+      this.onLoginCheck as EventListener
+    );
 
     // check for login every 2 minutes if possible
     if (!this.props.justListen) {
-      setInterval(() => {
+      this._sessionTimer = setInterval(() => {
+        console.log("Interval based Login Check", this.myRef);
         this.loginCheck();
       }, 120000);
 
-      // setup timers and run check to login if possible
-      setInterval(() => {
-        // this.pingHosts(); // explicit ping request (it is currently now redundent)
-        this.apiGetSession();
-      }, 60000); // ping every 60 seconds and grab user session as well
-
       // we want to run through our entire routine, so dont just only check for a login
       // perform the entire login routine if need be automatically
+      console.log("Mounted: Starting login check", this.myRef);
       this.loginCheck(false);
 
       // let the document know we have initialized fully and run any setups
-      document.dispatchEvent(
-        new CustomEvent("levelcrush_login_init", { bubbles: true })
-      );
+      document.dispatchEvent(new CustomEvent("levelcrush_login_init"));
     }
 
     if (this.props.justListen) {
-      document.addEventListener("levelcrush_login_session", ((
-        ev: CustomEvent
-      ) => {
-        //    const displayName = ev.
-        this.setState({
-          displayName: ev.detail["displayName"] as string,
-          setup: false,
-        });
-      }) as EventListener);
+      document.addEventListener(
+        "levelcrush_login_session",
+        this.onLoginSession as EventListener
+      );
     }
+  }
+
+  public onLoginSession(ev: CustomEvent) {
+    this.setState({
+      displayName: ev.detail["displayName"] as string,
+      setup: false,
+    });
+  }
+  public onLoginSuccess() {
+    this.setState({
+      loggedIn: true,
+      requesting: this.props.justListen ? false : true,
+      setup: false,
+    });
+    // any successful login will trigger us to get the current session
+    if (!this.props.justListen) {
+      this.apiGetSession();
+    }
+  }
+  public onLoginCheck(ev: CustomEvent) {
+    if (!this.props.justListen) {
+      if (ev.detail["loggedIn"] !== true && this.state.loggedIn === true) {
+        document.dispatchEvent(new CustomEvent("levelcrush_logout"));
+      } else if (
+        ev.detail["loggedIn"] === true &&
+        this.state.loggedIn === false
+      ) {
+        document.dispatchEvent(new CustomEvent("levelcrush_login_success"));
+      }
+    } else {
+      this.setState({
+        setup: false,
+      });
+    }
+  }
+
+  public onLogout() {
+    console.log("Logout request detected. Updating UI");
+    this.setState({
+      requesting: false,
+      setup: false,
+      loggedIn: false,
+    });
   }
 
   public loginCheck(onlyCheck = true, broadcastCheck = false) {
     if (this.props.justListen) {
       return;
     }
+    if (this.makingLoginCheck) {
+      return;
+    }
+    this.makingLoginCheck = true;
     // check login.levelcrush first
-    console.log("Checking if logged into ", ENV.hosts.login);
+    console.log("Checking if logged into ", ENV.hosts.login, this.myRef);
     this.setState({
       requesting: true,
     });
@@ -197,11 +256,13 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       };
 
       //   console.log(sessionResponse);
+
       if (onlyCheck === false) {
         if (
           sessionResponse.success &&
           sessionResponse.response.user.length > 0
         ) {
+          console.log("Now running API Login");
           this.apiLogin(
             sessionResponse.response.user,
             sessionResponse.response.application,
@@ -225,7 +286,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
       document.dispatchEvent(
         new CustomEvent("levelcrush_login_check", {
-          bubbles: true,
           detail: {
             loggedIn:
               sessionResponse.success &&
@@ -241,6 +301,10 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     if (this.props.justListen) {
       return;
     }
+    if (this.makingApiLogin) {
+      return;
+    }
+    this.makingApiLogin = true;
     // todo connect and login with api
     console.log("Attempting to finish login at ", ENV.hosts.api);
     Axios({
@@ -300,7 +364,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     application: string,
     broadcastCheck = false
   ) {
+    console.log(this.props, this.myRef.current);
     if (this.props.justListen) {
+      console.log("Just listening. Ignoring");
       return;
     }
     console.log("Using API to login with application");
@@ -342,9 +408,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             });
           }
         }
+
         document.dispatchEvent(
           new CustomEvent("levelcrush_login_success", {
-            bubbles: true,
             detail: { xhr: serverResponse },
           })
         );
@@ -387,9 +453,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
     console.log("Sending logout request");
     Promise.all([apiLogoutRequest, loginLogoutRequest]).then(() => {
-      document.dispatchEvent(
-        new CustomEvent("levelcrush_logout", { bubbles: true })
-      );
+      document.dispatchEvent(new CustomEvent("levelcrush_logout"));
     });
 
     // broadcast
@@ -414,9 +478,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
     console.log("Pinging host");
     Promise.all([apiRequest, loginRequest]).then(() => {
-      document.dispatchEvent(
-        new CustomEvent("levelcrush_login_ping", { bubbles: true })
-      );
+      document.dispatchEvent(new CustomEvent("levelcrush_login_ping"));
     });
   }
 
@@ -459,7 +521,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         () => {
           document.dispatchEvent(
             new CustomEvent("levelcrush_login_session", {
-              bubbles: true,
               detail: { displayName: this.state.displayName },
             })
           );
@@ -498,6 +559,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
           data-app="login"
           data-logged-in={this.state.loggedIn ? "1" : "0"}
           data-display={this.props.display}
+          ref={this.myRef}
         >
           {completedSetup}
         </div>

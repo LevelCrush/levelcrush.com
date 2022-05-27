@@ -14,6 +14,7 @@ export interface ThemeProps {
 
 export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
   private firstLoad: boolean;
+  private mounted: boolean = false;
   public constructor(props: Record<string, never>) {
     super(props);
 
@@ -24,15 +25,16 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
 
     this.themeCheck = this.themeCheck.bind(this);
     this.themeReset = this.themeReset.bind(this);
+
+    this.onDarkMode = this.onDarkMode.bind(this);
+    this.onLightMode = this.onLightMode.bind(this);
   }
 
   public themeSetLightMode() {
     // Whenever the user explicitly chooses light mode
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
-    document.dispatchEvent(
-      new CustomEvent("theme_lightmode", { bubbles: true })
-    );
+    document.dispatchEvent(new CustomEvent("theme_lightmode"));
   }
 
   public themeSetDarkMode() {
@@ -40,9 +42,7 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
     document.documentElement.classList.add("dark");
     localStorage.theme = "dark";
     console.log("Dark Mode enabled");
-    document.dispatchEvent(
-      new CustomEvent("theme_darkmode", { bubbles: true })
-    );
+    document.dispatchEvent(new CustomEvent("theme_darkmode"));
   }
 
   public themeReset() {
@@ -73,7 +73,18 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
     }
   }
 
+  public componentWillUnmount() {
+    this.mounted = false;
+    this.firstLoad = false;
+    document.removeEventListener("theme_darkmode", this.onDarkMode);
+    document.removeEventListener("theme_lightmode", this.onLightMode);
+  }
+
   public componentDidMount() {
+    if (this.mounted) {
+      return;
+    }
+    this.mounted = true;
     // todo
     this.themeCheck();
 
@@ -87,16 +98,19 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
       });
       */
 
-    document.addEventListener("theme_darkmode", () => {
-      this.setState({
-        mode: "dark",
-      });
-    });
+    document.addEventListener("theme_darkmode", this.onDarkMode);
+    document.addEventListener("theme_lightmode", this.onLightMode);
+  }
 
-    document.addEventListener("theme_lightmode", () => {
-      this.setState({
-        mode: "light",
-      });
+  private onDarkMode() {
+    this.setState({
+      mode: "dark",
+    });
+  }
+
+  private onLightMode() {
+    this.setState({
+      mode: "light",
     });
   }
 

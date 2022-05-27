@@ -23,6 +23,10 @@ export const Routes = [
     name: "Guides",
     children: [
       {
+        url: "/guides",
+        name: "Guides",
+      },
+      {
         url: "/guides/destiny2/votd",
         name: "Destiny 2 - VOTD",
       },
@@ -34,6 +38,10 @@ export const Routes = [
     loginOnly: true,
     pullMenuOnly: true,
     children: [
+      {
+        url: "/members",
+        name: "Dashboard",
+      },
       {
         url: "/members/profile",
         name: "Profile",
