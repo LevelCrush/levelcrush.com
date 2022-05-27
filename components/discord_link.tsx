@@ -9,7 +9,9 @@ export interface DiscordLinkProps {
 export const DiscordLink = (
   props: React.PropsWithChildren<DiscordLinkProps>
 ) => (
-  <Link href="https://discord.gg/levelcrush">
+  <Link
+    /* href="https://discord.gg/levelcrush" */ href="https://discord.gg/x5RmrND"
+  >
     <a
       target="_blank"
       className={
