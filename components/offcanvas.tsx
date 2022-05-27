@@ -207,7 +207,7 @@ export class OffCanvas extends React.Component<
                       {(routeItem.children || []).map(
                         (subChild, subChildIndex) => (
                           <li
-                            className="text-black dark:text-white border-b-[1px] last:border-b-0 first:border-t-[1px] border-black dark:border-cyan-500 border-solid"
+                            className="text-black dark:bg-slate-900 bg-yellow-100  dark:text-white border-b-[1px] last:border-b-0 first:border-t-[1px] border-black dark:border-cyan-500 border-solid"
                             key={
                               "route_item" +
                               routeItemIndex +
@@ -244,7 +244,7 @@ export class OffCanvas extends React.Component<
           {this.props.children}
         </div>
         <div
-          className="offcanvas-background hidden transition-all duration-30 h-screen w-screen fixed opacity-0 top-0 bg-black offcanvas-opened:opacity-75 offcanvas-opened:block z-[99998]"
+          className="offcanvas-background hidden transition-all duration-300 h-screen w-screen fixed opacity-0 top-0 bg-black offcanvas-opened:opacity-75 offcanvas-opened:block z-[99998]"
           onClick={(ev) => {
             document.dispatchEvent(new CustomEvent("offcanvas_hide"));
           }}
