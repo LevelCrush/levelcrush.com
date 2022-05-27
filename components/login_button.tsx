@@ -34,7 +34,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     this.state = {
       loggedIn: false,
       setup: true,
-      requesting: true,
+      requesting: props.justListen ? false : true,
       displayName: "",
     };
 
@@ -106,7 +106,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       console.log("Log in detected. Updating UI");
       this.setState({
         loggedIn: true,
-        requesting: true,
+        requesting: this.props.justListen ? false : true,
         setup: false,
       });
       // any successful login will trigger us to get the current session
@@ -359,10 +359,8 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public startLogin() {
-    if (this.props.justListen) {
-      return;
-    }
     // start login procedure
+    console.log("Storing current page");
     Axios({
       url:
         ENV.hosts.login +
@@ -379,9 +377,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   }
 
   public applicationLogout() {
-    if (this.props.justListen) {
-      return;
-    }
     // logout of the api and login.levelcrush
     const apiLogoutRequest = Axios.get(ENV.hosts.api + "/user/logout", {
       withCredentials: true,

@@ -22,6 +22,8 @@ module.exports = {
     plugin(function({ addVariant }) {
         addVariant('offcanvas-opened','.offcanvas[data-showing="1"] &')
         addVariant('offcanvas-closed','.offcanvas[data-showing="0"] &')
-    })
+        addVariant('is-member','.offcanvas[data-is-member="1"] &');
+        addVariant('is-not-member','.offcanvas[data-is-member="0"] &');
+    }),
   ],
 }

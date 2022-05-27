@@ -28,7 +28,8 @@
     "react-dom": "18.1.0",
     "react-gtm-module": "^2.0.11",
     "smoothscroll-polyfill": "^0.4.4",
-    "string-strip-html": "^9.1.12"
+    "string-strip-html": "^9.1.12",
+    "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",

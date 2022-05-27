@@ -1,16 +1,18 @@
 export interface RouteItem {
   url: string;
   name: string;
-  offcanvasMenu?: boolean;
+  pullMenuOnly?: boolean;
+  loginOnly?: boolean;
   target?: "_blank" | "_self";
   children?: RouteItem[];
 }
 
+/** These are the standard routes, intended for top level site navigation  */
 export const Routes = [
   {
     url: "/",
     name: "Home",
-    offcanvasMenu: true,
+    pullMenuOnly: true,
   },
   {
     url: "/lfg",
@@ -23,6 +25,17 @@ export const Routes = [
       {
         url: "/guides/destiny2/votd",
         name: "Destiny 2 - VOTD",
+      },
+    ],
+  },
+  {
+    url: "/members",
+    name: "Member Dashboard",
+    loginOnly: true,
+    children: [
+      {
+        url: "/members/profile",
+        name: "Profile",
       },
     ],
   },

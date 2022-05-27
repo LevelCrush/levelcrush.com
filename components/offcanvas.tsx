@@ -33,6 +33,7 @@ export interface OffCanvasProps {
 
 export interface OffCanvasState {
   showing: boolean;
+  isMember: boolean;
   routes: RouteItem[];
 }
 
@@ -49,6 +50,7 @@ export class OffCanvas extends React.Component<
     this.state = {
       showing: false,
       routes: this.props.routes || Routes,
+      isMember: false,
     };
   }
 
@@ -76,17 +78,34 @@ export class OffCanvas extends React.Component<
         showing: false,
       });
     });
+
+    // we have logged in as  a member
+    document.addEventListener("levelcrush_login_success", ((
+      ev: CustomEvent
+    ) => {
+      this.setState({
+        isMember: true,
+      });
+    }) as EventListener);
+
+    // we have logged out.
+    document.addEventListener("levelcrush_logout", ((ev: CustomEvent) => {
+      this.setState({
+        isMember: false,
+      });
+    }) as EventListener);
   }
 
   public render() {
     return (
       <div
-        className="offcanvas relative top-0"
+        className="offcanvas relative top-0 min-h-screen h-auto"
         data-showing={this.state.showing ? "1" : "0"}
+        data-is-member={this.state.isMember ? "1" : "0"}
       >
         <nav
           data-offcanvas="main"
-          className="offcanvas-menu  bg-gradient-to-b from-white  to-slate-300 dark:bg-slate-900 dark:from-slate-800 dark:to-slate-900   shadow-[0px_1rem_1rem_2px_rgba(0,0,0,0.7)] border-r-cyan-400 border-r-2 border-r-solid bg-black text-black dark:text-white fixed z-[99999] top-0 -translate-x-full offcanvas-opened:-translate-x-0 w-[20rem]  transition-all duration-300 h-screen overflow-auto"
+          className="offcanvas-menu bg-gradient-to-b from-white  to-slate-300 dark:bg-slate-900 dark:from-slate-800 dark:to-slate-900   shadow-[0px_1rem_1rem_2px_rgba(0,0,0,0.7)] border-r-cyan-400 border-r-2 border-r-solid bg-black text-black dark:text-white fixed z-[99999] top-0 -translate-x-full offcanvas-opened:-translate-x-0 w-[20rem]  transition-all duration-300 h-screen overflow-auto"
         >
           <H1
             className="align-middle text-black dark:text-yellow-400 text-center text-4xl font-headline font-bold uppercase tracking-widest my-4 transition duration-300"
@@ -103,55 +122,60 @@ export class OffCanvas extends React.Component<
             </div>
           </H1>
           <ul className="text-white font-bold">
-            {(this.state.routes || []).map((routeItem, routeItemIndex) => (
-              <li
-                className="text-black dark:text-white border-b-[1px] first:border-t-[1px] border-solid border-black dark:border-cyan-500"
-                key={"routeitem_" + routeItemIndex + "_" + routeItem.url}
-              >
-                <Hyperlink
-                  className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
-                  href={routeItem.url}
+            {(this.state.routes || []).map((routeItem, routeItemIndex) => {
+              if (routeItem.loginOnly && this.state.isMember === false) {
+                return <></>;
+              }
+              return (
+                <li
+                  className="text-black dark:text-white border-b-[1px] first:border-t-[1px] border-solid border-black dark:border-cyan-500"
+                  key={"routeitem_" + routeItemIndex + "_" + routeItem.url}
                 >
-                  {routeItem.name}
-                </Hyperlink>
-                <nav className="offcanvas-sub-menu">
-                  <ul className="text-white font-bold">
-                    {(routeItem.children || []).map(
-                      (subChild, subChildIndex) => (
-                        <li
-                          className="text-black dark:text-white border-b-[1px] last:border-b-0 first:border-t-[1px] border-black dark:border-cyan-500 border-solid"
-                          key={
-                            "route_item" +
-                            routeItemIndex +
-                            "_" +
-                            routeItem.url +
-                            "_sub_" +
-                            subChild.url +
-                            "_" +
-                            subChildIndex
-                          }
-                        >
-                          <Hyperlink
-                            className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
-                            href={subChild.url}
+                  <Hyperlink
+                    className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
+                    href={routeItem.url}
+                  >
+                    {routeItem.name}
+                  </Hyperlink>
+                  <nav className="offcanvas-sub-menu">
+                    <ul className="text-white font-bold">
+                      {(routeItem.children || []).map(
+                        (subChild, subChildIndex) => (
+                          <li
+                            className="text-black dark:text-white border-b-[1px] last:border-b-0 first:border-t-[1px] border-black dark:border-cyan-500 border-solid"
+                            key={
+                              "route_item" +
+                              routeItemIndex +
+                              "_" +
+                              routeItem.url +
+                              "_sub_" +
+                              subChild.url +
+                              "_" +
+                              subChildIndex
+                            }
                           >
-                            <span className="block border-l-2  border-solid border-black dark:border-cyan-500 pl-4">
-                              {subChild.name}
-                            </span>
-                          </Hyperlink>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </nav>
-              </li>
-            ))}
+                            <Hyperlink
+                              className="p-4 block hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 transition duration-300"
+                              href={subChild.url}
+                            >
+                              <span className="block border-l-2  border-solid border-black dark:border-cyan-500 pl-4">
+                                {subChild.name}
+                              </span>
+                            </Hyperlink>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </nav>
+                </li>
+              );
+            })}
           </ul>
           <div className="w-full h-auto p-4">
             <LoginButton></LoginButton>
           </div>
         </nav>
-        <div className="offcanvas-content block transition-all duration-300">
+        <div className="offcanvas-content min-h-screen h-screen  block transition-all duration-300">
           {this.props.children}
         </div>
         <div

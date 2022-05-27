@@ -206,5 +206,25 @@
     word-wrap: break-word;
     word-break: break-all;
   }
+
+
+  /** off canvas enhancement */
+  .offcanvas .offcanvas-content {
+    @apply flex;
+    @apply flex-col;
+  }
+
+  .offcanvas .offcanvas-content header {
+     @apply w-full;
+     @apply basis-auto;
+     @apply flex-shrink-0;
+     @apply flex-grow-0;
+  }
+
+  .offcanvas .offcanvas-content main {
+    @apply w-full;
+    @apply flex-auto;
+  }
+
 }
 
