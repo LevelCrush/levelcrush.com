@@ -76,7 +76,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
     clearInterval(this._sessionTimer as any);
     this._mounted = false;
-    this.makingApiLogin = false;
 
     // setup logout event handler
     document.removeEventListener(
@@ -101,6 +100,9 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         this.loginBroadcastChannel.close();
       }
     }
+
+    this.makingApiLogin = false;
+    this.makingLoginCheck = false;
   }
 
   // we have mounted , perform login check
@@ -139,6 +141,8 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             console.log("Login command received. Performing check in tab");
             // we need to run the whole routine of check, saying false here means we will trigger the entire routine and specifiying true as the second parameter signals that this is a broadcast message
             // the second parameter is important to avoid recursion in updates
+            this.makingApiLogin = false;
+            this.makingLoginCheck = false;
             this.loginCheck(false, true);
             break;
           default:
@@ -149,7 +153,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     }
 
     // setup logout event handler
-    document.addEventListener("levelcrush_logout", this.onLogout, true);
+    document.addEventListener("levelcrush_logout", this.onLogout);
 
     // when we have successfully logged in update our state
     document.addEventListener("levelcrush_login_success", this.onLoginSuccess);
@@ -164,6 +168,8 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     if (!this.props.justListen) {
       this._sessionTimer = setInterval(() => {
         console.log("Interval based Login Check", this.myRef);
+        this.makingApiLogin = false;
+        this.makingLoginCheck = false;
         this.loginCheck();
       }, 120000);
 
