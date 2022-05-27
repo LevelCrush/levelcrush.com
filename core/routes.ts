@@ -32,6 +32,7 @@ export const Routes = [
     url: "/members",
     name: "Member Dashboard",
     loginOnly: true,
+    pullMenuOnly: true,
     children: [
       {
         url: "/members/profile",
