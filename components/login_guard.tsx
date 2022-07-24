@@ -7,10 +7,14 @@ import LoginButton from "./login_button";
 
 export interface LoginGuardProperties {
   permissionLevel?: string;
+  onLogin?: (user: { userToken: string; userSecretToken: string }) => void;
+  onLogout?: () => void;
 }
 
 export interface LoginGuardState {
   loggedIn: boolean;
+  userToken: string;
+  userSecretToken: string;
 }
 
 export class LoginGuard extends React.Component<
@@ -22,6 +26,8 @@ export class LoginGuard extends React.Component<
     super(props);
     this.state = {
       loggedIn: false,
+      userToken: "",
+      userSecretToken: "",
     };
     this._mounted = false;
 
@@ -33,7 +39,7 @@ export class LoginGuard extends React.Component<
     // append login listeners
     document.removeEventListener(
       "levelcrush_login_success",
-      this.onMemberLogin
+      this.onMemberLogin as EventListener
     );
 
     this._mounted = false;
@@ -49,24 +55,60 @@ export class LoginGuard extends React.Component<
     this._mounted = true;
 
     // append login listeners
-    document.addEventListener("levelcrush_login_success", this.onMemberLogin);
+    document.addEventListener(
+      "levelcrush_login_success",
+      this.onMemberLogin as EventListener
+    );
 
     // append login listeners
     document.addEventListener("levelcrush_logout", this.onMemberLogout);
   }
 
-  public onMemberLogin() {
-    console.log("Guard detected login");
-    this.setState({
-      loggedIn: true,
-    });
+  public onMemberLogin(ev: CustomEvent) {
+    if (ev.detail) {
+      const xhr = ev.detail["xhr"] as {
+        success: boolean;
+        response: {
+          firstLoad: boolean;
+          timestamp: number;
+          token: string;
+          user: string;
+          valid: boolean;
+        };
+        errors: unknown[];
+      };
+      this.setState(
+        {
+          loggedIn: true,
+          userToken: xhr.response.user,
+          userSecretToken: xhr.response.token,
+        },
+        () => {
+          if (this.props.onLogin) {
+            this.props.onLogin({
+              userToken: this.state.userToken,
+              userSecretToken: this.state.userSecretToken,
+            });
+          }
+        }
+      );
+    }
   }
 
   public onMemberLogout() {
     console.log("Guard detected logout");
-    this.setState({
-      loggedIn: false,
-    });
+    this.setState(
+      {
+        loggedIn: false,
+        userToken: "",
+        userSecretToken: "",
+      },
+      () => {
+        if (this.props.onLogout) {
+          this.props.onLogout();
+        }
+      }
+    );
   }
 
   public renderNeedsLogin() {
