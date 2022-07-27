@@ -14,7 +14,8 @@ import moment from "moment";
 import GoogleDocDisplay from "../../../components/google_doc_display";
 import OffCanvas from "../../../components/offcanvas";
 
-export async function getServerSideProps() {
+
+export async function getStaticProps() {
   console.log("Grabbing Google Doc", moment().unix());
   const googleDoc = new GoogleDoc(
     process.env["GOOGLEDOC_DESTINY2_VOTD"] as string,

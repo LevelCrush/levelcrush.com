@@ -5,4 +5,5 @@ module.exports = {
     domains: ['assets.levelcrush.com','http.cat']
   },
   optimizeFonts: false,
+  experimental: { images: { allowFutureImage: true } }
 }
