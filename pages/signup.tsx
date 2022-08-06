@@ -137,6 +137,13 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
               label="Time Availability"
               className="flex justify-between flex-wrap"
             >
+              <p className="w-full flex-initial my-4">
+                <span>Raid Takes place at 10:00 AM PST on August 26th </span>
+                <br />
+                <span>
+                  You have chosen: <span>X</span> on <span>Y</span>
+                </span>
+              </p>
               <FormField
                 className="flex-initial w-full lg:w-auto"
                 type="checkbox"
