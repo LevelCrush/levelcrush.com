@@ -15,6 +15,10 @@ export const Routes = [
     pullMenuOnly: true,
   },
   {
+    url: "/signup",
+    name: "Event Signup!",
+  },
+  {
     url: "/lfg",
     name: "Looking for Group",
   },
