@@ -13,6 +13,11 @@ import {
 import Hero from "../components/hero";
 import OffCanvas from "../components/offcanvas";
 import { SiteHeader } from "../components/site_header";
+import googleSheets from '../core/googleSheet.mjs'
+const {Sheets} = googleSheets;
+const sheets = new Sheets();
+
+
 
 const AVAILABILITY_TIMES = [] as FormFieldPropsOption[];
 let hour_x = 0;
@@ -119,6 +124,9 @@ public updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 }
 
+public updateData = () => {
+  sheets.start([this.state.displayName,this.state.bungieUsername,this.state.startTime,this.state.endTime,"",this.state.timezone,"","",this.state.teamates,Date.now().toString()])
+}
 
   public render() {
     return (
@@ -151,7 +159,7 @@ public updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
               nisl massa, rutrum in enim at, tempor malesuada quam.
             </p>
           </Container>
-          <Form >
+          <Form onSubmit={this.updateData}>
             <FormFieldGroup label="Usernames">
               <FormField
                 label="Discord Username"
