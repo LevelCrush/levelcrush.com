@@ -1,3 +1,4 @@
+import { createWriteStream } from "fs";
 import moment from "moment-timezone";
 import Head from "next/head";
 import React from "react";
@@ -32,6 +33,11 @@ for (let i = 0; i < 24; i++) {
 export interface SignupPageState {
   displayName: string;
   timezone: string;
+  bungieUsername: string;
+  startTime:string;
+  endTime:string;
+  notes:string;
+  teamates:string;
 }
 
 export class SignupPage extends React.Component<{}, SignupPageState> {
@@ -42,6 +48,14 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
     this.state = {
       displayName: "",
       timezone: moment.tz.guess(),
+      bungieUsername: "",
+      startTime:"",
+      endTime:"",
+      notes:"",
+      teamates:"",
+
+      
+
     };
     this.onMemberLogin = this.onMemberLogin.bind(this);
   }
@@ -78,6 +92,33 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       this.onMemberLogin as EventListener
     );
   }
+public updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  switch(event.target.id){
+  case "bungie":
+    this.setState({bungieUsername:event.target.value});
+    break;
+  case "discord":
+    this.setState({displayName:event.target.value});
+    break;
+  case "avail_start":
+    this.setState({startTime:event.target.value});
+    break;
+  case "avail_end":
+    this.setState({endTime:event.target.value});
+    break;
+  case "timezone":
+    this.setState({timezone:event.target.value});
+    break;
+  case "preferred_teammates":
+    this.setState({teamates:event.target.value});
+    break;
+  case "notes":
+    this.setState({notes:event.target.value})
+ }
+
+}
+
 
   public render() {
     return (
@@ -110,7 +151,7 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
               nisl massa, rutrum in enim at, tempor malesuada quam.
             </p>
           </Container>
-          <Form>
+          <Form >
             <FormFieldGroup label="Usernames">
               <FormField
                 label="Discord Username"
@@ -130,6 +171,12 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 id="bungie"
                 type="text"
                 placeholder="Guaridan#XXXX"
+                onChange={e => this.updateState}
+                value={
+                  this.state.bungieUsername != ""
+                    ? this.state.bungieUsername
+                    : undefined
+                }
               />
             </FormFieldGroup>
             <hr />
@@ -157,7 +204,12 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 id="avail_start"
                 name="avail_start"
                 label="Start"
-                value="10:00 am"
+                
+                value={
+                  this.state.startTime != ""
+                    ? this.state.startTime
+                    : "10:00 am"
+                }
                 options={AVAILABILITY_TIMES}
               />
               <FormField
@@ -165,7 +217,12 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 type="select"
                 id="avail_end"
                 name="avail_end"
-                value="11:00 pm"
+                
+                value={
+                  this.state.endTime != ""
+                    ? this.state.endTime
+                    : "11:00 pm"
+                }
                 label="End"
                 options={AVAILABILITY_TIMES}
               />
@@ -175,12 +232,17 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 id="timezone"
                 name="timezone"
                 label="Time Zone"
+                value={
+                  this.state.timezone != ""
+                    ? this.state.timezone
+                    : undefined
+                }
                 options={moment.tz
                   .names()
                   .map((tz, index): FormFieldPropsOption => {
                     return { value: tz, text: tz };
                   })}
-                value={this.state.timezone}
+               
               />
             </FormFieldGroup>
             <hr />
@@ -192,6 +254,11 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 placeholder="Please seperate each team mate with a comma or line..."
                 label="Preferred Teammates (Discord Usernames)"
                 textarea={{ rows: 6 }}
+                value={
+                  this.state.teamates != ""
+                    ? this.state.teamates
+                    : undefined
+                }
               />
               <FormField
                 type="textarea"
@@ -200,6 +267,11 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 placeholder="Any additional notes?"
                 textarea={{ rows: 6 }}
                 label="Notes"
+                value={
+                  this.state.notes != ""
+                    ? this.state.notes
+                    : undefined
+                }
               />
             </FormFieldGroup>
             <hr />
