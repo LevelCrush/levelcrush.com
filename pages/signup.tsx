@@ -13,6 +13,10 @@ import Hero from "../components/hero";
 import OffCanvas from "../components/offcanvas";
 import { SiteHeader } from "../components/site_header";
 
+const EVENT_TIME = "2022-08-06 10:00 AM PST";
+const EVENT_MOMENT = moment.tz(EVENT_TIME, 'YYYY-MM-DD hh:mm')
+console.log(moment.tz(EVENT_TIME).toString(), "Event Time");
+
 const AVAILABILITY_TIMES = [] as FormFieldPropsOption[];
 let hour_x = 0;
 for (let i = 0; i < 24; i++) {
@@ -77,6 +81,10 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       "levelcrush_login_session",
       this.onMemberLogin as EventListener
     );
+
+    this.setState({
+      timezone: moment.tz.guess(),
+    });
   }
 
   public render() {
