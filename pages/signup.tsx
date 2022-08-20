@@ -13,14 +13,9 @@ import {
 import Hero from "../components/hero";
 import OffCanvas from "../components/offcanvas";
 import { SiteHeader } from "../components/site_header";
-import googleSheets from '../core/googleSheet.mjs'
-const {Sheets} = googleSheets;
-const sheets = new Sheets();
-
-
 
 const EVENT_TIME = "2022-08-06 10:00 AM PST";
-const EVENT_MOMENT = moment.tz(EVENT_TIME, 'YYYY-MM-DD hh:mm')
+const EVENT_MOMENT = moment.tz(EVENT_TIME, "YYYY-MM-DD hh:mm");
 console.log(moment.tz(EVENT_TIME).toString(), "Event Time");
 
 const AVAILABILITY_TIMES = [] as FormFieldPropsOption[];
@@ -43,10 +38,10 @@ export interface SignupPageState {
   displayName: string;
   timezone: string;
   bungieUsername: string;
-  startTime:string;
-  endTime:string;
-  notes:string;
-  teamates:string;
+  startTime: string;
+  endTime: string;
+  notes: string;
+  teamates: string;
 }
 
 export class SignupPage extends React.Component<{}, SignupPageState> {
@@ -58,13 +53,10 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       displayName: "",
       timezone: moment.tz.guess(),
       bungieUsername: "",
-      startTime:"",
-      endTime:"",
-      notes:"",
-      teamates:"",
-
-      
-
+      startTime: "",
+      endTime: "",
+      notes: "",
+      teamates: "",
     };
     this.onMemberLogin = this.onMemberLogin.bind(this);
   }
@@ -105,36 +97,32 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       timezone: moment.tz.guess(),
     });
   }
-public updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
+  public updateState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    switch (event.target.id) {
+      case "bungie":
+        this.setState({ bungieUsername: event.target.value });
+        break;
+      case "discord":
+        this.setState({ displayName: event.target.value });
+        break;
+      case "avail_start":
+        this.setState({ startTime: event.target.value });
+        break;
+      case "avail_end":
+        this.setState({ endTime: event.target.value });
+        break;
+      case "timezone":
+        this.setState({ timezone: event.target.value });
+        break;
+      case "preferred_teammates":
+        this.setState({ teamates: event.target.value });
+        break;
+      case "notes":
+        this.setState({ notes: event.target.value });
+    }
+  };
 
-  switch(event.target.id){
-  case "bungie":
-    this.setState({bungieUsername:event.target.value});
-    break;
-  case "discord":
-    this.setState({displayName:event.target.value});
-    break;
-  case "avail_start":
-    this.setState({startTime:event.target.value});
-    break;
-  case "avail_end":
-    this.setState({endTime:event.target.value});
-    break;
-  case "timezone":
-    this.setState({timezone:event.target.value});
-    break;
-  case "preferred_teammates":
-    this.setState({teamates:event.target.value});
-    break;
-  case "notes":
-    this.setState({notes:event.target.value})
- }
-
-}
-
-public updateData = () => {
-  sheets.start([this.state.displayName,this.state.bungieUsername,this.state.startTime,this.state.endTime,"",this.state.timezone,"","",this.state.teamates,Date.now().toString()])
-}
+  public updateData = () => {};
 
   public render() {
     return (
@@ -187,7 +175,7 @@ public updateData = () => {
                 id="bungie"
                 type="text"
                 placeholder="Guaridan#XXXX"
-                onChange={e => this.updateState}
+                onChange={(e) => this.updateState}
                 value={
                   this.state.bungieUsername != ""
                     ? this.state.bungieUsername
@@ -220,11 +208,8 @@ public updateData = () => {
                 id="avail_start"
                 name="avail_start"
                 label="Start"
-                
                 value={
-                  this.state.startTime != ""
-                    ? this.state.startTime
-                    : "10:00 am"
+                  this.state.startTime != "" ? this.state.startTime : "10:00 am"
                 }
                 options={AVAILABILITY_TIMES}
               />
@@ -233,11 +218,8 @@ public updateData = () => {
                 type="select"
                 id="avail_end"
                 name="avail_end"
-                
                 value={
-                  this.state.endTime != ""
-                    ? this.state.endTime
-                    : "11:00 pm"
+                  this.state.endTime != "" ? this.state.endTime : "11:00 pm"
                 }
                 label="End"
                 options={AVAILABILITY_TIMES}
@@ -249,16 +231,13 @@ public updateData = () => {
                 name="timezone"
                 label="Time Zone"
                 value={
-                  this.state.timezone != ""
-                    ? this.state.timezone
-                    : undefined
+                  this.state.timezone != "" ? this.state.timezone : undefined
                 }
                 options={moment.tz
                   .names()
                   .map((tz, index): FormFieldPropsOption => {
                     return { value: tz, text: tz };
                   })}
-               
               />
             </FormFieldGroup>
             <hr />
@@ -271,9 +250,7 @@ public updateData = () => {
                 label="Preferred Teammates (Discord Usernames)"
                 textarea={{ rows: 6 }}
                 value={
-                  this.state.teamates != ""
-                    ? this.state.teamates
-                    : undefined
+                  this.state.teamates != "" ? this.state.teamates : undefined
                 }
               />
               <FormField
@@ -283,11 +260,7 @@ public updateData = () => {
                 placeholder="Any additional notes?"
                 textarea={{ rows: 6 }}
                 label="Notes"
-                value={
-                  this.state.notes != ""
-                    ? this.state.notes
-                    : undefined
-                }
+                value={this.state.notes != "" ? this.state.notes : undefined}
               />
             </FormFieldGroup>
             <hr />
