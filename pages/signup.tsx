@@ -204,6 +204,8 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
           resolved_converted_moment.format(MOMENT_OUTPUT_FORMAT_BROWSER) +
           " America/Los_Angeles",
         valid_time: event_diff >= 0 && event_diff <= 24,
+        startTime: avail_start,
+        endTime: avail_end,
       });
     } catch (err) {
       console.log(err);
