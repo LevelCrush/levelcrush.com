@@ -440,6 +440,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         encodeURIComponent(window.location.href),
       method: "GET",
       withCredentials: true,
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
     }).then((response) => {
       const redirect = response.data["redirect"];
       window.location.href = redirect;

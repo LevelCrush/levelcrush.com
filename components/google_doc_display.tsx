@@ -1,4 +1,5 @@
 import { docs_v1 } from "googleapis";
+import Image from 'next/future/image';
 import React from "react";
 import { GoogleDocAssetMap } from "../core/googleDoc";
 import { H1, H2, H3, H4, H5, H6 } from "./elements/headings";
@@ -103,16 +104,27 @@ function renderBlock(
         </span>
       );
     } else { */
-    return (
-      <img
-        key={structIndex + "_block_" + elementIndex + "_image"}
-        src={asset.assetUrl}
-        loading="lazy"
-        /*  width={width} Disabled for now
-        height={height} */
-        className="inline-block pr-4 my-8 align-top"
-      />
-    );
+    //
+    //return (
+    //  <img
+    //    key={structIndex + "_block_" + elementIndex + "_image"}
+    //    src={asset.assetUrl}
+    //    loading="lazy"
+    //    /*  width={width} Disabled for now
+    //    height={height} */
+    //    className="inline-block pr-4 my-8 align-top"
+    //  />
+    //);
+
+    return <Image 
+      src={asset.assetUrl}
+      key={structIndex + "_block_" + elementIndex + "_image"}
+      loading="lazy"
+      className="inline-block pr-4 my-8 mr-4 align-top"
+      alt="Image"
+      width={width}
+      height={height}
+    />
     // }
   } else {
     const textStyle =
