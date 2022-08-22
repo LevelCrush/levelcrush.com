@@ -443,13 +443,16 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
             }}
           />
           <br />
-          {this.state.allDay ? (
-            <p>
-              Awesome! You wont need to worry about providing your availability
-            </p>
-          ) : (
-            <p>Please provide your availability below</p>
-          )}
+          <div className="w-full flex-initial">
+            {this.state.allDay ? (
+              <p>
+                Awesome! You wont need to worry about providing your
+                availability
+              </p>
+            ) : (
+              <p>Please provide your availability below</p>
+            )}
+          </div>
           <hr />
           <div
             className={
