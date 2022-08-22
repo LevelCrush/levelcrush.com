@@ -5,7 +5,7 @@ import { H3 } from "./elements/headings";
 /**
  * Default style for label elements
  */
-const STYLE_LABEL = "block text-lg hover:cursor-pointer ";
+const STYLE_LABEL = "inline-block text-lg hover:cursor-pointer ";
 
 export interface FormFieldPropsOption {
   value: string;
@@ -19,10 +19,18 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLElement> {
   label: string;
   name: string;
   id: string;
-  type: React.HTMLInputTypeAttribute | "custom" | "select" | "textarea";
+  required?: boolean;
+  type:
+    | React.HTMLInputTypeAttribute
+    | "custom"
+    | "select"
+    | "textarea"
+    | "toggle";
   placeholder?: string;
   value?: string;
   options?: FormFieldPropsOption[];
+  disabled?: boolean;
+  list?: string;
   textarea?: {
     rows?: number;
     columns?: number;
@@ -41,12 +49,19 @@ function render_default(props: FormFieldProps) {
         {props.label}
       </label>
       <input
-        className="block text-base p-[.25rem] text-black border-black border-[1px] w-full"
-        type={props.type}
+        className="block text-base p-[.25rem] text-black border-black border-[1px] w-full disabled:bg-gray-400"
+        type={props.list ? undefined : props.type}
         id={props.id}
         name={props.name}
         placeholder={props.placeholder}
         defaultValue={props.value}
+        disabled={props.disabled}
+        list={props.list}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        onCopy={props.onCopy}
+        onInput={props.onInput}
+        required={props.required}
       />
     </>
   );
@@ -64,12 +79,18 @@ function render_textarea(props: FormFieldProps) {
         {props.label}
       </label>
       <textarea
-        className="mb-8 h-auto w-full text-black bg-white border-[1px] border-black text-base"
+        className="mb-0 h-auto w-full text-black bg-white border-[1px] border-black text-base disabled:bg-gray-400"
         name={props.name}
         id={props.id}
         rows={props.textarea ? props.textarea.rows : undefined}
         cols={props.textarea ? props.textarea.columns : undefined}
         defaultValue={props.value}
+        disabled={props.disabled}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        onCopy={props.onCopy}
+        onInput={props.onInput}
+        required={props.required}
       ></textarea>
     </>
   );
@@ -89,8 +110,14 @@ function render_select(props: FormFieldProps) {
       <select
         name={props.name}
         id={props.id}
-        className="w-full bg-white border-black text-black border-[1px]"
-        defaultValue={props.value}
+        className="w-full bg-white border-black text-black border-[1px] disabled:bg-gray-400"
+        value={props.value}
+        disabled={props.disabled}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        onCopy={props.onCopy}
+        onInput={props.onInput}
+        required={props.required}
       >
         <option value="">--- Please Select ---</option>
         {(props.options || []).map((opt, index) => (
@@ -111,15 +138,32 @@ function render_select(props: FormFieldProps) {
 function render_checkbox(props: FormFieldProps) {
   return (
     <>
-      <label className={STYLE_LABEL + " toggle"} htmlFor={props.id}>
+      {props.type === "toggle" ? (
+        <>
+          <label className={STYLE_LABEL + "toggle-label"} htmlFor={props.id}>
+            {props.label}
+          </label>
+          <br />
+        </>
+      ) : (
+        <></>
+      )}
+      <label className={STYLE_LABEL} htmlFor={props.id}>
         <input
           className="mr-4"
           type="checkbox"
           name={props.name}
           id={props.id}
           defaultValue="yes"
+          disabled={props.disabled}
+          onChange={props.onChange}
+          required={props.required}
         />
-        {props.label}
+        {props.type === "checkbox" ? (
+          props.label
+        ) : (
+          <span className="slider"></span>
+        )}
       </label>
     </>
   );
@@ -133,6 +177,7 @@ function render_checkbox(props: FormFieldProps) {
 function render_field(props: FormFieldProps) {
   switch (props.type) {
     case "checkbox":
+    case "toggle":
       return render_checkbox(props);
     case "select":
       return render_select(props);
