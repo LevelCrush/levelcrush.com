@@ -19,6 +19,7 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLElement> {
   label: string;
   name: string;
   id: string;
+  maxLength?: number;
   required?: boolean;
   type:
     | React.HTMLInputTypeAttribute
@@ -49,8 +50,9 @@ function render_default(props: FormFieldProps) {
         {props.label}
       </label>
       <input
-        className="block text-base p-[.25rem] text-black border-black border-[1px] w-full disabled:bg-gray-400"
+        className="block text-base p-[.25rem] text-black border-black border-[1px] w-full disabled:bg-gray-400 h-10 rounded-none"
         type={props.list ? undefined : props.type}
+        maxLength={props.maxLength}
         id={props.id}
         name={props.name}
         placeholder={props.placeholder}
@@ -79,7 +81,7 @@ function render_textarea(props: FormFieldProps) {
         {props.label}
       </label>
       <textarea
-        className="mb-0 h-auto w-full text-black bg-white border-[1px] border-black text-base disabled:bg-gray-400"
+        className="mb-0 h-auto w-full text-black bg-white border-[1px] border-black text-base disabled:bg-gray-400 rounded-none"
         name={props.name}
         id={props.id}
         rows={props.textarea ? props.textarea.rows : undefined}
@@ -110,7 +112,7 @@ function render_select(props: FormFieldProps) {
       <select
         name={props.name}
         id={props.id}
-        className="w-full bg-white border-black text-black border-[1px] disabled:bg-gray-400"
+        className="w-full bg-white border-black text-black border-[1px] disabled:bg-gray-400 h-10 rounded-none "
         value={props.value}
         disabled={props.disabled}
         onChange={props.onChange}

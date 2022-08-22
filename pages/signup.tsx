@@ -237,12 +237,14 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       error_message = "Please specify a valid discord id";
     }
 
-    if (bungie_name.trim().length === 0) {
-      error_field = "bungie";
-      error_message = "Please specify a bungie username";
-    } else if (bungie_name.trim().includes("#") === false) {
-      error_field = "bungie";
-      error_message = "Please specify a valid bungie name";
+    if (error_field === "none") {
+      if (bungie_name.trim().length === 0) {
+        error_field = "bungie";
+        error_message = "Please specify a bungie username";
+      } else if (bungie_name.trim().includes("#") === false) {
+        error_field = "bungie";
+        error_message = "Please specify a valid bungie name";
+      }
     }
 
     switch (error_field) {
@@ -272,9 +274,14 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       const form_json = {
         "Discord Username": (
           form.elements.namedItem("discord") as HTMLInputElement
-        ).value,
-        "Bungie Name": (form.elements.namedItem("bungie") as HTMLInputElement)
-          .value,
+        ).value
+          .trim()
+          .substring(0, 64),
+        "Bungie Name": (
+          form.elements.namedItem("bungie") as HTMLInputElement
+        ).value
+          .trim()
+          .substring(0, 64),
         "Time Available Start": this.state.allDay
           ? "10:00 AM"
           : (form.elements.namedItem("avail_start") as HTMLInputElement).value,
@@ -293,10 +300,12 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         ).checked
           ? "Experienced Only"
           : "Any one",
-        Notes: (form.elements.namedItem("notes") as HTMLInputElement).value,
+        Notes: (
+          form.elements.namedItem("notes") as HTMLInputElement
+        ).value.trim(),
         "Preferred People": (
           form.elements.namedItem("preferred_teammates") as HTMLInputElement
-        ).value,
+        ).value.trim(),
         "Submitted Timestamp": moment().unix(),
       };
 
@@ -366,7 +375,15 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
           );
           return false;
         }}
-        action={ENV.hosts.api + "/forms/write"}
+        onKeyPress={(ev) => {
+          const is_enter_key =
+            (ev.keyCode || ev.which || ev.charCode || 0) == 13;
+          if (is_enter_key && ev.target.tagName.toLowerCase() != "textarea") {
+            ev.preventDefault();
+            return false;
+          }
+        }}
+        action="#goober"
         method="POST"
       >
         <H3>Raid Signup!</H3>
@@ -381,12 +398,19 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
           situation(s) without detracting too much from your experience.
         </p>
 
-        <FormFieldGroup label="Usernames (required)">
+        <FormFieldGroup
+          label="Usernames (required)"
+          className="flex justify-between flex-wrap"
+        >
           <FormField
-            className={this.state.error_field === "discord" ? "error" : ""}
+            className={
+              "flex-initial w-full lg:w-2/5 " +
+              (this.state.error_field === "discord" ? "error" : "")
+            }
             label="Discord Username (required)"
             name="discord"
             id="discord"
+            maxLength={64}
             type="text"
             placeholder="User#XXXX"
             disabled={this.state.form_submitting}
@@ -403,12 +427,16 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
             }
           />
           <FormField
-            className={this.state.error_field === "bungie" ? "error" : ""}
+            className={
+              "flex-initial w-full lg:w-2/5 " +
+              (this.state.error_field === "bungie" ? "error" : "")
+            }
             label="Bungie Username (required)"
             name="bungie"
             id="bungie"
             type="text"
             placeholder="Guaridan#XXXX"
+            maxLength={64}
             disabled={this.state.form_submitting}
             onChange={(ev) => {
               if (this.state.error_field === "bungie") {
@@ -462,30 +490,42 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
               (this.state.allDay ? " opacity-25" : "")
             }
           >
-            <p className="w-full flex-initial my-4">
-              Raid Takes place at{" "}
-              <span className="dark:text-green-700 text-green-900 underline font-bold">
-                {EVENT_MOMENT.format("hh:mm A")} America/Los_Angeles
-                {EVENT_MOMENT.format("MMMM Do")} 2022
-              </span>
-              <br />
-              <span>
-                Local time:
-                <span>{this.state.resolved_input_time}</span>
-                <br />
-                Converted:{" "}
+            <div className="w-full flex-initial my-4 mb-8">
+              <p className="mt-4 dark:text-green-700 text-green-900 font-bold">
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Event Starts:
+                </span>
+                <span className="inline-block">
+                  {EVENT_MOMENT.format("hh:mm A")} America/Los_Angeles &nbsp;
+                </span>
+                <span className="inline-block">
+                  {EVENT_MOMENT.format("MMMM Do")} 2022
+                </span>
+              </p>
+              <p className="mt-4">
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Local Starts:
+                </span>
+                <span className="inline-block">
+                  {this.state.resolved_input_time}
+                </span>
+              </p>
+              <p className="mt-4">
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Availability Starts:
+                </span>
                 <span
                   className={
-                    this.state.valid_time
-                      ? "dark:text-green-700 text-green-900 underline font-bold"
-                      : "text-red-700"
+                    "inline-block " +
+                    (this.state.valid_time
+                      ? "dark:text-green-700 text-green-900 font-bold"
+                      : "text-red-700")
                   }
                 >
                   {this.state.resolved_converted_time}
                 </span>
-              </span>
-            </p>
-
+              </p>
+            </div>
             <FormField
               className="flex-initial w-full  md:w-1/4"
               type="select"
@@ -572,7 +612,7 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         </FormFieldGroup>
         <hr />
         {this.state.error_field != "none" ? (
-          <p className="text-red-800 underline align-left my-4">
+          <p className="text-red-700 underline align-left my-4">
             {this.state.error_message}
           </p>
         ) : (
