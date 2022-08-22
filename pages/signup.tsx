@@ -497,8 +497,6 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
                 </span>
                 <span className="inline-block">
                   {EVENT_MOMENT.format("hh:mm A")} America/Los_Angeles &nbsp;
-                </span>
-                <span className="inline-block">
                   {EVENT_MOMENT.format("MMMM Do")} 2022
                 </span>
               </p>
