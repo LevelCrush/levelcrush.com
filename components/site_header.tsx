@@ -6,6 +6,8 @@ import LoginButton from "./login_button";
 import { OffCanvasToggle } from "./offcanvas";
 import ThemeToggle from "./theme_toggle";
 
+import Routes from "../core/routes";
+
 export const SiteHeader = (props: any) => (
   <header className="top-0 sticky z-[99] ">
     <div className="min-h-[4.5rem] flex items-center h-auto bg-[#003134] border-b-8 border-solid border-cyan-400 shadow-[0px_.5rem_.5rem_2px_rgba(0,0,0,0.7)] relative z-[99] ">
@@ -28,12 +30,19 @@ export const SiteHeader = (props: any) => (
         </H1>
         <nav className="flex-auto basis-full  lg:flex-auto mt-8 lg:mt-0 lg:block hidden">
           <ul className="flex justify-center text-lg md:text-sm lg:text-lg text-white font-semibold">
-            <li className="flex-initial hover:underline hover:cursor-pointer px-4">
-              <Hyperlink href="/lfg">Looking For Group</Hyperlink>
-            </li>
-            <li className="flex-initial hover:underline hover:cursor-pointer px-4">
-              <Hyperlink href="/guides">Guides</Hyperlink>
-            </li>
+            {Routes.map((route, index) => {
+              if (route.pullMenuOnly) {
+                return <></>;
+              }
+              return (
+                <li
+                  key={"navigation_top_" + index}
+                  className="flex-initial hover:underline hover:cursor-pointer px-4"
+                >
+                  <Hyperlink href={route.url}>{route.name}</Hyperlink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
         <div className="flex-auto basis-full md:basis-auto  text-center mt-8 mb-8 md:mt-0 md:mb-0 md:flex-initial md:text-right hidden md:block">
