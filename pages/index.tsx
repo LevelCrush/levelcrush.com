@@ -15,11 +15,12 @@ export const HomePage = (props: any) => (
     </Head>
     <SiteHeader />
     <main>
-      <Hero className="min-h-[50rem]">
+      <Hero className="min-h-[70rem]">
         <div className="w-full">
           <EmbedGallery
-            embeds={["terrorbytetw", "arcane1x", "thatguymcdsr"]}
+            embeds={["thebluebrokenmongoose"]}
             type={"carousel"}
+            single={true}
           ></EmbedGallery>
         </div>
       </Hero>
