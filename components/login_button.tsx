@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import Axios from "axios";
 import ENV from "../core/env";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 export interface LoginProperties {
   display?: "default" | "full" | "events-only" | string;
@@ -13,6 +16,8 @@ export interface LoginState {
   setup: boolean;
   requesting: boolean;
   displayName: string | undefined;
+  displayNameTwitch: string | undefined;
+  displayNameBungie: string | undefined;
 }
 
 // event list
@@ -40,6 +45,8 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       setup: true,
       requesting: props.justListen ? false : true,
       displayName: "",
+      displayNameBungie: "",
+      displayNameTwitch: "",
     };
 
     this.myRef = React.createRef<HTMLDivElement>();
@@ -193,6 +200,8 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   public onLoginSession(ev: CustomEvent) {
     this.setState({
       displayName: ev.detail["displayName"] as string,
+      displayNameTwitch: (ev.detail["displayNameTwitch"] as string) || "",
+      displayNameBungie: (ev.detail["displayNameBungie"] as string) || "",
       setup: false,
     });
   }
@@ -433,6 +442,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   public startLogin() {
     // start login procedure
     console.log("Storing current page");
+    /*
     Axios({
       url:
         ENV.hosts.login +
@@ -440,11 +450,16 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         encodeURIComponent(window.location.href),
       method: "GET",
       withCredentials: true,
-      headers: {'X-Requested-With': 'XMLHttpRequest'}
+      headers: { "X-Requested-With": "XMLHttpRequest" },
     }).then((response) => {
       const redirect = response.data["redirect"];
       window.location.href = redirect;
-    });
+    }); */
+
+    window.location.href =
+      ENV.hosts.login +
+      "/discord/login?redirect=" +
+      encodeURIComponent(window.location.href);
 
     // navigate to server api login
   }
@@ -514,32 +529,152 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
         errors: unknown[];
       };
 
-      this.setState(
-        {
-          requesting: false,
-          displayName:
-            apiRequest.success &&
-            apiRequest.response &&
-            apiRequest.response.applications &&
-            apiRequest.response.applications.hub.display_name_full
-              ? apiRequest.response.applications.hub.display_name_full
-              : "Unknown#Potatoe",
-        },
-        () => {
-          document.dispatchEvent(
-            new CustomEvent("levelcrush_login_session", {
-              detail: { displayName: this.state.displayName },
-            })
+      Axios.get(ENV.hosts.login + "/profile/get", {
+        withCredentials: true,
+      })
+        .then((profile_request) => {
+          console.log("Profile Response:", profile_request.data.response);
+          this.setState(
+            {
+              requesting: false,
+              displayName:
+                apiRequest.success &&
+                apiRequest.response &&
+                apiRequest.response.applications &&
+                apiRequest.response.applications.hub.display_name_full
+                  ? apiRequest.response.applications.hub.display_name_full
+                  : "Unknown#Potatoe",
+              displayNameBungie:
+                profile_request.data &&
+                profile_request.data.success &&
+                profile_request.data.response &&
+                profile_request.data.response.bungie
+                  ? profile_request.data.response.bungie
+                  : "",
+              displayNameTwitch:
+                profile_request.data &&
+                profile_request.data.success &&
+                profile_request.data.response &&
+                profile_request.data.response.twitch
+                  ? profile_request.data.response.twitch
+                  : "",
+            },
+            () => {
+              document.dispatchEvent(
+                new CustomEvent("levelcrush_login_session", {
+                  detail: {
+                    displayName: this.state.displayName,
+                    displayNameTwitch: this.state.displayNameTwitch,
+                    displayNameBungie: this.state.displayNameBungie,
+                  },
+                })
+              );
+            }
           );
-        }
-      );
+        })
+        .catch(() => {
+          console.log("Failed to get profile information...");
+        });
     });
+  }
+
+  /**  */
+  private buttonCoreStyle =
+    "block w-full  text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer  px-4 py-2 mx-auto relative top-0";
+  private buttonStyle = this.buttonCoreStyle + " rounded mx-auto  my-4 ";
+  private buttonSubStyle =
+    this.buttonCoreStyle + " border-t-[1px] border-blue-300 border-solid";
+
+  public render_link_twitch() {
+    return (
+      <button
+        type="button"
+        onClick={(ev) => {
+          window.location.href =
+            ENV.hosts.login +
+            "/twitch/login?redirect=" +
+            encodeURIComponent(window.location.href);
+        }}
+        className="block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
+      >
+        <FontAwesomeIcon
+          icon={faTwitch}
+          className="float-left mr-2 relative top-1 align-middle"
+        />
+        <span>Link Twitch</span>
+      </button>
+    );
+  }
+
+  public render_show_twitch() {
+    return (
+      <button
+        type="button"
+        className="block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
+      >
+        <FontAwesomeIcon
+          icon={faTwitch}
+          className="float-left mr-2 relative top-1 align-middle"
+        />
+        <span>{this.state.displayNameTwitch}</span>
+      </button>
+    );
+  }
+
+  public render_needs_login() {
+    return (
+      <button
+        disabled={this.state.setup}
+        className={this.buttonStyle}
+        type="button"
+        onClick={this.startLogin}
+      >
+        Login with Discord
+      </button>
+    );
+  }
+
+  public render_is_logged_in() {
+    return (
+      <>
+        <button
+          onClick={(ev) => {
+            const targ = ev.currentTarget as HTMLButtonElement;
+            targ.classList.toggle("dropdown");
+          }}
+          disabled={this.state.requesting}
+          className={this.buttonCoreStyle + " mx-auto mb-0 mt-4 rounded "}
+          type="button"
+        >
+          <span>{this.state.displayName}</span>
+          <FontAwesomeIcon
+            icon={faAngleDown}
+            className="ml-4 float-right align-middle top-1 relative"
+          />
+        </button>
+        <div className="w-full rounded-bl rounded-br   bg-blue-600 overflow-hidden  h-auto  block max-h-0 absolute transition-all ease-in-out duration-300  btn-dropdown:block btn-dropdown:max-h-[10rem]">
+          <>
+            {this.state.displayNameTwitch
+              ? this.render_show_twitch()
+              : this.render_link_twitch()}
+          </>
+          <button
+            type="button"
+            className={this.buttonSubStyle}
+            onClick={this.applicationLogout}
+          >
+            Logout
+          </button>
+        </div>
+        <div className="mb-4"></div>
+      </>
+    );
   }
 
   public render() {
     if (this.props.display !== "events-only") {
-      const completedSetup =
-        this.state.setup === false ? (
+      /*const completedSetup =
+       this.state.setup === false ? (
           <button
             className="block w-full  text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2 mx-auto  my-4"
             onClick={
@@ -559,10 +694,16 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
           >
             Login with Discord
           </button>
-        );
+        ); */
+
+      const completedSetup =
+        this.state.setup || this.state.loggedIn === false
+          ? this.render_needs_login()
+          : this.render_is_logged_in();
+
       return (
         <div
-          className="app inline-block w-auto h-auto"
+          className="app inline-block w-auto h-auto relative top-0"
           data-app="login"
           data-logged-in={this.state.loggedIn ? "1" : "0"}
           data-display={this.props.display}
