@@ -6,6 +6,7 @@ export interface EmbedGalleryProperties {
   embeds: string[];
   type: "carousel";
   id?: string;
+  single?: boolean;
 }
 
 export interface EmbedGalleryState {
@@ -119,8 +120,10 @@ export class EmbedGallery extends React.Component<
         {this.props.embeds.map((val, index) => (
           <EmbedV2
             className={
-              "flex-initial w-full max-w-[40rem] lg:max-w-[33%] 2xl:max-w-[31.25rem]  4k:max-w-[40rem] origin-center transition order-" +
-              (index + 1) +
+              (this.props.single
+                ? "flex-initial w-full max-w-[40rem] lg:max-w-[80%] xl:max-w-[80rem] 4k:max-w-[100rem] origin center transition order-0 "
+                : "flex-initial w-full max-w-[40rem] lg:max-w-[33%] xl:max-w-[31.25rem]  4k:max-w-[40rem] origin-center transition order-" +
+                  (index + 1).toString()) +
               " " +
               (index === startingCenterIndex
                 ? centerEmbedScale
@@ -130,7 +133,7 @@ export class EmbedGallery extends React.Component<
             embedID={"gallery_embed_" + index.toString() + "_" + val}
             platform="twitch"
             width="100%"
-            height={480}
+            height={this.props.single ? 720 : 480}
             embed={val}
             hideChat={true}
             poster={

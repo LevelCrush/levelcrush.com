@@ -15,6 +15,11 @@ module.exports = {
         sans: ["acumin-pro", "sans-serif"],
         headline: ["atrament-web", "sans-serif"],
       },
+
+      screens: {
+        "2xl": "1536px",
+        "4k": "2160px",
+      },
     },
   },
   plugins: [
@@ -30,3 +35,4 @@ module.exports = {
     }),
   ],
 };
+;
