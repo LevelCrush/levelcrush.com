@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Axios from "axios";
 import ENV from "../core/env";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { faTwitch } from "@fortawesome/free-brands-svg-icons";
+import { faAngleDown, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDiscord, faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 export interface LoginProperties {
   display?: "default" | "full" | "events-only" | string;
@@ -580,7 +580,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
   /**  */
   private buttonCoreStyle =
-    "block w-full  text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer  px-4 py-2 mx-auto relative top-0";
+    "block w-full  text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer  px-4 py-2 mx-auto relative top-0 truncate";
   private buttonStyle = this.buttonCoreStyle + " rounded mx-auto  my-4 ";
   private buttonSubStyle =
     this.buttonCoreStyle + " border-t-[1px] border-blue-300 border-solid";
@@ -595,7 +595,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             "/twitch/login?redirect=" +
             encodeURIComponent(window.location.href);
         }}
-        className="block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
+        className="truncate block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
       >
         <FontAwesomeIcon
           icon={faTwitch}
@@ -608,16 +608,53 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
   public render_show_twitch() {
     return (
-      <button
-        type="button"
-        className="block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
-      >
-        <FontAwesomeIcon
-          icon={faTwitch}
-          className="float-left mr-2 relative top-1 align-middle"
-        />
-        <span>{this.state.displayNameTwitch}</span>
-      </button>
+      <div className="w-full flex flex-nowrap group">
+        <button
+          type="button"
+          disabled={this.state.requesting}
+          className="hover:cursor-default truncate disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out block w-full group-hover:w-3/4  bg-[#9146FF]  border-[#cba9ff] border-t-[1px]  px-4 py-2 mx-auto relative top-0"
+        >
+          <FontAwesomeIcon
+            icon={faTwitch}
+            className="float-left mr-2 relative top-2 align-middle"
+          />
+          <span>{this.state.displayNameTwitch}</span>
+        </button>
+        <button
+          type="button"
+          title="Unlink Twitch"
+          disabled={this.state.requesting}
+          onClick={(ev) => {
+            ev.preventDefault();
+
+            // set our component state to be requesting and then make a background ajax post.
+            // succeed or not we will just reload the window regardless ( easy way to clear out the state of the current window)
+            // TODO: this is not the best solution. Ideally we could leverage the broadcast channel/session information to remove the twitch name in real time by just
+            // modifying the displayNameTwitch state. For now this is ok, but not ideal
+            this.setState({ requesting: true }, () => {
+              Axios.post(
+                ENV.hosts.login + "/twitch/unlink",
+                {},
+                { withCredentials: true }
+              )
+                .then(() => {
+                  console.log("Unlinked.");
+                })
+                .finally(() => {
+                  // at the end no matter if we fail or not, reload the window
+                  window.location.reload();
+                });
+            });
+            return false;
+          }}
+          className="disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 flex-initial w-0 group-hover:w-1/4 transition-all duration-300 ease-in-out bg-transparent group-hover:bg-red-700 group-hover:hover:bg-red-900 border-l-[1px] border-transparent group-hover:border-white  text-white"
+        >
+          <FontAwesomeIcon
+            icon={faTrash}
+            className="align-middle text-center"
+          />
+        </button>
+      </div>
     );
   }
 
@@ -646,10 +683,16 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
           className={this.buttonCoreStyle + " mx-auto mb-0 mt-4 rounded "}
           type="button"
         >
-          <span>{this.state.displayName}</span>
+          <FontAwesomeIcon
+            icon={faDiscord}
+            className="mr-4 float-left align-middle top-2 relative"
+          />
+          <span className="truncate max-w-[65%] inline-block relative top-0 align-middle">
+            {this.state.displayName}
+          </span>
           <FontAwesomeIcon
             icon={faAngleDown}
-            className="ml-4 float-right align-middle top-1 relative"
+            className="ml-4 float-right align-middle top-2 relative"
           />
         </button>
         <div className="w-full rounded-bl rounded-br   bg-blue-600 overflow-hidden  h-auto  block max-h-0 absolute transition-all ease-in-out duration-300  btn-dropdown:block btn-dropdown:max-h-[10rem]">
@@ -673,29 +716,6 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
   public render() {
     if (this.props.display !== "events-only") {
-      /*const completedSetup =
-       this.state.setup === false ? (
-          <button
-            className="block w-full  text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2 mx-auto  my-4"
-            onClick={
-              this.state.loggedIn ? this.applicationLogout : this.startLogin
-            }
-            disabled={this.state.requesting}
-            title={this.state.loggedIn ? "Log out" : "Log in"}
-          >
-            {this.state.loggedIn
-              ? this.state.displayName
-              : "Login with Discord"}
-          </button>
-        ) : (
-          <button
-            disabled={true}
-            className="block w-full  text-white bg-blue-600 opacity-50  hover:cursor-default rounded px-4 py-2 mx-auto  my-4"
-          >
-            Login with Discord
-          </button>
-        ); */
-
       const completedSetup =
         this.state.setup || this.state.loggedIn === false
           ? this.render_needs_login()
@@ -703,7 +723,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
 
       return (
         <div
-          className="app inline-block w-auto h-auto relative top-0"
+          className="app inline-block w-auto h-auto relative top-0 min-w-[12rem] max-w-[15rem]"
           data-app="login"
           data-logged-in={this.state.loggedIn ? "1" : "0"}
           data-display={this.props.display}

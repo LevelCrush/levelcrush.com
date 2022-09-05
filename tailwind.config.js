@@ -32,7 +32,7 @@ module.exports = {
       addVariant("expanded-hover", ".expanded:hover &");
       addVariant("toggle-yes", 'input[type="checkbox"]:checked + &');
       addVariant("btn-dropdown", "button.dropdown + &");
+      addVariant("btn-dropdown-showing", "button.dropdown &");
     }),
   ],
 };
-;
