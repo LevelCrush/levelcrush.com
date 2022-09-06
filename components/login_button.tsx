@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import Axios from "axios";
 import ENV from "../core/env";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faGamepad,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { faDiscord, faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 export interface LoginProperties {
@@ -585,6 +589,76 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
   private buttonSubStyle =
     this.buttonCoreStyle + " border-t-[1px] border-blue-300 border-solid";
 
+  public render_link_bungie() {
+    return (
+      <button
+        type="button"
+        onClick={(ev) => {
+          window.location.href =
+            ENV.hosts.login +
+            "/bungie/login?redirect=" +
+            encodeURIComponent(window.location.href);
+        }}
+        className="truncate block w-full transition-all duration-300 ease-in-out group-hover:w-3/4 bg-[#1d252d] hover:bg-[#06090b] border-t-[1px] px-4 py-2 mx-auto relative top-0"
+      >
+        Link Bungie
+      </button>
+    );
+  }
+
+  public render_show_bungie() {
+    return (
+      <div className="w-full flex flex-nowrap group">
+        <button
+          type="button"
+          title={"Bungie: " + this.state.displayNameBungie}
+          disabled={this.state.requesting}
+          className="hover:cursor-default disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out truncate block w-full group-hover:w-3/4 bg-[#1d252d]  border-t-[1px] px-4 py-2 mx-auto relative top-0"
+        >
+          <FontAwesomeIcon
+            icon={faGamepad}
+            className="float-left mr-2 relative top-1 align-middle"
+          />
+          {this.state.displayNameBungie}
+        </button>
+        <button
+          type="button"
+          title="Unlink Bungie"
+          disabled={this.state.requesting}
+          onClick={(ev) => {
+            ev.preventDefault();
+
+            // set our component state to be requesting and then make a background ajax post.
+            // succeed or not we will just reload the window regardless ( easy way to clear out the state of the current window)
+            // TODO: this is not the best solution. Ideally we could leverage the broadcast channel/session information to remove the twitch name in real time by just
+            // modifying the displayNameTwitch state. For now this is ok, but not ideal
+            this.setState({ requesting: true }, () => {
+              Axios.post(
+                ENV.hosts.login + "/bungie/unlink",
+                {},
+                { withCredentials: true }
+              )
+                .then(() => {
+                  console.log("Unlinked.");
+                })
+                .finally(() => {
+                  // at the end no matter if we fail or not, reload the window
+                  window.location.reload();
+                });
+            });
+            return false;
+          }}
+          className="disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 flex-initial w-0 group-hover:w-1/4 transition-all duration-300 ease-in-out bg-transparent group-hover:bg-red-700 group-hover:hover:bg-red-900 border-l-[1px] border-transparent group-hover:border-white  text-white"
+        >
+          <FontAwesomeIcon
+            icon={faTrash}
+            className="align-middle text-center"
+          />
+        </button>
+      </div>
+    );
+  }
+
   public render_link_twitch() {
     return (
       <button
@@ -611,6 +685,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
       <div className="w-full flex flex-nowrap group">
         <button
           type="button"
+          title={"Twitch: " + this.state.displayNameTwitch}
           disabled={this.state.requesting}
           className="hover:cursor-default truncate disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out block w-full group-hover:w-3/4  bg-[#9146FF]  border-[#cba9ff] border-t-[1px]  px-4 py-2 mx-auto relative top-0"
         >
@@ -700,6 +775,11 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             {this.state.displayNameTwitch
               ? this.render_show_twitch()
               : this.render_link_twitch()}
+          </>
+          <>
+            {this.state.displayNameBungie
+              ? this.render_show_bungie()
+              : this.render_link_bungie()}
           </>
           <button
             type="button"
