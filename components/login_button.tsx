@@ -599,7 +599,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             "/bungie/login?redirect=" +
             encodeURIComponent(window.location.href);
         }}
-        className="truncate block w-full transition-all duration-300 ease-in-out group-hover:w-3/4 bg-[#1d252d] hover:bg-[#06090b] border-t-[1px] px-4 py-2 mx-auto relative top-0"
+        className="truncate text-white block w-full transition-all duration-300 ease-in-out group-hover:w-3/4 bg-[#1d252d] hover:bg-[#06090b] border-t-[1px] px-4 py-2 mx-auto relative top-0"
       >
         Link Bungie
       </button>
@@ -613,7 +613,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
           type="button"
           title={"Bungie: " + this.state.displayNameBungie}
           disabled={this.state.requesting}
-          className="hover:cursor-default disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out truncate block w-full group-hover:w-3/4 bg-[#1d252d]  border-t-[1px] px-4 py-2 mx-auto relative top-0"
+          className="hover:cursor-default text-white disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out truncate block w-full group-hover:w-3/4 bg-[#1d252d]  border-t-[1px] px-4 py-2 mx-auto relative top-0"
         >
           <FontAwesomeIcon
             icon={faGamepad}
@@ -669,7 +669,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
             "/twitch/login?redirect=" +
             encodeURIComponent(window.location.href);
         }}
-        className="truncate block w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
+        className="truncate block text-white  w-full bg-[#9146FF] hover:bg-[#6534ad] border-[#cba9ff] border-t-[1px]  hover:cursor-pointer px-4 py-2 mx-auto relative top-0"
       >
         <FontAwesomeIcon
           icon={faTwitch}
@@ -687,7 +687,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
           type="button"
           title={"Twitch: " + this.state.displayNameTwitch}
           disabled={this.state.requesting}
-          className="hover:cursor-default truncate disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out block w-full group-hover:w-3/4  bg-[#9146FF]  border-[#cba9ff] border-t-[1px]  px-4 py-2 mx-auto relative top-0"
+          className="hover:cursor-default text-white truncate disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:text-gray-800 transition-all duration-300 ease-in-out block w-full group-hover:w-3/4  bg-[#9146FF]  border-[#cba9ff] border-t-[1px]  px-4 py-2 mx-auto relative top-0"
         >
           <FontAwesomeIcon
             icon={faTwitch}
