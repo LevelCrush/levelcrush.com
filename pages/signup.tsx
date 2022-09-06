@@ -378,8 +378,11 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         onKeyPress={(ev) => {
           const is_enter_key =
             (ev.keyCode || ev.which || ev.charCode || 0) == 13;
-          if (is_enter_key && ev.target.tagName.toLowerCase() != "textarea") {
+
+          const evTarget = ev.target as HTMLElement;
+          if (is_enter_key && evTarget.tagName.toLowerCase() != "textarea") {
             ev.preventDefault();
+
             return false;
           }
         }}
