@@ -61,14 +61,16 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
   public themeCheck() {
     if (this.state.mode === "system" || this.firstLoad) {
       this.firstLoad = false;
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
+
+      // no theme found.
+      if (!("theme" in localStorage)) {
         this.themeSetDarkMode();
       } else {
-        this.themeSetLightMode();
+        if (localStorage.theme === "dark") {
+          this.themeSetDarkMode();
+        } else {
+          this.themeSetLightMode();
+        }
       }
     }
   }
