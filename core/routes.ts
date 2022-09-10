@@ -15,8 +15,8 @@ export const Routes = [
     pullMenuOnly: true,
   },
   {
-    url: "/signup",
-    name: "Event Signup!",
+    url: "/leaderboards/destiny",
+    name: "Leaderboards",
   },
   {
     url: "/lfg",
