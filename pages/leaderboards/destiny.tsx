@@ -34,7 +34,8 @@ export const DestinyLeaderboards = (props: any) => (
       </Container>
       <Container>
         <SpeedRunTable
-          id="destinySpeedRuns"
+          title="Destiny 2 - Kings Fall"
+          id="destinySpeedRunsKingsFall"
           addlHeaders={["Raid Report"]}
           data={[
             {
