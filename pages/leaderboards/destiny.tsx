@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import Head from "next/head";
 import React from "react";
 import Hero from "../../components/hero";
@@ -7,9 +8,51 @@ import Container from "../../components/elements/container";
 import { H3 } from "../../components/elements/headings";
 import OffCanvas from "../../components/offcanvas";
 import { H2 } from "../../components/elements/headings";
-import SpeedRunTable from "../../components/speedrun_table";
+import SpeedRunTable, { SpeedRunProps } from "../../components/speedrun_table";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
+import axios from "axios";
+import ENV from "../../core/env";
 
-export const DestinyLeaderboards = (props: any) => (
+export interface DestinyLeaderboardsProp {
+  entries: SpeedRunProps["data"];
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const axiosResponse = await axios.post(ENV.hosts.api + "/leaderboards/read", {
+    type: "destiny2-speedrun-kingsfall",
+    amount: 10,
+  });
+
+  let entries: SpeedRunProps["data"] = [];
+  if (
+    axiosResponse &&
+    axiosResponse.data &&
+    axiosResponse.data.success &&
+    axiosResponse.data.response &&
+    axiosResponse.data.response.results
+  ) {
+    for (let i = 0; i < axiosResponse.data.response.results.length; i++) {
+      try {
+        const entry = JSON.parse(
+          axiosResponse.data.response.results[i].fields
+        ) as SpeedRunProps["data"][0];
+
+        entry.duration = entry.duration || "Not provided";
+        entry.verified = entry.verified || false;
+        entry.video = entry.video || "N/A";
+        entries.push(entry);
+      } catch {}
+    }
+  }
+
+  return {
+    props: {
+      entries: entries,
+    },
+  };
+};
+
+export const DestinyLeaderboards = (props: DestinyLeaderboardsProp) => (
   <OffCanvas>
     <Head>
       <title>Destiny Leaderboards | Level Crush</title>
@@ -37,14 +80,7 @@ export const DestinyLeaderboards = (props: any) => (
           title="Destiny 2 - Kings Fall"
           id="destinySpeedRunsKingsFall"
           addlHeaders={["Raid Report"]}
-          data={[
-            {
-              duration: "1 hour, 49 minutes",
-              verified: true,
-              video: "https://youtu.be/5oRUAB18U8A",
-              "Raid Report": "https://raid.report/pgcr/11427144781",
-            },
-          ]}
+          data={props.entries}
         ></SpeedRunTable>
       </Container>
     </main>
