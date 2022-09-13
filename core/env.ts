@@ -3,7 +3,7 @@ const isBrowser = typeof window !== "undefined";
 let theme = "";
 let localStorageTheme =
   typeof localStorage !== "undefined" && localStorage["theme"] !== "undefined"
-    ? localStorage.getItem("theme")
+    ? localStorage.getItem("colorstyle")
     : undefined;
 if (localStorageTheme !== undefined) {
   theme = localStorageTheme as string;
