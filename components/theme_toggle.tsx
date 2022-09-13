@@ -33,14 +33,14 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
   public themeSetLightMode() {
     // Whenever the user explicitly chooses light mode
     document.documentElement.classList.remove("dark");
-    localStorage.theme = "light";
+    localStorage.colorstyle = "light";
     document.dispatchEvent(new CustomEvent("theme_lightmode"));
   }
 
   public themeSetDarkMode() {
     // Whenever the user explicitly chooses dark mode
     document.documentElement.classList.add("dark");
-    localStorage.theme = "dark";
+    localStorage.colorstyle = "dark";
     console.log("Dark Mode enabled");
     document.dispatchEvent(new CustomEvent("theme_darkmode"));
   }
@@ -61,14 +61,16 @@ export class ThemeToggle extends React.Component<ThemeProps, ThemeState> {
   public themeCheck() {
     if (this.state.mode === "system" || this.firstLoad) {
       this.firstLoad = false;
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
+
+      // no theme found.
+      if (!("colorstyle" in localStorage)) {
         this.themeSetDarkMode();
       } else {
-        this.themeSetLightMode();
+        if (localStorage.colorstyle === "dark") {
+          this.themeSetDarkMode();
+        } else {
+          this.themeSetLightMode();
+        }
       }
     }
   }

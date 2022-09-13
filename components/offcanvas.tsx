@@ -3,7 +3,6 @@ import { faAngleDoubleRight, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Routes, RouteItem } from "../core/routes";
 import Hyperlink from "./elements/hyperlink";
-import { off } from "process";
 import ThemeToggle from "./theme_toggle";
 import { H1 } from "./elements/headings";
 import LoginButton from "./login_button";

@@ -60,7 +60,7 @@ export class LoginButton extends React.Component<LoginProperties, LoginState> {
     this.makingApiLogin = false;
 
     // specify version
-    this.version = "1.1.0";
+    this.version = "1.2.0";
 
     this.startLogin = this.startLogin.bind(this);
     this.loginCheck = this.loginCheck.bind(this);

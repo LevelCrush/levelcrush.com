@@ -10,7 +10,7 @@ export const DiscordLink = (
   props: React.PropsWithChildren<DiscordLinkProps>
 ) => (
   <Link
-    /* href="https://discord.gg/levelcrush" */ href="https://discord.gg/x5RmrND"
+    /* href="https://discord.gg/levelcrush" */ href="https://levelcrush.gg/discord"
   >
     <a
       target="_blank"

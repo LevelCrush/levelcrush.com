@@ -14,13 +14,14 @@ export const Routes = [
     name: "Home",
     pullMenuOnly: true,
   },
+
   {
-    url: "/signup",
-    name: "Event Signup!",
+    url: "/signups",
+    name: "Signup!",
   },
   {
-    url: "/lfg",
-    name: "Looking for Group",
+    url: "/leaderboards/destiny",
+    name: "Leaderboards",
   },
   {
     url: "/guides",
