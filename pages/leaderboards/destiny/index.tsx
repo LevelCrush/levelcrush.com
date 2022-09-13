@@ -7,6 +7,7 @@ import Container from "../../../components/elements/container";
 import { H3 } from "../../../components/elements/headings";
 import OffCanvas from "../../../components/offcanvas";
 import { H2 } from "../../../components/elements/headings";
+import Hyperlink from "../../../components/elements/hyperlink";
 
 export const DestinyLeaderboards = (props: any) => (
   <OffCanvas>
@@ -30,6 +31,46 @@ export const DestinyLeaderboards = (props: any) => (
         <p>
           <DiscordLink />
         </p>
+      </Container>
+      <Container>
+        <H3>Raids</H3>
+        <ul className="list-disc">
+          <li>
+            <Hyperlink href="/leaderboards/destiny/kingsfall">
+              Kings Fall
+            </Hyperlink>
+          </li>
+
+          <li>
+            <Hyperlink href="/leaderboards/destiny/votd">
+              Vow of the Disciple
+            </Hyperlink>
+          </li>
+
+          <li>
+            <Hyperlink href="/leaderboards/destiny/vog">
+              Vault of Glass
+            </Hyperlink>
+          </li>
+
+          <li>
+            <Hyperlink href="/leaderboards/destiny/dsc">
+              Deep Stone Crypt
+            </Hyperlink>
+          </li>
+
+          <li>
+            <Hyperlink href="/leaderboards/destiny/gos">
+              Garden of Salvation
+            </Hyperlink>
+          </li>
+
+          <li>
+            <Hyperlink href="/leaderboards/destiny/lastwish">
+              Last Wish
+            </Hyperlink>
+          </li>
+        </ul>
       </Container>
     </main>
   </OffCanvas>
