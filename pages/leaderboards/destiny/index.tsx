@@ -22,8 +22,9 @@ export const DestinyLeaderboards = (props: any) => (
         </Container>
       </Hero>
       <Container>
-        <H3>Below is a list of leaderboards that LevelCrush supports</H3>
+        <H3>Destiny Leaderboards</H3>
         <p>
+          Below is a list of leaderboards that LevelCrush supports <br />
           While we are working on an automated system, please bare with us and
           manually submit your entry please Discord Primal#7344 or make an
           appropriate post in the discord.
