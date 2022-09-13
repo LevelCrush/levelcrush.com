@@ -50,7 +50,14 @@ for (let i = 0; i < 24; i++) {
   hour_x++;
 }
 
-export type ErrorFieldType = "discord" | "bungie" | "none" | "form";
+export type ErrorFieldType =
+  | "discord"
+  | "bungie"
+  | "teammate_discord"
+  | "teammate_bungie"
+  | "team_name"
+  | "none"
+  | "form";
 
 export interface SignupPageState {
   displayName: string;
@@ -282,37 +289,21 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         ).value
           .trim()
           .substring(0, 64),
-        "Time Available Start": this.state.allDay
-          ? "10:00 AM"
-          : (form.elements.namedItem("avail_start") as HTMLInputElement).value,
-        "Time Available End": this.state.allDay
-          ? "11:59 PM"
-          : (form.elements.namedItem("avail_end") as HTMLInputElement).value,
-        "Time Zone": this.state.allDay
-          ? "America/Los_Angeles"
-          : (form.elements.namedItem("timezone") as HTMLInputElement).value,
-        "Full Day": (form.elements.namedItem("all_day") as HTMLInputElement)
-          .checked
-          ? "Yes"
-          : "No",
-        "Fireteam Experience": (
-          form.elements.namedItem("experience") as HTMLInputElement
-        ).checked
-          ? "Experienced Only"
-          : "Any one",
-        Notes: (
-          form.elements.namedItem("notes") as HTMLInputElement
-        ).value.trim(),
-        "Preferred People": (
-          form.elements.namedItem("preferred_teammates") as HTMLInputElement
-        ).value.trim(),
+        "Team Name": (
+          form.elements.namedItem("team_name") as HTMLInputElement
+        ).value.substring(0, 32),
+        Teammate: (
+          form.elements.namedItem("teammate") as HTMLInputElement
+        ).value
+          .trim()
+          .substring(0, 64),
         "Submitted Timestamp": moment().unix(),
       };
 
       axios({
         method: "POST",
         data: {
-          form_token: "b84bc2781637ef99d1cbb0ec728d58ef",
+          form_token: "30641cd4bf3597d288e54ca2d15d0c9b",
           form_data: JSON.stringify(form_json),
         },
         url: ENV.hosts.api + "/forms/write",
@@ -391,14 +382,12 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       >
         <H3>Raid Signup!</H3>
         <p>
-          In the Level Crush Day 1 for the upcoming re-release of the Kings Fall
-          raid, we want everyone to have fun while also possibly being
-          competitive in getting that day 1 clear! the following form will help
-          us get everyone groups of people that should be a good fit together.
-          We are aiming for everyone to have a good experience, so if incidents
-          or difficulties do arise, please inform __ of the issue and our team
-          setting up this day 1 will do their best to help resolve the
-          situation(s) without detracting too much from your experience.
+          Level Crush is excited to host our first PvP tournament ever! We
+          welcome players of all skill sets to come and try thier luck against
+          other teams in a crimson days like event! Come duel it out with your
+          friend or family as you take on 2 other players in a double
+          elimination bracket! Got a friend that's not in Level Crush? Invite
+          them and come rep your clan as well!
         </p>
 
         <FormFieldGroup
@@ -458,156 +447,46 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         </FormFieldGroup>
         <hr />
         <FormFieldGroup
-          label="Time Availability"
+          label="Team information (required)"
           className="flex justify-between flex-wrap"
         >
           <FormField
-            className="flex-initial w-full lg:w-auto toggle"
-            type="toggle"
-            id="all_day"
-            name="all_day"
-            label="I'm available for the full event"
-            disabled={this.state.form_submitting}
-            onChange={(ev) => {
-              this.setState({
-                allDay: (ev.target as HTMLInputElement).checked,
-              });
-              this.changeLocalTime(ev);
-            }}
-          />
-          <br />
-          <div className="w-full flex-initial">
-            {this.state.allDay ? (
-              <p>
-                Awesome! You wont need to worry about providing your
-                availability
-              </p>
-            ) : (
-              <p>Please provide your availability below</p>
-            )}
-          </div>
-          <hr />
-          <div
             className={
-              "flex flex-wrap justify-between w-full flex-initial" +
-              (this.state.allDay ? " opacity-25" : "")
+              "flex-initial w-full lg:w-[30%] " +
+              (this.state.error_field === "team_name" ? "error" : "")
             }
-          >
-            <div className="w-full flex-initial my-4 mb-8">
-              <p className="mt-4 dark:text-green-700 text-green-900 font-bold">
-                <span className="dark:text-white text-black font-bold mr-2">
-                  Event Starts:
-                </span>
-                <span className="inline-block">
-                  {EVENT_MOMENT.format("hh:mm A")} America/Los_Angeles &nbsp;
-                  {EVENT_MOMENT.format("MMMM Do")} 2022
-                </span>
-              </p>
-              <p className="mt-4">
-                <span className="dark:text-white text-black font-bold mr-2">
-                  Local Starts:
-                </span>
-                <span className="inline-block">
-                  {this.state.resolved_input_time}
-                </span>
-              </p>
-              <p className="mt-4">
-                <span className="dark:text-white text-black font-bold mr-2">
-                  Availability Starts:
-                </span>
-                <span
-                  className={
-                    "inline-block " +
-                    (this.state.valid_time
-                      ? "dark:text-green-700 text-green-900 font-bold"
-                      : "text-red-700")
-                  }
-                >
-                  {this.state.resolved_converted_time}
-                </span>
-              </p>
-            </div>
-            <FormField
-              className="flex-initial w-full  md:w-1/4"
-              type="select"
-              id="avail_start"
-              name="avail_start"
-              label="Start"
-              disabled={this.state.form_submitting || this.state.allDay}
-              value={
-                this.state.startTime != "" ? this.state.startTime : "10:00 AM"
-              }
-              options={AVAILABILITY_TIMES}
-              onChange={this.changeLocalTime}
-            />
-            <FormField
-              className="flex-initial w-full md:w-1/4"
-              type="select"
-              id="avail_end"
-              name="avail_end"
-              disabled={this.state.form_submitting || this.state.allDay}
-              value={this.state.endTime != "" ? this.state.endTime : "11:00 PM"}
-              label="End"
-              options={AVAILABILITY_TIMES}
-              onChange={this.changeLocalTime}
-            />
-            <FormField
-              className="flex-intial w-full md:w-1/4"
-              type=""
-              id="timezone"
-              name="timezone"
-              label="Time Zone"
-              list="timezoneList"
-              disabled={this.state.form_submitting || this.state.allDay}
-              value={
-                this.state.timezone != "" ? this.state.timezone : undefined
-              }
-              onChange={this.changeLocalTime}
-              onBlur={this.changeLocalTime}
-              onCopy={this.changeLocalTime}
-            />
-            <datalist id="timezoneList">
-              {moment.tz
-                .names()
-                .map((tz, index): FormFieldPropsOption => {
-                  return { value: tz, text: tz };
-                })
-                .map((choice, choice_index) => (
-                  <option
-                    key={"timezonelist_" + choice_index}
-                    value={choice.value}
-                  />
-                ))}
-            </datalist>
-          </div>
-        </FormFieldGroup>
-        <hr />
-        <FormFieldGroup label="Additional Information" className="">
-          <FormField
-            type="textarea"
-            id="preferred_teammates"
-            name="preferred_teammates"
-            placeholder="Please seperate each team mate with a comma or line..."
-            label="Preferred Teammates (Discord Usernames)"
-            textarea={{ rows: 6 }}
+            label="Team name"
+            name="team_name"
+            id="teamName"
+            maxLength={32}
+            type="text"
+            placeholder="Team name here please...."
             disabled={this.state.form_submitting}
           />
           <FormField
-            type="textarea"
-            id="notes"
-            name="notes"
-            placeholder="Any additional notes?"
-            textarea={{ rows: 6 }}
-            label="Notes"
+            className={
+              "flex-initial w-full lg:w-[30%] " +
+              (this.state.error_field === "teammate_discord" ? "error" : "")
+            }
+            label="Teammate (Discord name)"
+            name="teammate_discord"
+            id="teammateDiscord"
+            type="text"
+            placeholder="TeammateDiscord#1234"
+            maxLength={64}
             disabled={this.state.form_submitting}
           />
-
           <FormField
-            type="toggle"
-            className="toggle"
-            id="experience"
-            name="experience"
-            label="I want a experienced fireteam only"
+            className={
+              "flex-initial w-full lg:w-[30%] " +
+              (this.state.error_field === "teammate_bungie" ? "error" : "")
+            }
+            label="Teammate (Bungie name)"
+            name="teammate_bungie"
+            id="teammateBungie"
+            type="text"
+            placeholder="TeammateBungie#1234"
+            maxLength={64}
             disabled={this.state.form_submitting}
           />
         </FormFieldGroup>
