@@ -314,7 +314,7 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         action="#goober"
         method="POST"
       >
-        <H3>Raid Signup!</H3>
+        <H3>PvP Tournament Signup!</H3>
         <p>
           Level Crush is excited to host our first PvP tournament ever! We
           welcome players of all skill sets to come and try thier luck against
