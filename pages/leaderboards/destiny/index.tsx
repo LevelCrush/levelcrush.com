@@ -1,15 +1,15 @@
 import Head from "next/head";
 import React from "react";
-import Hero from "../../components/hero";
-import { SiteHeader } from "../../components/site_header";
-import DiscordLink from "../../components/discord_link";
-import Container from "../../components/elements/container";
-import { H3 } from "../../components/elements/headings";
-import OffCanvas from "../../components/offcanvas";
-import { H2 } from "../../components/elements/headings";
-import Hyperlink from "../../components/elements/hyperlink";
+import Hero from "../../../components/hero";
+import { SiteHeader } from "../../../components/site_header";
+import DiscordLink from "../../../components/discord_link";
+import Container from "../../../components/elements/container";
+import { H3 } from "../../../components/elements/headings";
+import OffCanvas from "../../../components/offcanvas";
+import { H2 } from "../../../components/elements/headings";
+import Hyperlink from "../../../components/elements/hyperlink";
 
-export const Leaderboards = (props: any) => (
+export const DestinyLeaderboards = (props: any) => (
   <OffCanvas>
     <Head>
       <title>Destiny Leaderboards | Level Crush</title>
@@ -77,4 +77,4 @@ export const Leaderboards = (props: any) => (
   </OffCanvas>
 );
 
-export default Leaderboards;
+export default DestinyLeaderboards;
