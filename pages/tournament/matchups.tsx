@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export const MatchupPage = (props: MatchupFeedProperties) => (
   <OffCanvas>
     <Head>
-      <title>Tournament Rules | Level Crush</title>
+      <title>Tournament Matchups | Level Crush</title>
     </Head>
     <SiteHeader />
     <main>
