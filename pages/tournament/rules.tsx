@@ -25,10 +25,10 @@ export const RulesPage = (props: any) => (
         <p>
           Below you&apos;ll find a list of all of our rules for the tournament.
           If you have any questions be sure to join the discord and post about
-          it!
+          it! <br />
           <strong>
             Note: A copy of the rules will be posted in the discord in the
-            appropriate channels. If there is a discrepency in rules between
+            appropriate channels. If there is a discrepancy in rules between
             this page and the discord rules, favor discord version rulings.
           </strong>
           <DiscordLink></DiscordLink>
