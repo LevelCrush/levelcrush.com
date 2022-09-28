@@ -443,6 +443,14 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
     );
   }
 
+  public render_closed() {
+    return (
+      <Container>
+        <H3>Signups are now closed!</H3>
+      </Container>
+    );
+  }
+
   public render() {
     return (
       <OffCanvas>
@@ -454,11 +462,13 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
           <Hero className="min-h-[20rem]">
             <Container minimalCSS={true} className="px-4 mx-auto flex-initial">
               <H2 className="drop-shadow text-center">Signups!</H2>
+              <p>
+                If you have any questions or concerns please join the discord!
+              </p>
+              <DiscordLink />
             </Container>
           </Hero>
-          {this.state.form_submit_success
-            ? this.render_success()
-            : this.render_form()}
+          {this.render_closed()}
         </main>
       </OffCanvas>
     );

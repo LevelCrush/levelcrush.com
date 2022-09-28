@@ -16,6 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       destination: "/guides/destiny2/votd",
     },
   };
+
 };
 
 export const GuidePage = (props: any) => (

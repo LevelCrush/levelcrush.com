@@ -16,8 +16,18 @@ export const Routes = [
   },
 
   {
-    url: "/signups",
-    name: "Signup!",
+    url: "/tournament/matchups",
+    name: "Tournament",
+    children: [
+      {
+        url: "/tournament/matchups",
+        name: "Matchups",
+      },
+      {
+        url: "/tournament/rules",
+        name: "Rules",
+      },
+    ],
   },
   {
     url: "/leaderboards/destiny",

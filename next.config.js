@@ -13,6 +13,22 @@ module.exports = {
         destination: "/signup",
         permanent: true,
       },
+      {
+        source: "/tournament",
+        destination: "/tournament/matchups",
+        permanent: false,
+      },
+
+      {
+        source: "/tournament/matchup",
+        destination: "/tournament/matchups",
+        permanent: false,
+      },
+      {
+        source: "/tournament/rule",
+        destination: "/tournament/rules",
+        permanent: false,
+      },
     ];
   },
 };

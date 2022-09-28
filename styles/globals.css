@@ -291,4 +291,18 @@
     box-shadow: none;
     border: none;
   }
+
+  .matchup-round {
+    counter-reset: round-counter;
+  }
+
+  .matchup-round .matchup {
+    counter-increment: round-counter;
+  }
+
+  .matchup-round .matchup > div:first-child::before {
+    content: counter(round-counter) ".";
+    color: inherit;
+    padding-right: 0.5rem;
+  }
 }
