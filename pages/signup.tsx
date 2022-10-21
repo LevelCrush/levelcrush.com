@@ -15,6 +15,7 @@ import {
   FormFieldPropsOption,
 } from "../components/form";
 import Hero from "../components/hero";
+import LoginButton from "../components/login_button";
 import OffCanvas from "../components/offcanvas";
 import { SiteHeader } from "../components/site_header";
 import ENV from "../core/env";
@@ -29,19 +30,7 @@ export type ErrorFieldType =
   | "form";
 
 export interface SignupPageState {
-  displayName: string;
-  timezone: string;
-  bungieUsername: string;
-  allDay: boolean;
-  startTime: string;
-  endTime: string;
-  resolved_input_time: string;
-  resolved_converted_time: string;
-  form_submitting: boolean;
-  form_submit_success: boolean;
-  valid_time: boolean;
-  error_field: ErrorFieldType;
-  error_message: string;
+    
 }
 
 export class SignupPage extends React.Component<{}, SignupPageState> {
@@ -50,19 +39,6 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
     super(props);
 
     this.state = {
-      displayName: "",
-      timezone: moment.tz.guess(),
-      bungieUsername: "",
-      startTime: "",
-      endTime: "",
-      form_submitting: false,
-      form_submit_success: false,
-      resolved_input_time: "",
-      resolved_converted_time: "",
-      valid_time: false,
-      allDay: false,
-      error_field: "none",
-      error_message: "",
     };
     this.onMemberLogin = this.onMemberLogin.bind(this);
     this.submitData = this.submitData.bind(this);
@@ -238,7 +214,7 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
       axios({
         method: "POST",
         data: {
-          form_token: "30641cd4bf3597d288e54ca2d15d0c9b",
+          form_token: "052bc45b7d9ca3aa1112f671dc2ca133",
           form_data: JSON.stringify(form_json),
         },
         url: ENV.hosts.api + "/forms/write",
@@ -317,13 +293,27 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
         <H3>PvP Tournament Signup!</H3>
         <p>
           Level Crush is excited to host our first PvP tournament ever! We
-          welcome players of all skill sets to come and try thier luck against
+          welcome players of all skill sets to come and try their luck against
           other teams in a crimson days like event! Come duel it out with your
           friend or family as you take on 2 other players in a double
           elimination bracket! Got a friend that&apos;s not in Level Crush?
           Invite them and come rep your clan as well!
         </p>
 
+        <br />
+        <p>To join this tournament you will need to do the following.</p>
+        <ol className="list-inside list-decimal">
+          <li>Login with your Discord account.</li>
+          <li>Link your Bungie account</li>
+          <li>Click the &quot;Signup&quot; button</li>
+        </ol>
+        <p>
+          Once all items are completed you will have the abilty to signup and
+          then share a invite link for your team mate!
+        </p>
+        <Container>
+          
+        </Container>
         <FormFieldGroup
           label="Usernames (required)"
           className="flex justify-between flex-wrap"
@@ -468,7 +458,7 @@ export class SignupPage extends React.Component<{}, SignupPageState> {
               <DiscordLink />
             </Container>
           </Hero>
-          {this.render_closed()}
+          {this.render_form()}
         </main>
       </OffCanvas>
     );

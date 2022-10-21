@@ -15,7 +15,7 @@ import { SiteHeader } from "../../components/site_header";
 import MatchupFeedRequest from "../../core/matchup_feed_request";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let feed = new MatchupFeedRequest("pvp1-tournament");
+  let feed = new MatchupFeedRequest("pvp2-tournament");
   let results = await feed.fetch();
 
   return {

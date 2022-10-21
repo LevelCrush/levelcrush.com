@@ -13,9 +13,31 @@ export interface TournamentMatchup {
 export type MatchupMap = { [round: string]: TournamentMatchup[] };
 export type Standings = string[];
 
+export type TournamentMatchupMap = { [round: string]: TournamentMatchup[] };
+export type TournamentStandings = string[];
+export type TournamentRules = string[];
+export type TournamentMaps = string[];
+export type TournamentPrize = string;
+export type TournamentPrizePool = { [position: string]: TournamentPrize };
+
+export interface TournamentInformation {
+  date: string;
+  team_size: number;
+  required: number;
+  format: string;
+}
+
+export interface TournamentConfiguration {
+  information: TournamentInformation;
+  rules: TournamentRules;
+  prize_pool: TournamentPrizePool;
+  maps: [];
+}
+
 export interface TournamentFeed {
-  matchups: MatchupMap;
-  standings: Standings;
+  matchups: TournamentMatchupMap;
+  standings: TournamentStandings;
+  configuration: TournamentConfiguration;
 }
 
 export class MatchupFeedRequest {
@@ -26,7 +48,21 @@ export class MatchupFeedRequest {
 
   public async fetch() {
     const targetHost = ENV.hosts.api;
-    let results: TournamentFeed = { matchups: {}, standings: [] };
+    let results: TournamentFeed = {
+      matchups: {},
+      standings: [],
+      configuration: {
+        information: {
+          date: "N/A",
+          team_size: 69,
+          required: 420,
+          format: "Tournament has an improper configuration. Please fix",
+        },
+        rules: [],
+        prize_pool: {},
+        maps: [],
+      },
+    };
 
     try {
       const axiosResponse = await axios.post(targetHost + "/feed/get", {
@@ -48,14 +84,56 @@ export class MatchupFeedRequest {
           results = activityFeed as TournamentFeed;
         } catch {
           console.log("Unable to parse JSON feed");
-          results = { matchups: {}, standings: [] };
+          results = {
+            matchups: {},
+            standings: [],
+            configuration: {
+              information: {
+                date: "N/A",
+                team_size: 69,
+                required: 420,
+                format: "Tournament has an improper configuration. Please fix",
+              },
+              rules: [],
+              prize_pool: {},
+              maps: [],
+            },
+          };
         }
       } else {
-        results = { matchups: {}, standings: [] };
+        results = {
+          matchups: {},
+          standings: [],
+          configuration: {
+            information: {
+              date: "N/A",
+              team_size: 69,
+              required: 420,
+              format: "Tournament has an improper configuration. Please fix",
+            },
+            rules: [],
+            prize_pool: {},
+            maps: [],
+          },
+        };
       }
     } catch (err) {
       console.log(err);
-      results = { matchups: {}, standings: [] };
+      results = {
+        matchups: {},
+        standings: [],
+        configuration: {
+          information: {
+            date: "N/A",
+            team_size: 69,
+            required: 420,
+            format: "Tournament has an improper configuration. Please fix",
+          },
+          rules: [],
+          prize_pool: {},
+          maps: [],
+        },
+      };
     }
     return results;
   }

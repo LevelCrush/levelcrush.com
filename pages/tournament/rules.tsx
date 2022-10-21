@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React from "react";
 import DiscordLink from "../../components/discord_link";
@@ -7,8 +8,25 @@ import Hyperlink from "../../components/elements/hyperlink";
 import Hero from "../../components/hero";
 import OffCanvas from "../../components/offcanvas";
 import { SiteHeader } from "../../components/site_header";
+import MatchupFeedRequest, {
+  TournamentConfiguration,
+} from "../../core/matchup_feed_request";
 
-export const RulesPage = (props: any) => (
+export interface RulesProps {
+  configuration: TournamentConfiguration;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let feed = new MatchupFeedRequest("pvp2-tournament");
+  let results = await feed.fetch();
+  return {
+    props: {
+      configuration: results.configuration,
+    },
+  };
+};
+
+export const RulesPage = (props: RulesProps) => (
   <OffCanvas>
     <Head>
       <title>Tournament Rules | Level Crush</title>
@@ -26,6 +44,7 @@ export const RulesPage = (props: any) => (
           Below you&apos;ll find a list of all of our rules for the tournament.
           If you have any questions be sure to join the discord and post about
           it! <br />
+          <br />
           <strong>
             Note: A copy of the rules will be posted in the discord in the
             appropriate channels. If there is a discrepancy in rules between
@@ -35,76 +54,55 @@ export const RulesPage = (props: any) => (
         </p>
       </Container>
       <Container>
-        <H3>Games</H3>
+        <H3>Format</H3>
+        <p>{props.configuration.information.format}</p>
+      </Container>
+      <Container>
+        <H3>Team Size</H3>
         <p>
-          Most games will be a best of 3 format. The finals will be best of 5
-          format
+          <strong>Team Size:</strong>
+          {props.configuration.information.team_size}
+        </p>
+        <p>
+          <strong>Required Teams:</strong>
+          {props.configuration.information.required}
+        </p>
+      </Container>
+      <Container>
+        <H3>Date</H3>
+        <p>
+          This tournament will take place on:{" "}
+          {props.configuration.information.date}
         </p>
       </Container>
       <Container>
         <H3>Maps</H3>
-        <p>
-          The maps that will be played are{" "}
-          <Hyperlink
-            href="https://d2.destinygamewiki.com/wiki/The_Burnout"
-            target="_blank"
-          >
-            Burnout
-          </Hyperlink>
-          ,
-          <Hyperlink
-            href="https://d2.destinygamewiki.com/wiki/The_Dead_Cliffs"
-            target="_blank"
-          >
-            Dead Cliffs
-          </Hyperlink>
-          ,
-          <Hyperlink
-            href="https://d2.destinygamewiki.com/wiki/Endless_Vale"
-            target="_blank"
-          >
-            Endless Vale
-          </Hyperlink>
-          ,
-          <Hyperlink
-            href="https://d2.destinygamewiki.com/wiki/Javelin-4"
-            target="_blank"
-          >
-            Javelin-4
-          </Hyperlink>
-          ,{" "}
-          <Hyperlink
-            href="https://d2.destinygamewiki.com/wiki/Wormhaven"
-            target="_blank"
-          >
-            Wormhaven
-          </Hyperlink>
-        </p>
+        <p>The maps that will be played are </p>
+        <ol className="list-inside list-decimal">
+          {props.configuration.maps.map((map, map_index) => (
+            <li key={"map_" + map_index}>{map}</li>
+          ))}
+        </ol>
       </Container>
       <Container>
-        <H3>Weapons and Exotics</H3>
+        <H3>Loadout Rules</H3>
         <p>
-          {" "}
           Please follow the rules below, failure to do so will get your team
           disqualified immediately.
         </p>
-        <ul className="list-inside list-decimal">
-          <li>No sunset Weapons or armor pieces allowed</li>
-          <li>No duplicate exotic weapons or armor</li>
-          <li>
-            No duplicate special weapon archtypes. Snipers and Linears are the
-            same for this category (i.e one shotgun, 1 fusion, 1 linear, 1
-            sniper)
-          </li>
-          <li>Only 1 Bow per team is allowed</li>
-          <li>&quot;Quicksilver Storm&quot; is banned</li>
-          <li>
-            <strong>MK44 PAIRED WITH Juggernaut</strong> is banned. (i.e you
-            cannot use these 2 items together)
-          </li>
-          <li>ALL heavy weapons are banned</li>
-          <li>All supers are allowed</li>
-        </ul>
+        <ol className="list-inside list-decimal">
+          {props.configuration.rules.map((rule, rule_index) => (
+            <li key={"rule_" + rule_index}>{rule}</li>
+          ))}
+        </ol>
+      </Container>
+      <Container>
+        <Hyperlink
+          className="block max-w-[12rem] text-center text-white bg-blue-600 hover:bg-blue-900 hover:cursor-pointer rounded px-4 py-2  mx-0 my-8"
+          href="/signup"
+        >
+          Sign up!
+        </Hyperlink>
       </Container>
     </main>
   </OffCanvas>
